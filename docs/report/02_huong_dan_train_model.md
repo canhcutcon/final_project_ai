@@ -21,6 +21,103 @@ Sử dụng **Reconstruction-based + Prediction-based Hybrid**:
 
 ---
 
+## I-BIS. SƠ ĐỒ LUỒNG XỬ LÝ 7 BƯỚC — MODEL PIPELINE
+
+### Sơ đồ tổng quan
+
+```mermaid
+flowchart TD
+    %% ---- Step 1-2: Upload & Preprocessing ----
+    S1["🟦 Step 1: Upload CSV"]
+    S2["🟦 Step 2: Preprocessing\n(Làm sạch, encode, scale)\n⚙️ Không dùng Model"]
+
+    S1 --> S2
+
+    %% ---- Step 3: Nhận diện loại dữ liệu ----
+    S3{"🟧 Step 3: Nhận diện loại dữ liệu\n🤖 Model C3\n(Data-Type Classifier)"}
+
+    S2 --> S3
+
+    %% ---- Step 3.5: Cân bằng dữ liệu ----
+    S35["🟨 Step 3.5: Cân bằng dữ liệu\n🤖 Model C1 — GAN Generator\n🤖 Model C2 — SMOTE Oversampling"]
+
+    S3 -->|"Kiểm tra tỷ lệ imbalance"| S35
+
+    %% ---- Step 4: Phát hiện dị thường — chia nhánh ----
+    S35 --> S4_BRANCH{"📊 Loại dữ liệu?"}
+
+    S4_TAB["🟥 Step 4a: Anomaly Detection\n— Tabular —\n🤖 A1: AnoGAN / CT-GAN\n🤖 A2: Deep Noise Evaluation\n🤖 A3: VAE Autoencoder"]
+
+    S4_TS["🟥 Step 4b: Anomaly Detection\n— Time-Series —\n🤖 A4: TranAD (Transformer)\n🤖 A5: BiLSTM-GRU Ensemble\n🤖 A6: Hybrid BiLSTM+CNN"]
+
+    S4_BRANCH -->|"Tabular"| S4_TAB
+    S4_BRANCH -->|"Time-Series"| S4_TS
+
+    %% ---- Step 5: Sửa lỗi tự động ----
+    S5["🟩 Step 5: Sửa lỗi tự động\n(Rule-based Correction)\n⚙️ Không dùng Model"]
+
+    S4_TAB --> S5
+    S4_TS --> S5
+
+    %% ---- Step 6: Phân tích & báo cáo ----
+    S6["🟪 Step 6: Phân tích & Báo cáo\n🤖 B1: LLM Chain-of-Thought\n🤖 B2: mT5 Summarization\n🤖 B3: Pattern Mining\n🤖 B4: Trend Analyzer"]
+
+    S5 --> S6
+
+    %% ---- Step 7: Xuất PDF ----
+    S7["📄 Step 7: Xuất PDF Report\n⚙️ Template Engine"]
+
+    S6 --> S7
+
+    %% ---- Styling ----
+    classDef noModel fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
+    classDef classifier fill:#fff3e0,stroke:#e65100,color:#bf360c
+    classDef balance fill:#fffde7,stroke:#f57f17,color:#827717
+    classDef anomaly fill:#ffebee,stroke:#c62828,color:#b71c1c
+    classDef rule fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+    classDef report fill:#f3e5f5,stroke:#6a1b9a,color:#4a148c
+    classDef output fill:#eceff1,stroke:#37474f,color:#263238
+
+    class S1,S2 noModel
+    class S3 classifier
+    class S35 balance
+    class S4_TAB,S4_TS anomaly
+    class S5 rule
+    class S6 report
+    class S7 output
+```
+
+### Bảng tóm tắt: Mapping Model → Bước → Input/Output
+
+| Bước | Tên bước | Model sử dụng | Input | Output |
+|:---:|---|---|---|---|
+| **1** | Upload CSV | *(Không dùng model)* | File CSV thô từ người dùng | Raw DataFrame |
+| **2** | Preprocessing | *(Không dùng model)* | Raw DataFrame | Cleaned & scaled DataFrame (loại bỏ trùng lặp, fill missing, encode, normalize) |
+| **3** | Nhận diện loại dữ liệu | **Model C3** — Data-Type Classifier | Scaled DataFrame + metadata (tên cột, dtype, thống kê mô tả) | Label: `tabular` \| `timeseries` \| `mixed` |
+| **3.5** | Cân bằng dữ liệu | **Model C1** — GAN Generator | Dữ liệu lớp thiểu số (minority class samples) | Synthetic samples (dữ liệu tổng hợp) |
+| | | **Model C2** — SMOTE Oversampling | Feature vectors lớp thiểu số + k-neighbors | Oversampled balanced dataset |
+| **4a** | Anomaly Detection *(Tabular)* | **Model A1** — AnoGAN / CT-GAN | Tabular feature vectors (đã cân bằng) | Anomaly scores + reconstruction errors per row |
+| | | **Model A2** — Deep Noise Evaluation | Tabular feature vectors | Noise-based anomaly labels |
+| | | **Model A3** — VAE Autoencoder | Tabular feature vectors | Reconstruction error + latent distribution |
+| **4b** | Anomaly Detection *(Time-Series)* | **Model A4** — TranAD (Transformer) | Windowed time-series sequences (shape: `[B, W, D]`) | Per-window anomaly scores (2-phase adversarial) |
+| | | **Model A5** — BiLSTM-GRU Ensemble | Windowed sequences | Prediction errors + ensemble confidence |
+| | | **Model A6** — Hybrid BiLSTM+CNN | Windowed sequences | Temporal + spatial anomaly features |
+| **5** | Sửa lỗi tự động | *(Rule-based — không dùng model)* | Anomaly labels + original data | Corrected DataFrame (auto-fix outliers, clamp, interpolate) |
+| **6** | Phân tích & Báo cáo | **Model B1** — LLM Chain-of-Thought | Anomaly results + data context (JSON summary) | Giải thích nguyên nhân từng anomaly bằng ngôn ngữ tự nhiên |
+| | | **Model B2** — mT5 Summarization | Toàn bộ báo cáo phân tích (text dài) | Tóm tắt ngắn gọn (≤200 từ) bằng tiếng Việt |
+| | | **Model B3** — Pattern Mining | Anomaly clusters + feature correlations | Frequent patterns, association rules |
+| | | **Model B4** — Trend Analyzer | Time-indexed anomaly scores | Trend direction, seasonality flags, change points |
+| **7** | Xuất PDF | *(Template engine — không dùng model)* | Structured report data (JSON/HTML) | PDF file hoàn chỉnh |
+
+### Ghi chú bổ sung
+
+- **Step 4 chia nhánh** dựa trên kết quả của Step 3 (Model C3). Nếu dữ liệu là `mixed`, hệ thống chạy **cả hai nhánh** (A1-A3 + A4-A6) rồi ensemble kết quả.
+- **Step 3.5 là tùy chọn**: chỉ kích hoạt khi phát hiện tỷ lệ imbalance > 1:10 giữa các class.
+- **Model B1 (LLM)** sử dụng kỹ thuật **Chain-of-Thought prompting** để giải thích từng bước suy luận, giúp người dùng hiểu *tại sao* một record bị đánh dấu anomaly.
+- **Model B2 (mT5)** được fine-tune trên corpus tiếng Việt để tạo summary chất lượng cao.
+
+---
+
 ## II. CHUẨN BỊ DỮ LIỆU
 
 ### 2.1 Datasets Benchmark đề xuất
