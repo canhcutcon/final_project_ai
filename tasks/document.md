@@ -129,24 +129,142 @@ need for explainable artificial intelligence (XAI). However, as it has been show
 
 ### 2. Report Generation (Tạo Báo cáo bằng NLP)
 
-Một trong những thách thức lớn nhất (Thách thức thứ 6 - CH6) của các mô hình phát hiện dị thường là chúng thiếu đi sự giải thích (anomaly explanation). Nền tảng của bạn áp dụng NLP để tạo báo cáo tiếng Việt là một giải pháp hoàn hảo cho vấn đề này.
+Một trong những thách thức lớn nhất (Thách thức thứ 6 - CH6) của các mô hình phát hiện dị thường là chúng thiếu đi sự giải thích (anomaly explanation)**2**. Nền tảng của bạn áp dụng NLP để tạo báo cáo tiếng Việt là một giải pháp hoàn hảo cho vấn đề này.
 
 - **Sử dụng Mô hình Ngôn ngữ Lớn (LLMs):** Các nghiên cứu gần đây đã chứng minh LLMs có khả năng tuyệt vời trong việc giải thích dị thường, tổng hợp các sự cố và đánh giá mức độ rủi ro của dữ liệu.
+  **11** - (
+  [6] Yinfang Chen, Huaibing Xie, Minghua Ma, Yu Kang, Xin Gao, Liu Shi, Yunjie Cao, Xuedong Gao, Hao Fan, Ming Wen, et al. 2024. Automatic Root Cause Analysis via Large Language Models for Cloud Incidents. (2024).
+  [7] Yuhang Chen, Chaoyun Zhang, Minghua Ma, Yudong Liu, Ruomeng Ding, Bowen Li, Shilin He, Saravan Rajmohan, Qingwei Lin, and Dongmei Zhang. 2023. Imdif-fusion: Imputed diffusion models for multivariate time series anomaly detection. VLDB (2023).
+  [8] Liang Dai, Tao Lin, Chang Liu, Bo Jiang, Yanwei Liu, Zhen Xu, and Zhi-Li Zhang. 2021. SDFVAE: Static and Dynamic Factorized VAE for Anomaly Detection of Multivariate CDN KPIs. In Proceedings of the Web Conference 2021 (Ljubljana, Slovenia) (WWW ’21). Association for Computing Machinery, New York, NY, USA, 3076–3086. https://doi.org/10.1145/3442381.3450013
+  VAE for Time Series Revisiting VAE for Unsupervised Time Series Anomaly Detection- A Frequency Perspective.pdf
+  )
+
+**12** - ([18] Yuxuan Jiang, Chaoyun Zhang, Shilin He, Zhihao Yang, Minghua Ma, Si Qin, Yu Kang, Yingnong Dang, Saravan Rajmohan, Qingwei Lin, et al. 2024. Xpert: Empowering Incident Management with Query Recommendations via Large Language Models. (2024).
+[19] Pengxiang Jin, Shenglin Zhang, Minghua Ma, Haozhe Li, Yu Kang, Liqun Li, Yudong Liu, Bo Qiao, Chaoyun Zhang, Pu Zhao, et al. 2023. Assess and Summarize: Improve Outage Understanding with Large Language Models. (2023).
+[20] Harshavardhan Kamarthi, Lingkai Kong, Alexander Rodriguez, Chao Zhang, and B Aditya Prakash. 2022. CAMul: Calibrated and Accurate Multi-View Time-Series Forecasting. In Proceedings of the ACM Web Conference 2022 (Virtual Event, Lyon, France) (WWW ’22). Association for Computing Machinery, New York, NY, USA,
+3174–3185. https://doi.org/10.1145/3485447.3512037
+VAE for Time Series Revisiting VAE for Unsupervised Time Series Anomaly Detection- A Frequency Perspective.pdf
+)
+
 - Mặc dù các tài liệu không đề cập trực tiếp đến việc tạo báo cáo bằng tiếng Việt _(lưu ý: đây là tính năng bạn có thể tự thiết lập bằng các LLM hiện đại như GPT-4 hay Claude)_, nhưng cơ chế sử dụng NLP để phân tích dữ liệu dạng bảng đã được chứng minh hiệu quả trong các tác vụ như phân tích báo cáo tài chính, nhật ký mạng hoặc lời văn mô tả khiếu nại.
+  **13** - (
+  Transformers: Unlike CNNs and RNNs, which process all points in the input se-quence step by step, transformers process all points at once. The self-attention mecha-nism and feed-forward networks of Transformers enable it to model complex relation-
+  7
+  ships and extract meaningful features from sequential data, which is very useful to recognizing patterns in transactional data, user behavior, or network interactions in fraud detection.
+  Natural Language Processing (NLP): NLP enhances fraud detection by an-alyzing unstructured textual data such as financial reports [59], tax compliance and financial regulation [12], and claims narratives [23]. Key techniques include sentiment analysis, readability metrics, and feature extraction (e.g., Bag-of-Words, TF-IDF, and word embeddings). These features are integrated with traditional fraud indicators in machine learning models, improving accuracy and recall [59].
+  [12] Bajpai, A. (2023). Evaluating the impact of artificial intelligence on enhancing tax com-pliance and financial regulation. International Journal of Multidisciplinary Research and Technology.
+  [23] Fursov, I., Kovtun, E., Rivera-Castro, R., Zaytsev, A., Khasyanov, R., Spindler, M., and Burnaev, E. (2022). Sequence embeddings help detect insurance fraud. IEEE Access.
+  [59] Zhang, Z., Ma, Y., and Hua, Y. (2022). Financial fraud identification based on stacking ensemble learning algorithm: Introducing md&a text information. Computational Intelli-gence and Neuroscience.
+  Year-over-Year Developments in Financial Fraud Detection via Deep Learning- A Systematic Literature Review.pdf
+  )
 
 ### 3. Full Analysis Pipeline (Đề xuất Kiến trúc Pipeline Toàn diện)
 
 Dựa trên framework **TAD-GP (Tabular Anomaly Detection via Guided Prompts)** được giới thiệu trong nghiên cứu, bạn có thể thiết kế Full Analysis Pipeline của mình theo các bước sau:
+**14** - (
+Xiaoyong Zhao, Xingxin Leng, Lei Wang, Ningning Wang & Yanqiong Liu
+In cybersecurity, anomaly detection in tabular data is essential for ensuring information security. While traditional machine learning and deep learning methods have shown some success, they continue to face significant challenges in terms of generalization. To address these limitations, this paper presents an innovative method for tabular data anomaly detection based on large language models, called “Tabular Anomaly Detection via Guided Prompts” (TAD-GP). This approach utilizes a 7-billion-parameter open-source model and incorporates strategies such as data sample introduction, anomaly type recognition, chain-of-thought reasoning, multi-turn dialogue, and key information reinforcement. Experimental results indicate that the TAD-GP framework improves F1 scores by 79.31%, 97.96%, and 59.09% on the CICIDS2017, KDD Cup 1999, and UNSW-NB15 datasets, respectively. Furthermore, the smaller-scale TAD-GP model outperforms larger models across multiple datasets, demonstrating its practical potential in environments with constrained computational resources and requirements for private deployment. This method addresses a critical gap in research on anomaly detection in cybersecurity, specifically using small-scale open-source models
+Efficient anomaly detection in tabular cybersecurity data using large language models
+)
+**15** - (
+Tabular anomaly detection via guided prompting (TAD-GP) This paper introduces a novel approach for anomaly detection in tabular network data, called the Tabular Anomaly Detection via Guided Prompts (TAD-GP) framework (Figs. 1 and 2 ). The framework is designed to improve the performance of small-scale large language models in anomaly detection tasks. TAD-GP incorporates several key techniques, including data sample introduction, fine-grained anomaly classification, chain-of-thought reasoning, multi-turn interaction, and key information reinforcement. These strategies collectively guide the model through a structured analytical process, resulting in more precise and efficient anomaly detection.
+
+Efficient anomaly detection in tabular cybersecurity data using large language models .pdf
+)
 
 - **Bước 1: Tiền xử lý (Preprocessing):** Tải file CSV, làm sạch dữ liệu (xử lý giá trị thiếu, loại bỏ trùng lặp) và chuyển đổi định dạng CSV thành JSON. Định dạng JSON giúp các mô hình NLP dễ dàng phân tích cấu trúc và thuộc tính của dữ liệu hơn.
-- **Bước 2: Quét dị thường (Hybrid Detection):**
-  - Với các tập CSV khổng lồ, hãy chạy dữ liệu qua một mô hình Deep Learning (ví dụ: Autoencoder hoặc TranAD) trước để khoanh vùng (filter) các hàng dữ liệu có điểm số dị thường (anomaly score) cao nhất.
-  - Với dữ liệu nhỏ hơn hoặc cần phân tích sâu, đưa trực tiếp chuỗi JSON vào LLM.
-- **Bước 3: Phân tích & Tạo báo cáo (Reasoning & Report Generation):** Sử dụng chiến lược **Chain-of-Thought (Chuỗi suy luận)** phân tích theo phương châm "Bộ phận trước, Tổng thể sau". Bạn thiết kế các prompt (câu lệnh) cho LLM đi qua các bước:
-  1.  _Data Inspection (Kiểm tra dữ liệu)_
-  2.  _Feature Analysis (Phân tích đặc trưng - đánh giá sự tương quan của các cột trong CSV)_
-  3.  _Pattern Recognition (Nhận diện các mẫu đáng ngờ)_
-  4.  _Decision Making (Kết luận)_.
-- **Bước 4: Xuất báo cáo tiếng Việt:** Chỉ thị cho NLP model dịch và trình bày các bước suy luận trên thành một bản báo cáo tóm tắt bằng tiếng Việt, giải thích rõ ràng tại sao hàng/cột trong CSV bị đánh dấu là lỗi chất lượng hoặc gian lận.
+  **16** - (
+  Efficient introduction of data samples To improve the model’s understanding of tabular data, the TAD-GP framework utilizes a strategy of selecting one normal and one anomalous sample at random. This helps the model quickly familiarize itself with key data
 
-Nền tảng của bạn sẽ giải quyết được vấn đề "hộp đen" của AI truyền thống, đồng thời đáp ứng được các yêu cầu về tính minh bạch và tuân thủ quy định. Bạn có muốn đào sâu hơn vào việc thiết kế cấu trúc mạng Deep Learning cụ thể cho phần Anomaly Detection không?
+  Efficient anomaly detection in tabular cybersecurity data using large language models .pdf
+  )
+
+  **17** - (
+  Data preprocessing Data cleaning Remove duplicates and address missing values in the dataset to maintain data integrity and consistency.
+  Data balancing Utilize sampling techniques to achieve a balanced ratio of normal to anomalous data, thereby preventing class imbalance from adversely affecting the model’s training process.
+  Data format conversion Convert tabular data into a JSON format that is compatible with large language models, facilitating efficient parsing of structured data by the model.
+
+  Efficient anomaly detection in tabular cybersecurity data using large language models .pdf
+  )
+
+- **Bước 2: Quét dị thường (Hybrid Detection):**
+  - Với các tập CSV khổng lồ, hãy chạy dữ liệu qua một mô hình Deep Learning (ví dụ: Autoencoder hoặc TranAD) trước để khoanh vùng (filter) các hàng dữ liệu có điểm số dị thường (anomaly score) cao nhất. **9**
+  - Với dữ liệu nhỏ hơn hoặc cần phân tích sâu, đưa trực tiếp chuỗi JSON vào LLM.
+
+- **Bước 3: Phân tích & Tạo báo cáo (Reasoning & Report Generation):** Sử dụng chiến lược **Chain-of-Thought (Chuỗi suy luận)** phân tích theo phương châm "Bộ phận trước, Tổng thể sau".
+  **18** - (
+  “Part-first, whole-later” chain-of-thought strategy To improve the interpretability of anomaly detection, the TAD-GP framework employs a “part-first, whole-later” chain-of-thought strategy. In this approach, the model begins by independently analyzing each feature to evaluate the likelihood of deviation from normal ranges. It then synthesizes the interactions among multiple features to identify potential anomaly patterns, as illustrated in the purple section of Fig. 2.
+  For instance, in the Data Inspection section, we guide the model to focus on individual features of the data instances. In the Pattern Recognition section, we direct the model to consider interactions among multiple features. Finally, in the Decision Making section, we assist the model in making the final judgment.
+
+  Efficient anomaly detection in tabular cybersecurity data using large language models .pdf
+  )
+
+Bạn thiết kế các prompt (câu lệnh) cho LLM đi qua các bước:
+
+1.  _Data Inspection (Kiểm tra dữ liệu)_
+2.  _Feature Analysis (Phân tích đặc trưng - đánh giá sự tương quan của các cột trong CSV)_
+3.  _Pattern Recognition (Nhận diện các mẫu đáng ngờ)_
+4.  _Decision Making (Kết luận)_.
+    **19** - (
+    This strategy enhances understanding of the complex relationships among data features, enabling the model to detect not only explicit anomalies but also more subtle combinations of anomaly patterns. This significantly improves its detection capability. Particularly in high-dimensional and complex data scenarios, the strategy allows the model to analyze feature dependencies in greater detail, leading to more comprehensive and accurate judgments.
+    Fig. 1. Structured Processing Flowchart for Tabular Data Anomaly Detection. This figure outlines the complete process from raw data input to the final anomaly detection output. The data is first converted into JSON format and integrated into a specially designed multi-turn dialogue. The large language model then generates the corresponding linguistic analysis and anomaly detection results, which are followed by a performance evaluation of the model.
+
+    Efficient anomaly detection in tabular cybersecurity data using large language models .pdf
+    )
+
+- **Bước 4: Xuất báo cáo tiếng Việt:** Chỉ thị cho NLP model dịch và trình bày các bước suy luận trên thành một bản báo cáo tóm tắt bằng tiếng Việt, giải thích rõ ràng tại sao hàng/cột trong CSV bị đánh dấu là lỗi chất lượng hoặc gian lận.**12**, **19**
+
+Nền tảng của bạn sẽ giải quyết được vấn đề "hộp đen" của AI truyền thống, đồng thời đáp ứng được các yêu cầu về tính minh bạch và tuân thủ quy định.**2**, Bạn có muốn đào sâu hơn vào việc thiết kế cấu trúc mạng Deep Learning cụ thể cho phần Anomaly Detection không?
+**20** - (
+Expert Systems With Applications 193 (2022) 116429
+Available online 31 December 2021 0957-4174/© 2022 The Authors. Published by Elsevier Ltd. This is an open access article under the CC BY-NC-ND license (http://creativecommons.org/licenses/by-nc-nd/4.0/).
+Review
+Financial Fraud: A Review of Anomaly Detection Techniques and Recent Advances
+Waleed Hilal a, S. Andrew Gadsden a,\*, John Yawney b
+a McMaster University, Canada b Adastra Corporation, Canada
+A R T I C L E I N F O
+Keywords: Index Terms — Anomaly Outlier Anomaly detection Outlier detection Machine learning Deep learning Financial fraud Credit card fraud Insurance fraud Securities and commodities fraud Insider trading Money laundering
+
+Financial Fraud- A Review of Anomaly Detection Techniques and Recent Advances .pdf
+)
+
+## GANs: Giải Pháp Cân Bằng Dữ Liệu Trong Phát Hiện Gian Lận
+
+Trong các hệ thống phát hiện dị thường và gian lận, nơi số lượng các giao dịch bất thường vô cùng hiếm hoi so với dữ liệu hợp lệ, Mạng đối nghịch tạo sinh (GANs) được ứng dụng như một giải pháp đột phá để giải quyết vấn đề mất cân bằng dữ liệu (class imbalance). Thay vì chỉ lấy mẫu lại dữ liệu hiện có, GANs hoạt động như một Mô hình sinh dữ liệu (Data Generation Model) để tiêm thêm dữ liệu thiểu số tổng hợp vào tập huấn luyện. **1**,**2**,**3**
+
+Dưới đây là các phương pháp và cơ chế kết hợp GANs để xử lý mất cân bằng dữ liệu dựa trên các nguồn tài liệu:
+**1. Sinh dữ liệu tổng hợp chân thực (Realistic Synthetic Data Generation)**Cơ chế cốt lõi của GANs trong việc cân bằng dữ liệu là sử dụng một mạng sinh (Generator) để học phân phối của dữ liệu nhóm thiểu số (chẳng hạn như dữ liệu gian lận) từ một véc-tơ nhiễu ngẫu nhiên [4]. Trong khi đó, mạng phân biệt (Discriminator) cố gắng phân biệt giữa mẫu thật và mẫu giả. Quá trình cạnh tranh này ép Generator tạo ra các mẫu gian lận nhân tạo có đặc tính thống kê giống hệt như gian lận thực tế [3, 4]. Việc bổ sung các mẫu này giúp mô hình phân loại không bị thiên lệch (bias) về phía nhóm dữ liệu đa số (dữ liệu bình thường) [1, 5]. 2. Kết hợp GANs với kỹ thuật SMOTENhiều nghiên cứu thiết kế mô hình lai kết hợp trực tiếp GANs với Kỹ thuật lấy mẫu quá mức thiểu số tổng hợp (SMOTE) để tối ưu hóa việc cân bằng dữ liệu [6-8].
+SMOTE giúp lấy mẫu quá mức bằng cách nội suy tuyến tính giữa các điểm dữ liệu gian lận hiện có [9].
+GANs được sử dụng để tiêm các ví dụ đối nghịch (adversarial examples), sinh ra các kịch bản gian lận nhân tạo mới [8]. Sự kết hợp này vừa giúp gia tăng số lượng mẫu thiểu số một cách nhanh chóng, vừa giúp mô hình nhận diện được các chiêu thức gian lận tinh vi, mới nổi mang tính "trông có vẻ hợp lệ" (look-alike) mà các hệ thống thông thường hay bỏ sót [6, 8]. 3. Tăng cường dữ liệu (Data Augmentation) để cải thiện độ đa dạngCác phương pháp tăng cường dữ liệu truyền thống (như sao chép, dịch chuyển) thường không nắm bắt được các phân phối mới của các dị thường chưa biết. Bằng cách sinh ra dữ liệu tổng hợp dựa trên GANs, mô hình có thể tạo ra các mẫu dị thường với sự đa dạng cao về hình dạng, vị trí và góc độ [10, 11]. Điều này không chỉ giải quyết triệt để sự khan hiếm của mẫu dị thường mà còn ngăn chặn hiện tượng quá khớp (overfitting) vào một số ít mẫu gian lận có sẵn, giúp mô hình tổng quát hóa tốt hơn trên dữ liệu thực tế [10, 11]. 4. Sử dụng các biến thể GANs chuyên biệt cho mất cân bằng
+Conditional GANs (CGANs): Được sử dụng để tạo ra các mẫu tổng hợp cho lớp thiểu số với sự định hướng của nhãn dữ liệu, kết hợp với phân kỳ Kullback-Leibler để hướng dẫn mô hình học phân phối của lớp thiểu số một cách cực kỳ chuẩn xác [1].
+Wasserstein GANs (WGANs): Được sử dụng để thay thế GAN tiêu chuẩn nhằm đem lại sự ổn định cao hơn trong quá trình huấn luyện và khắc phục hiện tượng sụp đổ mô hình (mode collapse), từ đó tạo ra các mẫu gian lận cân bằng đáng tin cậy hơn để cải thiện hiệu suất phân loại [12].
+Complementary GANs (ví dụ: OCAN): Trong những trường hợp cực đoan không có dữ liệu gian lận (chỉ có dữ liệu người dùng bình thường), GANs được huấn luyện để sinh ra các "mẫu bổ sung" nằm ở vùng mật độ thấp của dữ liệu bình thường. Các mẫu giả này đóng vai trò là "dị thường giả định" (negative reference instances) để huấn luyện bộ phân loại một lớp nhận diện được các sai lệch [13-15].
+**Hiệu quả mang lại:**Việc kết hợp GANs để cân bằng tập dữ liệu mang lại cải thiện lớn đối với các chỉ số quan trọng, đặc biệt là tăng mạnh tỷ lệ thu hồi (Recall) và điểm F1-Score [12, 16]. Nhờ được huấn luyện trên một tập dữ liệu đã được cân bằng bởi GANs, mô hình giảm thiểu hiện tượng bỏ lọt các giao dịch gian lận nguy hiểm mà không làm tăng quá mức tỷ lệ cảnh báo sai (False Positives) [16].
+
+---
+
+Kiến Trúc Nền Tảng AI Phát Hiện Dị Thường CSV
+Ý tưởng xây dựng một CSV AI Platform kết hợp giữa phát hiện dị thường (Anomaly Detection) và tạo báo cáo tự động bằng NLP là một hướng đi cực kỳ bắt kịp xu hướng công nghệ hiện tại. Dựa trên các tài liệu nghiên cứu mới nhất, hệ thống bạn đang hình dung giải quyết được một trong những bài toán lớn nhất hiện nay: biến các mô hình AI từ những "hộp đen" (black-box) thành các công cụ có tính giải thích cao (Explainable AI - XAI) thông qua các báo cáo ngôn ngữ tự nhiên [1, 2].
+Dưới đây là những phân tích và gợi ý kiến trúc cho nền tảng của bạn dựa trên các nguồn tài liệu:
+
+1. CSV Anomaly Detection (Phát hiện Dị thường trên Dữ liệu CSV)
+   Dữ liệu CSV thường chứa hai dạng chính: Dữ liệu dạng bảng tĩnh (Tabular Data) hoặc Dữ liệu chuỗi thời gian (Time-series Data). Nền tảng của bạn có thể tích hợp các mô hình Học sâu (Deep Learning) mạnh mẽ sau để tự động trích xuất đặc trưng mà không cần thiết lập quy tắc thủ công [1]:
+   Đối với CSV dạng bảng (Tabular Data): Bạn có thể sử dụng các mô hình học máy sinh tạo (Generative models) như AnoGAN [3, 4] hoặc CT-GAN [5]. Các mô hình này học phân phối của dữ liệu bình thường và phát hiện dị thường dựa trên "lỗi tái tạo" (reconstruction error) hoặc bằng cách đánh giá mức độ nhiễu (Deep Noise Evaluation) [6].
+   Đối với CSV chuỗi thời gian (Time-series): Nếu các cột trong CSV của bạn liên quan đến các bản ghi theo thời gian (ví dụ: log hệ thống, giao dịch tài chính), bạn có thể áp dụng các mô hình lai như LSTM-CNN [7], BiLSTM-GRU [8], hoặc TranAD (Deep Transformer Networks) [9]. Mô hình TranAD đặc biệt vượt trội nhờ khả năng xử lý song song siêu tốc và giải quyết các phụ thuộc thời gian dài hạn [9, 10].
+2. Report Generation (Tạo Báo cáo bằng NLP)
+   Một trong những thách thức lớn nhất (Thách thức thứ 6 - CH6) của các mô hình phát hiện dị thường là chúng thiếu đi sự giải thích (anomaly explanation) [2]. Nền tảng của bạn áp dụng NLP để tạo báo cáo tiếng Việt là một giải pháp hoàn hảo cho vấn đề này.
+   Sử dụng Mô hình Ngôn ngữ Lớn (LLMs): Các nghiên cứu gần đây đã chứng minh LLMs có khả năng tuyệt vời trong việc giải thích dị thường, tổng hợp các sự cố và đánh giá mức độ rủi ro của dữ liệu [11, 12].
+   Mặc dù các tài liệu không đề cập trực tiếp đến việc tạo báo cáo bằng tiếng Việt (lưu ý: đây là tính năng bạn có thể tự thiết lập bằng các LLM hiện đại như GPT-4 hay Claude), nhưng cơ chế sử dụng NLP để phân tích dữ liệu dạng bảng đã được chứng minh hiệu quả trong các tác vụ như phân tích báo cáo tài chính, nhật ký mạng hoặc lời văn mô tả khiếu nại [13].
+3. Full Analysis Pipeline (Đề xuất Kiến trúc Pipeline Toàn diện)
+   Dựa trên framework TAD-GP (Tabular Anomaly Detection via Guided Prompts) được giới thiệu trong nghiên cứu, bạn có thể thiết kế Full Analysis Pipeline của mình theo các bước sau [14, 15]:
+   Bước 1: Tiền xử lý (Preprocessing): Tải file CSV, làm sạch dữ liệu (xử lý giá trị thiếu, loại bỏ trùng lặp) và chuyển đổi định dạng CSV thành JSON. Định dạng JSON giúp các mô hình NLP dễ dàng phân tích cấu trúc và thuộc tính của dữ liệu hơn [16, 17].
+   Bước 2: Quét dị thường (Hybrid Detection):
+   Với các tập CSV khổng lồ, hãy chạy dữ liệu qua một mô hình Deep Learning (ví dụ: Autoencoder hoặc TranAD) trước để khoanh vùng (filter) các hàng dữ liệu có điểm số dị thường (anomaly score) cao nhất [9].
+   Với dữ liệu nhỏ hơn hoặc cần phân tích sâu, đưa trực tiếp chuỗi JSON vào LLM.
+   Bước 3: Phân tích & Tạo báo cáo (Reasoning & Report Generation): Sử dụng chiến lược Chain-of-Thought (Chuỗi suy luận) phân tích theo phương châm "Bộ phận trước, Tổng thể sau" [18]. Bạn thiết kế các prompt (câu lệnh) cho LLM đi qua các bước:
+   Data Inspection (Kiểm tra dữ liệu)
+   Feature Analysis (Phân tích đặc trưng - đánh giá sự tương quan của các cột trong CSV)
+   Pattern Recognition (Nhận diện các mẫu đáng ngờ)
+   Decision Making (Kết luận) [19].
+   Bước 4: Xuất báo cáo tiếng Việt: Chỉ thị cho NLP model dịch và trình bày các bước suy luận trên thành một bản báo cáo tóm tắt bằng tiếng Việt, giải thích rõ ràng tại sao hàng/cột trong CSV bị đánh dấu là lỗi chất lượng hoặc gian lận [12, 19].
+   Nền tảng của bạn sẽ giải quyết được vấn đề "hộp đen" của AI truyền thống, đồng thời đáp ứng được các yêu cầu về tính minh bạch và tuân thủ quy định [2, 20]. Bạn có muốn đào sâu hơn vào việc thiết kế cấu trúc mạng Deep Learning cụ thể cho phần Anomaly Detection không?
