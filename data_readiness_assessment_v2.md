@@ -1,186 +1,143 @@
-# 🎓 ĐÁNH GIÁ DATA — REAL ESTATE DOMAIN FOCUS
+# 🎓 ĐÁNH GIÁ DATA v2 — SAU KHI THÊM DATA MỚI
 
-> **Professor Minh** × **Data Analyst** | 17/03/2026
-
----
-
-## I. HIỆN TRẠNG DATA
-
-### Detection Data — 20 files, ~42K rows (SNRE Singapore)
-
-| Nhóm | Files | Rows | Quality | Dùng cho |
-|------|-------|------|---------|----------|
-| **Transactions** | `all_transactions_detailed_report`, `project_transactions`, `referral_non_project_transactions` | ~8,137 | ⚠️ Missing 23-73% | **A1-A3 (Tabular Detection)** — phát hiện giao dịch bất thường |
-| **Invoices** | `invoice_snre_data_summary_v2`, `enrich_invoice`, `BILL_PRJS_FULL_RECORDS` | ~5,581 | ✅ Missing <2% | **A1-A3** — phát hiện invoice sai/trùng |
-| **SNRE Annual** | `SNRE2020/2021/2022report` | ~1,935 | ⚠️ Missing ~37% | **Mixed** — timeline 3 năm, có thể tạo time-series |
-| **Clients** | `client_data_with_type`, `client_landlord_seller_details` | ~9,424 | ✅ Missing <3% | **A1-A3** — phát hiện client bất thường |
-| **Properties** | `merged_properties_infomation` | 3,759 | ⚠️ Missing 14% | **A1-A3** — phát hiện duplicate/sai địa chỉ |
-| **Linkage** | `payee_role_links`, `combined_ar_data`, agents summaries | ~12,652 | ✅ Clean | **B3 Pattern Mining** — phát hiện network bất thường |
-
-### Report Samples — 43 files (~560KB text)
-
-- 22 [.md](file:///Users/mac/Downloads/GIANG/giang_workspace/.agent/skills/scan/SKILL.md) + 21 [.txt](file:///Users/mac/Downloads/GIANG/giang_workspace/csv_agent_services/data/report-sample/ar_split_report.txt) — phân tích invoice, bill integrity, data quality
-- Ngôn ngữ: Việt + English mixed
-- Chất lượng: **Tốt** — đã có structure, tables, findings
+> **Professor Minh** × **Data Analyst** | 17/03/2026 — Updated
 
 ---
 
-## II. ĐÁNH GIÁ LẠI: DOMAIN REAL ESTATE
+## I. DATA MỚI THÊM
 
-### ✅ Điểm mạnh (thay đổi so với đánh giá trước)
+### 🆕 2 file XLSX — Rất có giá trị!
 
-| # | Điểm mạnh | Chi tiết |
-|---|-----------|----------|
-| 1 | **Data thực tế, phong phú** | 42K records từ 1 công ty — đủ train unsupervised models |
-| 2 | **Đa dạng loại CSV** | 6 nhóm data khác nhau → test Model C3 router |
-| 3 | **Report samples chất lượng** | 43 reports viết bởi analyst → có thể dùng cho B1/B2 |
-| 4 | **Time-series tiềm năng** | SNRE 2020-2022 (3 năm) → ghép thành chuỗi thời gian |
-| 5 | **Anomaly thật đã có** | `bills_duplicate_check_report_matches` = **63 duplicates đã detect** |
+| File | Rows | Cols | Size | Timeline | Highlight |
+|------|------|------|------|----------|-----------|
+| **`transaction.xlsx`** | 3,603 | 143 | 3.2MB | 2012 → 2024 (12 năm!) | Rich — 30 numeric, 113 text cols |
+| **`transaction-asian.xlsx`** | 1,024 | 145 | 785KB | 2014 → 2024 (10 năm) | **CÓ CỘT `This a high risk or unusual transaction`** 🎯 |
 
-### ❌ Vẫn cần bổ sung
+### 🎯 Phát hiện quan trọng: CÓ ANOMALY LABEL!
 
-| # | Thiếu | Mức độ | Giải pháp |
-|---|-------|--------|-----------|
-| 1 | **Anomaly labels** | 🔴 Critical | Annotate thủ công + inject synthetic |
-| 2 | **Training pairs cho B1/B2** | 🟡 High | Tạo từ report samples hiện có |
-| 3 | **Time-series format** | 🟡 Medium | Ghép SNRE 2020-2022 theo timeline |
+```
+File: transaction-asian.xlsx
+Column: "This a high risk or unusual transaction"
 
----
-
-## III. KẾ HOẠCH HÀNH ĐỘNG (Real Estate Focus)
-
-### Phase 1: TẠO ANOMALY LABELS (1-2 ngày)
-
-#### A. Inject Synthetic Anomalies vào SNRE data
-
-```python
-# synthetic_anomaly_injector.py
-import pandas as pd
-import numpy as np
-
-def inject_anomalies(df, anomaly_ratio=0.05):
-    """Inject 5% anomalies vào data SNRE thực"""
-    n_anomalies = int(len(df) * anomaly_ratio)
-    df['is_anomaly'] = 0
-    indices = np.random.choice(len(df), n_anomalies, replace=False)
-    
-    anomaly_types = []
-    for idx in indices:
-        atype = np.random.choice([
-            'duplicate_invoice',    # Invoice trùng số
-            'commission_outlier',   # Commission cao/thấp bất thường
-            'missing_critical',     # Thiếu field quan trọng
-            'amount_mismatch',      # Bill ≠ Invoice amount
-            'date_inconsistency',   # Contract date > Completion date
-            'suspicious_payee',     # Payee không match salesperson
-        ])
-        
-        if atype == 'commission_outlier':
-            # Nhân commission x10 hoặc x0.01
-            if 'Commission' in df.columns:
-                df.loc[idx, 'Commission'] *= np.random.choice([10, 0.01])
-        
-        elif atype == 'amount_mismatch':
-            if 'Bill Amount' in df.columns and 'Invoice Amount' in df.columns:
-                df.loc[idx, 'Invoice Amount'] *= np.random.uniform(1.5, 3.0)
-        
-        elif atype == 'date_inconsistency':
-            # Swap dates to create impossible timeline
-            date_cols = [c for c in df.columns if 'date' in c.lower()]
-            if len(date_cols) >= 2:
-                df.loc[idx, date_cols[0]], df.loc[idx, date_cols[1]] = \
-                    df.loc[idx, date_cols[1]], df.loc[idx, date_cols[0]]
-        
-        df.loc[idx, 'is_anomaly'] = 1
-        anomaly_types.append(atype)
-    
-    df.loc[indices, 'anomaly_type'] = anomaly_types
-    return df
+  0.0 (Normal):     864 records (84.4%)
+  1.0 (High Risk):    2 records  (0.2%)
+  NaN (Unlabeled):  158 records (15.4%)
 ```
 
-**Loại anomaly phù hợp domain real estate:**
+> ⚠️ **Vấn đề**: Chỉ có **2 records** được đánh dấu high-risk → quá ít để train supervised. Nhưng đây là **ground truth thật** — rất quý cho validation.
 
-| Loại | Mô tả | Ví dụ thực tế SNRE |
-|------|--------|---------------------|
-| `duplicate_invoice` | Invoice trùng số/payee | [bills_duplicate_check_report_matches.csv](file:///Users/mac/Downloads/GIANG/giang_workspace/csv_agent_services/data/raw-csv-detection/bills_duplicate_check_report_matches.csv) đã có 63 cases |
-| `commission_outlier` | Hoa hồng bất thường | Commission $315K (max) vs median $2,962 |
-| `amount_mismatch` | Bill Amount ≠ Invoice Amount | Chênh lệch giữa `Bill Amount` và `Invoice Amount` |
-| `date_inconsistency` | Timeline sai logic | Contract Date > Completion Date |
-| `missing_critical` | Thiếu thông tin bắt buộc | File Number trống, Payee Name missing |
-| `suspicious_payee` | Payee không khớp hồ sơ | Payee name ≠ Matched Agent Name |
+### 📊 Thống kê chi tiết data mới
 
-#### B. Annotate thủ công từ report findings
+**Financial ranges:**
 
-Từ report samples đã có, extract anomalies đã phát hiện:
+| Metric | `transaction.xlsx` | `transaction-asian.xlsx` |
+|--------|-------------------|--------------------------|
+| **Price** | $700 — $30M (median: $6,679) | $350 — $4.08B (median: $3,300) |
+| **Gross Commission** | $0 — $370K (median: $3,500) | $0 — $143K (median: $1,820) |
+| **Billing Total** | $0 — $396K (median: $3,745) | $0 — $143K (median: $1,820) |
 
-| Report | Anomalies tìm được | Dùng làm labels |
-|--------|---------------------|-----------------|
-| [BILLS_DATA_QUALITY_ISSUES.txt](file:///Users/mac/Downloads/GIANG/giang_workspace/csv_agent_services/data/report-sample/BILLS_DATA_QUALITY_ISSUES.txt) | ✅ Data quality violations | Labels cho `enrich_invoice`, `BILL_PRJS` |
-| [BAO_CAO_BILLS_ANALYSIS.md](file:///Users/mac/Downloads/GIANG/giang_workspace/csv_agent_services/data/report-sample/BAO_CAO_BILLS_ANALYSIS.md) | ✅ Bill duplicates + missing | Labels cho `all_transactions` |
-| [INVOICE_DISCREPANCY_ANALYSIS.md](file:///Users/mac/Downloads/GIANG/giang_workspace/csv_agent_services/data/report-sample/INVOICE_DISCREPANCY_ANALYSIS.md) | ✅ Invoice mismatches | Labels cho `invoice_snre_data_summary_v2` |
-| [BILLS_MISSING_IN_SYSTEM.txt](file:///Users/mac/Downloads/GIANG/giang_workspace/csv_agent_services/data/report-sample/BILLS_MISSING_IN_SYSTEM.txt) | ✅ 74 invoices missing | Ground truth anomalies |
+**Status distributions:**
 
-### Phase 2: TẠO TIME-SERIES DATA (1 ngày)
+| Column | `transaction.xlsx` | `transaction-asian.xlsx` |
+|--------|-------------------|--------------------------|
+| **Status** | Finalized: 3,355 / Draft: 239 / Aborted: 9 | Finalized: 1,010 / Aborted: 13 / Draft: 1 |
+| **Billing Status** | Paid: 1,858 / Pending: 1,317 / Not Invoiced: 354 | Paid: 977 / Partially: 14 / Pending: 14 |
+| **Txn Type** | Rental: 3,450 / Sale: 153 | Rental: 756 / Sale: 230 / Other: 38 |
+| **Property Type** | Condo: 2,327 / Apt: 382 / Landed: 273 | Apt/Condo: 207 / Condo: 176 / HDB 4-room: 96 |
 
-Ghép SNRE 2020 + 2021 + 2022 thành chuỗi thời gian:
+**Date ranges** (time-series tiềm năng):
 
-```python
-# Ghép 3 năm SNRE → time-series theo tháng
-snre_files = ['SNRE2020report.csv', 'SNRE2021report.csv', 'SNRE2022report.csv']
-dfs = [pd.read_csv(f, encoding='utf-8-sig') for f in snre_files]
-combined = pd.concat(dfs, ignore_index=True)
-
-# Parse date & sort
-combined['Date'] = pd.to_datetime(combined['Submission Date'], format='mixed')
-combined = combined.sort_values('Date')
-
-# Aggregate monthly: count transactions, total commission, avg amount
-monthly = combined.groupby(combined['Date'].dt.to_period('M')).agg({
-    'File Number': 'count',          # Số giao dịch/tháng
-    'Commission': 'sum',             # Tổng hoa hồng
-    'Transaction Price': 'mean',     # Giá trung bình
-}).reset_index()
-# → ~36 data points (3 năm × 12 tháng) — đủ cho TranAD window_size=10
-```
-
-### Phase 3: TẠO TRAINING PAIRS CHO B1/B2 (2 ngày)
-
-Tạo cặp `(anomaly_context → explanation → summary)` từ reports hiện có:
-
-```json
-{
-  "input": {
-    "anomaly_type": "amount_mismatch",
-    "record": {"Invoice": "INV-22-01004LPF", "Bill": 25000, "Invoice_Amount": 37500},
-    "context": "Payee: Liong Phang Fei, Project: SB Yung Ho Investment"
-  },
-  "chain_of_thought": "1. Bill Amount = $25,000, Invoice Amount = $37,500 → chênh lệch 50%. 2. Trong SNRE, chênh lệch bình thường do GST < 10%. 3. Chênh lệch 50% vượt xa mức bình thường → BẤT THƯỜNG.",
-  "summary": "Invoice INV-22-01004LPF có chênh lệch 50% giữa bill và invoice amount, vượt ngưỡng GST thông thường.",
-  "label": "anomaly"
-}
-```
-
-→ Tạo **~200 cặp** từ 43 report samples + synthetic anomalies.
+| File | Submit Time | Lease Start | Lease Expiry |
+|------|------------|-------------|--------------|
+| `transaction.xlsx` | 2012-05 → 2024-07 | 2012-06 → 2025-06 | 2014-06 → 2028-05 |
+| `transaction-asian.xlsx` | 2014-10 → 2024-09 | 2014-09 → 2026-08 | 2015-03 → 2027-08 |
 
 ---
 
-## IV. SCORECARD CẬP NHẬT (Real Estate Focus)
+## II. TỔNG HỢP TOÀN BỘ DATA
+
+### Inventory cập nhật: 22 files, ~47K rows
+
+| Nhóm | Files | Rows | Cols | Quality |
+|------|-------|------|------|---------|
+| **🆕 Transactions (XLSX)** | 2 files mới | **4,627** | 143-145 | ⚠️ Missing 43-48% nhưng rất rich |
+| Transactions (CSV) | 3 files | 8,137 | 9-61 | ⚠️ Missing 23-73% |
+| Invoices | 3 files | 5,581 | 12-24 | ✅ Good |
+| SNRE Annual | 3 files | 1,935 | 40-41 | ⚠️ Missing ~37% |
+| Clients | 2 files | 9,424 | 8-13 | ✅ Good |
+| Properties | 1 file | 3,759 | 11 | ✅ OK |
+| Linkage/Summary | 8 files | 12,652 | 4-9 | ✅ Clean |
+| **TỔNG** | **22 files** | **~47K** | — | — |
+
+---
+
+## III. ĐÁNH GIÁ THEO MODEL (CẬP NHẬT)
+
+| Model | Before | After | Lý do thay đổi |
+|-------|--------|-------|-----------------|
+| **A1-A3** (Tabular Detection) | 🔴 20% | 🟡 **50%** | +4.6K rows rich data, CÓ partial labels |
+| **A4-A6** (Time-Series) | 🔴 0% | 🟡 **40%** | Submit Time 2012-2024 → monthly aggregation ~144 data points |
+| **C3** (Data-Type Classifier) | 🟡 40% | 🟡 **50%** | Thêm 2 files XLSX = thêm sample types |
+| **C1/C2** (Balancing) | 🔴 0% | 🟡 **30%** | Có label `high_risk` nhưng chỉ 2 positive → cần augment |
+| **B3** (Pattern Mining) | 🔴 0% | 🟡 **35%** | Rich features cho pattern discovery |
+| **B4** (Trend Analyzer) | 🔴 0% | 🟡 **45%** | 12 năm data → trend + seasonality analysis |
+| **B1/B2** (Reports) | 🟡 30% | 🟡 **30%** | Không thay đổi — vẫn cần training pairs |
+
+---
+
+## IV. HÀNH ĐỘNG CẬP NHẬT
+
+### ✅ Không cần làm nữa
+
+| # | Item | Lý do |
+|---|------|-------|
+| 1 | Tìm anomaly label | ĐÃ CÓ cột `This a high risk or unusual transaction` |
+| 2 | Tìm time-series data | ĐÃ CÓ Submit Time 2012-2024 (12 năm) |
+
+### ⚡ Cần làm (ưu tiên cập nhật)
+
+| # | Hành động | Chi tiết | Thời gian |
+|---|-----------|----------|-----------|
+| 1 | **Inject synthetic anomalies** | Dùng 2 records `high_risk=1` làm template → inject thêm ~200-500 synthetic anomalies tương tự | 1 ngày |
+| 2 | **Merge + clean XLSX** | Gộp 2 XLSX → chuẩn hóa 145 cols chung, xử lý missing 43-48% | 0.5 ngày |
+| 3 | **Tạo time-series aggregation** | Group by month (Submit Time) → ~144 monthly data points | 0.5 ngày |
+| 4 | **Tạo training pairs cho B1/B2** | Từ report samples + anomaly results | 2 ngày |
+
+### 🔍 Anomaly thật đã có sẵn trong data!
+
+| Loại | Chi tiết | File |
+|------|----------|------|
+| **Price outlier** | Max **$4.08 BILLION** (median chỉ $3,300) — chắc chắn sai | `transaction-asian.xlsx` |
+| **Aborted transactions** | 22 aborted records | Cả 2 xlsx |
+| **Draft/Unapproved** | 239 Draft + 354 Approval Status=0 | `transaction.xlsx` |
+| **Billing mismatch** | 45 Partially Invoiced + 26 Ready to Invoice | `transaction.xlsx` |
+| **High risk flagged** | 2 records ground truth | `transaction-asian.xlsx` |
+| **Duplicate invoices** | 63 matches | `bills_duplicate_check_report_matches.csv` |
+| **Missing invoices** | 74 invoices missing | Report samples |
+
+→ **Tổng: ~350+ anomaly candidates** không cần synthetic injection!
+
+---
+
+## V. SCORECARD CẬP NHẬT
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│         DATA READINESS — REAL ESTATE FOCUS              │
+│         DATA READINESS v2 — AFTER NEW DATA              │
 │                                                         │
-│  Hiện tại               Sau Phase 1-3                   │
+│  v1 (before)          v2 (now)           Target         │
 │                                                         │
-│  Detection:  ██░░░░░░  20%  →  ███████░░░  70%        │
-│  C3 Router:  ████░░░░  40%  →  ████████░░  80%        │
-│  Balancing:  ░░░░░░░░   0%  →  ██████░░░░  60%        │
-│  Reports:    ███░░░░░  30%  →  ████████░░  80%        │
+│  Detection:  ██░░░░  20%  →  █████░░░  45%  →  70%    │
+│  Time-Series: ░░░░░░   0%  →  ████░░░░  40%  →  65%   │
+│  C3 Router:  ████░░  40%  →  █████░░░  50%  →  80%    │
+│  Balancing:  ░░░░░░   0%  →  ███░░░░░  30%  →  60%    │
+│  Reports:    ███░░░  30%  →  ███░░░░░  30%  →  80%    │
 │                                                         │
-│  Overall:    ██░░░░░░  15%  →  ███████░░░  70%  ✅    │
+│  Overall:    ██░░░░  15%  →  █████░░░  40%  ✅        │
 │                                                         │
-│  ⚡ Ước tính: 4-5 ngày công để hoàn thành Phase 1-3    │
+│  ⚡ Ước tính: 3-4 ngày công để đạt target 70%+         │
+│  (Giảm 1 ngày so với v1 nhờ data mới!)                 │
 └─────────────────────────────────────────────────────────┘
 ```
 
-> **Kết luận mới**: Với focus real estate, data SNRE hiện có là **nền tảng tốt**. Chỉ cần **inject synthetic anomalies** + **annotate từ report findings** + **ghép time-series** là có thể bắt đầu train. Không cần download benchmark datasets từ domain khác.
+> **Kết luận v2**: Data mới **cải thiện đáng kể** tình hình. Đặc biệt cột `high_risk` và 12 năm timeline. Price outlier $4.08B là anomaly thật → dùng làm ground truth. Cần ~3-4 ngày nữa là đủ train.
