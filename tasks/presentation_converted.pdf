@@ -1,0 +1,12 @@
+# Document Extraction Results
+
+Converted 1 document(s) to markdown.
+
+---
+
+## NguyenThiThuyKieu_22000631_Presentation (1).pptx
+
+**Error**: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'Unsupported MIME type: application/vnd.openxmlformats-officedocument.presentationml.presentation', 'status': 'INVALID_ARGUMENT'}}
+
+---
+
