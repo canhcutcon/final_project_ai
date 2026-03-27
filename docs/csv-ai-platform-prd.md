@@ -90,7 +90,7 @@ Monorepo — `backend/` (FastAPI) và `frontend/` (Next.js) trong cùng reposito
 | **File Storage** | MinIO | S3-compatible, self-hosted |
 | **Frontend** | Next.js 14 (React 18) | SSR, App Router, TypeScript |
 | **Charts** | Recharts / D3.js | Interactive visualization |
-| **LLM** | OpenAI API / Local LLM (Llama) | Report generation |
+| **LLM** | Qwen2.5-7B + LoRA (fine-tuned) | Report generation — domain-tuned on anomaly data |
 | **PDF** | ReportLab / WeasyPrint | Server-side PDF |
 | **Container** | Docker + Docker Compose | Reproducible deployment |
 | **CI/CD** | GitHub Actions | Automated testing |
@@ -103,7 +103,9 @@ Unit + Integration — pytest cho backend, Jest cho frontend, E2E manual testing
 
 ### Additional Technical Assumptions
 - Model weights pretrained và lưu trong Model Registry (local filesystem hoặc MinIO)
-- LLM sử dụng OpenAI API (production) hoặc Local Llama (development/offline)
+- LLM sử dụng **Qwen2.5-7B fine-tuned với LoRA** (3B/7B tùy tài nguyên); 7B yêu cầu GPU ≥16GB VRAM hoặc Colab T4 với quantization (4-bit)
+- LoRA adapter fine-tuned trên domain data (anomaly JSON → báo cáo tiếng Việt/Anh)
+- Inference: `transformers` + `peft` + `bitsandbytes` (int4 quantization cho production)
 - WebSocket cho realtime pipeline status updates
 - Alembic cho database migrations (MySQL dialect)
 
@@ -114,7 +116,7 @@ Unit + Integration — pytest cho backend, Jest cho frontend, E2E manual testing
 - **Epic 1: Infrastructure & Project Setup** — Thiết lập nền tảng dự án, Docker, Database, CI/CD pipeline
 - **Epic 2: Data Ingestion & Processing** — Upload CSV, tự động nhận diện loại dữ liệu, tiền xử lý và lưu trữ
 - **Epic 3: AI Anomaly Detection Engine** — Tích hợp các model BiLSTM, TranAD, AnoGAN để phát hiện dị thường
-- **Epic 4: NLP Report Generation** — Sinh báo cáo tự nhiên bằng LLM (Chain-of-Thought), hỗ trợ Việt/Anh, xuất PDF
+- **Epic 4: NLP Report Generation** — Pipeline 4 bước (Aggregation → Enrichment → Prompt Builder → LLM). Fine-tune Qwen2.5-7B + LoRA trên structured data, LLM chỉ viết văn — không tự tính toán. Hỗ trợ Việt/Anh, xuất PDF
 - **Epic 5: Full Pipeline Orchestration** — Kết nối toàn bộ luồng xử lý bất đồng bộ với Celery + Redis
 - **Epic 6: Frontend Dashboard & UI** — Xây dựng giao diện Next.js: Dashboard, Upload, Analysis, Report, Pipeline
 
@@ -264,20 +266,83 @@ so that I get optimal detection results without manual configuration.
 
 ### Epic 4: NLP Report Generation
 
-**Objective:** Sử dụng LLM (OpenAI API hoặc Local Llama) với kỹ thuật Chain-of-Thought để sinh báo cáo phân tích dị thường bằng ngôn ngữ tự nhiên. Hỗ trợ tiếng Việt và tiếng Anh, hai style (summary/detailed), và xuất PDF.
+**Objective:** Xây dựng pipeline sinh báo cáo production-level với 4 bước: **Aggregation → Enrichment → Prompt Builder → LLM**. Fine-tune **Qwen2.5-7B với LoRA** trên domain data (structured JSON → báo cáo Markdown), tích hợp vào pipeline. LLM chỉ đóng vai trò "viết văn" — mọi tính toán số học được thực hiện trước bởi Aggregator + Enrichment Layer.
 
-#### Story 4.1: LLM Report Generation
+**Pipeline luồng sinh báo cáo (Production Level):**
+```
+Raw anomalies (Từ AI Models BiLSTM/TranAD/DAE)
+       ↓
+Aggregator (Gom nhóm, đếm count, tìm missing)
+       ↓
+Enrichment Layer (Tính ratio, score, rank priority, cross-analysis)
+       ↓
+Prompt Builder (Jinja2 Template + Instructions)
+       ↓
+Qwen2.5-7B + LoRA (Viết Markdown Report)
+       ↓
+PDF export (ReportLab / WeasyPrint)
+```
+
+**Nguyên tắc cốt lõi:** `Aggregator + Enrichment quality = 80% output quality`. LLM chỉ rewrite dữ liệu đã chuẩn bị, **tuyệt đối không để LLM tự làm toán** (ngăn hallucination).
+
+**Hardware requirements:**
+- Fine-tune: GPU ≥16GB VRAM (RTX 3090/4090, A100) hoặc Google Colab T4 với 4-bit quantization
+- Inference production: GPU ≥8GB (int4) hoặc CPU với llama.cpp backend
+- Model size: Qwen2.5-7B (~14GB FP16) → ~4GB với int4 quantization
+
+#### Story 4.1: Aggregation Service
+As a developer,
+I want raw anomaly results grouped into semantic clusters with counts and summaries,
+so that the LLM receives structured, pre-computed data instead of raw JSON.
+
+**Acceptance Criteria:**
+1. `AggregationService.aggregate()` nhóm anomalies thành clusters theo `issue_type` (MISSING_TRANSACTION, HIGH_COMMISSION, DUPLICATE_ENTRY, ...)
+2. Mỗi cluster chứa: `issue_type`, `count`, `samples[]` (top 3-5 mẫu đại diện), `affected_ids[]`
+3. Context summary được tính toán sẵn: `total_records`, `expected`, `missing`, `anomaly_ratio`
+4. Cross-analysis equations được sinh trước (VD: `-48 issued + 366 paid = 318 net difference`) — LLM chỉ cần rewrite, không tự tính
+5. Output là structured JSON chuẩn, sẵn sàng cho Enrichment Layer
+
+#### Story 4.2: Enrichment Service
+As a developer,
+I want aggregated anomaly clusters enriched with numerical reasoning signals, priority ranking, and semantic text,
+so that the LLM can generate accurate reports without performing any calculations.
+
+**Acceptance Criteria:**
+1. `EnrichmentService.enrich()` thêm cho mỗi cluster: `ratio` (VD: "1.34% of total"), `priority` (1-3), `impact_score` (0-1), `impact` level (High/Medium/Low)
+2. Priority ranking dựa trên `impact_score`: score ≥0.8 → priority 1, ≥0.5 → priority 2, còn lại → priority 3
+3. Sinh `semantic_text` cho detailed reports: "Price is 45% higher than district average", "Commission is 80% higher than expected"
+4. Individual anomaly detail chứa: `risk_level`, `anomaly_score`, `key_findings[]`, `location_context`, `temporal_context`
+5. Output JSON đạt chuẩn "Semantic & Enriched" — LLM có thể viết report chỉ bằng cách rewrite
+
+#### Story 4.3: Qwen2.5-7B LoRA Fine-Tuning
+As an ML engineer,
+I want to fine-tune Qwen2.5-7B with LoRA on structured anomaly data → report pairs,
+so that the model generates accurate, professionally-toned reports in Vietnamese and English.
+
+**Acceptance Criteria:**
+1. Training script `generation/train_lora.py` với `transformers` + `peft` + `bitsandbytes`
+2. Dataset format: JSONL với `Instruction + Input (Enriched JSON) + Output (Markdown Report)` — **KHÔNG train từ raw JSON**
+3. Instruction template bao gồm: tone (professional audit), structure (Executive Summary → Key Issues → Cross Analysis → Recommendations), format rules (bullet points, bold, numeric references)
+4. LoRA config: `r=16`, `alpha=32`, target modules `q_proj`, `v_proj`
+5. Fine-tuning chạy được trên Colab T4 (4-bit QLoRA) và local GPU ≥16GB (bfloat16)
+6. Training data: ≥50,000 samples dạng `Instruction + Enriched Input + Expected Markdown`
+7. Adapter weights lưu vào `models/qwen-lora-adapter/`
+8. BLEU / ROUGE-L evaluation trên held-out test set
+
+#### Story 4.4: Prompt Template & Report Generation Service
 As a user,
 I want the system to generate a natural language report explaining the anomalies found,
 so that I can understand the results without deep technical knowledge.
 
 **Acceptance Criteria:**
-1. `NLPService.generate_report()` tạo nội dung Markdown từ `AnomalyResult`
-2. Hỗ trợ `language`: `vi` (Việt) và `en` (English)
-3. Hỗ trợ `style`: `summary` (tóm tắt) và `detailed` (chi tiết)
-4. Sử dụng Chain-of-Thought prompting cho giải thích logic
+1. Prompt template `generation/templates/report_prompt.j2` nhận Enriched JSON từ Story 4.2, render thành prompt chuẩn với `### Instruction` + `### Input` + `### Output`
+2. `NLPService.generate_report()` gọi pipeline: Aggregate → Enrich → Render Template → LLM Inference
+3. Hỗ trợ `language`: `vi` (Việt) và `en` (English) — via prompt language instruction
+4. Hỗ trợ `style`: `summary` (tóm tắt ≤500 từ, cluster-level) và `detailed` (per-anomaly explanation với semantic text)
+5. Force Tone: professional audit tone (consulting-style recommendations: "Investigate missing transactions" thay vì "Bạn nên...")
+6. Inference timeout ≤60s cho dataset ≤1000 anomalies
 
-#### Story 4.2: PDF Export
+#### Story 4.5: PDF Export
 As a user,
 I want to download the analysis report as a PDF,
 so that I can share it with stakeholders.
