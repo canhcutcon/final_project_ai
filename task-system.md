@@ -40,3 +40,9 @@ A4_TranAD 0.711 ±0.058 0.923 ✓ Tốt — variance cao hơn
 
 hiện tại nếu chỉ cần detect lỗi csv thì giữ lại 2 model A5_BiLSTM, A4_TranAD có ok không?
 Cần đánh giá lại daset hiện tại, vẽ visualize cho dataset, đánh giá độ phù hợp tranning
+kiểm tra đánh giá data csv_agent_platform/generation/data cho generation report
+Qwen2.5-7B LoRA Fine-Tuning
+
+As an ML engineer,
+I want to fine-tune Qwen2.5-7B with LoRA on structured anomaly data → report pairs,
+so that the model generates accurate, professionally-toned reports in Vietnamese and English.
