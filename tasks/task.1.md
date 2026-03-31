@@ -145,10 +145,12 @@ Phase 2: Fix Label Leakage — Loại anomaly\_\* khỏi TS input features
 
 Thay đổi — configs/default.yaml: Thêm exclude_from_features
 timeseries:  
- exclude_from_features:  
- - anomaly_count  
- - anomaly_ratio  
- # Tất cả lag/rolling variants sẽ tự động bị drop
+ exclude_from_features:
+
+- anomaly_count
+- anomaly_ratio
+
+# Tất cả lag/rolling variants sẽ tự động bị drop
 
 Thay đổi — src/data/timeseries.py hoặc src/data/dataset.py: Khi tạo features, drop các cột này trước khi windowing (giữ
 lại is_anomaly_week làm label_col, nhưng không dùng làm feature).
@@ -163,15 +165,13 @@ Sau khi fix code, cần chạy lại pipeline:
 
 1. scripts/run_pipeline.py → regenerate monthly_timeseries.parquet (với is_anomaly_week)
 2. Regenerate master_timeseries_train/val/test.pt (với đúng labels và features)
-3. Retrain TranAD và BiLSTM → V7  
-
+3. Retrain TranAD và BiLSTM → V7
 
 Metric mục tiêu V7:
 
 - TS Val anomaly%: 15–30% (thay vì 100%)
 - TranAD/BiLSTM F1 realistic: 0.6–0.8 (thay vì 1.0)
-- Feature count TS: ~56 (loại 35 leaky cols)  
-
+- Feature count TS: ~56 (loại 35 leaky cols)
 
 ---
 
@@ -180,5 +180,59 @@ Thứ Tự Ưu Tiên
 P1 (ngay): Fix windowing.py label threshold → 30 phút code
 P1 (ngay): Fix timeseries.py thêm is*anomaly_week → 20 phút code  
  P2 (sau): Loại anomaly*\* cols khỏi TS input → 30 phút code + config  
- P3 (sau): Chạy lại pipeline + retrain V7 → runtime  
+ P3 (sau): Chạy lại pipeline + retrain V7 → runtime
 
+need to fix 3. Train/Test KHÔNG phải Temporal Split
+
+Train time: 2012-08-01 → 2025-11-25
+Test time: 2012-05-17 → 2025-11-25 ← 100% overlap!
+
+Timeline thực tế:
+──────────────────────────────────────────────────────────
+2012 2015 2019 2022 2025
+| | | | |
+[████████████████ TRAIN ████████████████████████]
+[████████████████ TEST ████████████████████████]
+↑ Không có ranh giới thời gian!
+
+Đây là random stratified split, KHÔNG phải temporal split.
+
+Vấn đề với TranAD / BiLSTM:
+Model time-series cần:
+Train: 2012 → 2023 (học pattern lịch sử)
+Test : 2024 → 2025 (predict tương lai)
+
+Hiện tại: train và test có cùng thời điểm → model có thể
+"nhớ" pattern tương lai trong training → đánh giá không thực tế
+
+4. Feature Bloat — 193 flags nhưng 188 là constant (vô dụng)
+
+\_high_missing flags: 193 cột
+├── 188 cột CONSTANT (cùng giá trị cho mọi row) → NOISE
+└── 5 cột có variance → potentially useful
+
+Effective features sau cleanup: ~225 (thay vì 413)
+
+# Dọn dẹp ngay
+
+from sklearn.feature_selection import VarianceThreshold
+vt = VarianceThreshold(threshold=0.0)
+
+# Loại ~188 constant cols
+
+# 2. Remove constant \_high_missing flags
+
+from sklearn.feature_selection import VarianceThreshold
+vt = VarianceThreshold(threshold=0.0)
+
+# Sẽ tự động drop 188 constant cols
+
+# 3. KHÔNG clip values vì data đã standardized
+
+# (bỏ cell 6.1 clip hoặc chỉ clip raw data trước khi scale)
+
+# 4. Cân nhắc temporal split cho TS models
+
+# train: submit_time < 2024-01-01
+
+# test : submit_time >= 2024-01-01
