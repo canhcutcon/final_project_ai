@@ -1,295 +1,348 @@
-Bạn có thể chuyển model ngay trong Claude Code bằng cách
-gõ:
+Phase 1: Data Audit & Fix (Ưu tiên CAO)
 
-/model sonnet
+┌──────┬────────────────────────────────────────────────────────────────────┬────────────────────────────┐  
+ │ Task │ Chi tiết │ Tại sao │
+├──────┼────────────────────────────────────────────────────────────────────┼────────────────────────────┤  
+ │ 1.1 │ Xác định data đã scaled hay raw — nếu scaled thì bỏ clip/log steps │ Tránh apply sai operations │
+├──────┼────────────────────────────────────────────────────────────────────┼────────────────────────────┤
+│ 1.2 │ Fix Target Encoding → dùng K-Fold (k=5) │ Chống data leakage │  
+ ├──────┼────────────────────────────────────────────────────────────────────┼────────────────────────────┤  
+ │ 1.3 │ Tách _high_missing__ columns ra — chúng đã là binary features │ Tránh xử lý trùng │  
+ ├──────┼────────────────────────────────────────────────────────────────────┼────────────────────────────┤  
+ │ 1.4 │ Tách _\_freq và \*\_encoded — chúng đã là engineered features │ Hiểu rõ feature pipeline │
+└──────┴────────────────────────────────────────────────────────────────────┴────────────────────────────┘
 
-hoặc chọn claude-sonnet-4-6 từ danh sách hiện ra.
+Phase 2: Domain Features (Real Estate Transactions)
 
-======
-Model CV Mean F1 CV Std CV AUC Đánh giá
-──────────────────────────────────────────────────────  
- A5_BiLSTM 0.772 ±0.026 0.934 ⭐ TỐT NHẤT — ổn định
-A4_TranAD 0.711 ±0.058 0.923 ✓ Tốt — variance cao hơn  
- A2_DAE 0.671 ±0.017 0.965 ✓ Tốt — AUC cao nhất  
- A3_VAE 0.508 ±0.038 0.924 △ Trung bình
+┌────────────────────┬─────────────────────────┬──────────────────────────────────────────────────┐  
+ │ Feature Group │ Features │ Công thức │
+├────────────────────┼─────────────────────────┼──────────────────────────────────────────────────┤  
+ │ Commission anomaly │ commission_pct │ gross_commission / transaction_price × 100 │
+├────────────────────┼─────────────────────────┼──────────────────────────────────────────────────┤
+│ │ commission_vs_median │ commission - median(commission by property_type) │  
+ ├────────────────────┼─────────────────────────┼──────────────────────────────────────────────────┤  
+ │ │ is_commission_outlier │ Commission ngoài IQR per group │  
+ ├────────────────────┼─────────────────────────┼──────────────────────────────────────────────────┤  
+ │ Price anomaly │ price_per_sqm │ transaction_price / builtup_area │
+├────────────────────┼─────────────────────────┼──────────────────────────────────────────────────┤  
+ │ │ price_vs_area_median │ Price deviation từ median per postal code │
+├────────────────────┼─────────────────────────┼──────────────────────────────────────────────────┤  
+ │ │ price_zscore_by_type │ Z-score of price within property_type │
+├────────────────────┼─────────────────────────┼──────────────────────────────────────────────────┤  
+ │ Agent behavior │ agent_txn_count_30d │ Số giao dịch của agent trong 30 ngày │
+├────────────────────┼─────────────────────────┼──────────────────────────────────────────────────┤  
+ │ │ agent_avg_commission │ Trung bình commission của agent │
+├────────────────────┼─────────────────────────┼──────────────────────────────────────────────────┤  
+ │ │ agent_diversity_score │ Số loại property_type agent xử lý │
+├────────────────────┼─────────────────────────┼──────────────────────────────────────────────────┤  
+ │ Lease anomaly │ lease_vs_market │ So sánh lease duration với thị trường │
+├────────────────────┼─────────────────────────┼──────────────────────────────────────────────────┤  
+ │ │ lease_price_ratio │ Price per lease day │
+├────────────────────┼─────────────────────────┼──────────────────────────────────────────────────┤  
+ │ Missing pattern │ missing_score │ Tổng % missing trên 1 row │
+├────────────────────┼─────────────────────────┼──────────────────────────────────────────────────┤  
+ │ │ critical_fields_missing │ Đếm critical fields bị missing │
+└────────────────────┴─────────────────────────┴──────────────────────────────────────────────────┘
+
+Phase 3: Advanced Features
+
+┌────────────────────────┬────────────────────────────────────────────────────────────────────────────┐  
+ │ Feature Type │ Chi tiết │
+├────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
+│ Interaction features │ price × commission_ratio, area × property_type_encoded │
+├────────────────────────┼────────────────────────────────────────────────────────────────────────────┤
+│ Polynomial │ price², commission² (cho non-linear patterns) │  
+ ├────────────────────────┼────────────────────────────────────────────────────────────────────────────┤  
+ │ Cluster-based │ KMeans cluster ID dựa trên key numeric features │  
+ ├────────────────────────┼────────────────────────────────────────────────────────────────────────────┤  
+ │ Aggregation │ Group-level stats (mean, std, count) per postal_code, property_type │
+├────────────────────────┼────────────────────────────────────────────────────────────────────────────┤  
+ │ Anomaly-specific │ Isolation Forest score, LOF score (unsupervised signals) │
+├────────────────────────┼────────────────────────────────────────────────────────────────────────────┤  
+ │ Time-series enrichment │ Merge monthly stats back to tabular (txn_count_month, anomaly_ratio_month) │
+└────────────────────────┴────────────────────────────────────────────────────────────────────────────┘
+
+Phase 4: Selection & Validation
+
+┌──────┬───────────────────────────────────┬────────────────────────────────┐
+│ Step │ Method │ Threshold │
+├──────┼───────────────────────────────────┼────────────────────────────────┤  
+ │ 4.1 │ Remove constant/near-constant │ Variance < 0.01 │
+├──────┼───────────────────────────────────┼────────────────────────────────┤  
+ │ 4.2 │ Remove highly correlated │ |corr| > 0.95 │  
+ ├──────┼───────────────────────────────────┼────────────────────────────────┤
+│ 4.3 │ Mutual Information screening │ Top-K features │  
+ ├──────┼───────────────────────────────────┼────────────────────────────────┤  
+ │ 4.4 │ XGBoost/SHAP importance │ Keep top 50-80 │
+├──────┼───────────────────────────────────┼────────────────────────────────┤  
+ │ 4.5 │ Re-run PSI check │ PSI < 0.2 │
+├──────┼───────────────────────────────────┼────────────────────────────────┤  
+ │ 4.6 │ Save final feature set + metadata │ .parquet + feature_config.json │
+└──────┴───────────────────────────────────┴────────────────────────────────┘
+
+    ---
+
+Code Review: Recruitment Module vs Case Module Patterns
+
+CRITICAL
 
 ---
 
-📋 Tóm tắt đánh giá
+1. RecruitmentApplicationEntity.salespersonInfo typed as Record<string, unknown> — loses type safety
 
-┌─────────────────────────┬──────────────────────────────────────────────────────────────────────┐
-│ │ Nhận định │  
- ├─────────────────────────┼──────────────────────────────────────────────────────────────────────┤
-│ V6 fixes hoạt động? │ Có — TS stratified split, dropout, VAE min_epochs đều cải thiện │
-├─────────────────────────┼──────────────────────────────────────────────────────────────────────┤
-│ TranAD/BiLSTM V6 vs V5? │ F1 thấp hơn nhưng thực chất hơn (V5 bị inflated) │  
- ├─────────────────────────┼──────────────────────────────────────────────────────────────────────┤  
- │ A10/A6/A9 F1=1.0? │ ⚠️ Không tin cậy — cần kiểm tra leakage và độ khó của anomaly labels │  
- ├─────────────────────────┼──────────────────────────────────────────────────────────────────────┤  
- │ Model tốt nhất thực sự? │ A5_BiLSTM (CV F1=0.772) và A2_DAE (CV AUC=0.965) │
-└─────────────────────────┴──────────────────────────────────────────────────────────────────────┘
+- File: src/modules/recruitment/entities/recruitment-application.entity.ts:84
+- Rule: JSON Columns — Always Typed (case module uses CaseDeal, CommissionDeal interfaces)
+- Issue: salespersonInfo, businessCardDetails, emergencyContact are all Record<string, unknown>. The case module types every JSON column with
+  a dedicated interface (CaseDeal, CommissionDeal). This caused the field-mapping bugs we just fixed — the compiler can't catch missing fields  
+  on Record<string, unknown>.
+- Fix: Define typed interfaces matching the DTO shapes:  
+
+
+// In interfaces/recruitment-application.interface.ts  
+ export interface ISalespersonInfo {  
+ nameAsPerNric?: string;  
+ aliasName?: string;  
+ chineseCharacters?: string;  
+ nricNo?: string;  
+ dateOfBirth?: string;  
+ gender?: string;  
+ race?: string;  
+ raceOther?: string;  
+ countryOfBirth?: string;  
+ citizenship?: string;  
+ residentialStatus?: string;  
+ residentialStatusOther?: string;  
+ ceaRegistrationNo?: string;  
+ nricFrontDocuments?: string[];  
+ nricBackDocuments?: string[];  
+ isMyInfoPopulated?: boolean;  
+ phone?: { countryCode: string; phoneNumber: string }[];  
+ residentialNumber?: { countryCode: string; phoneNumber: string };  
+ address?: Record<string, string>;  
+ }
+
+// In entity:  
+ @Column({ name: 'salesperson_info', type: 'json', nullable: true })  
+ salespersonInfo: ISalespersonInfo;
+
+Same for businessCardDetails → IBusinessCardDetails and emergencyContact → IEmergencyContact.
 
 ---
 
-🔧 Đề xuất cho V7
+2. RecruitmentSettingItemEntity.value typed as any — violates JSON typing rule
 
-1. Kiểm tra lại synthetic anomaly — nếu tạo bằng rule đơn giản thì V10 sẽ luôn = 1.0
-2. Tách A10 khỏi A6/A9 pipeline để đánh giá độc lập
-3. Thêm held-out test set chưa dùng trong bất kỳ training nào
-4. A3_VAE vẫn yếu nhất — cân nhắc thay bằng β-TCVAE
-
-hiện tại nếu chỉ cần detect lỗi csv thì giữ lại 2 model A5_BiLSTM, A4_TranAD có ok không?
-Cần đánh giá lại daset hiện tại, vẽ visualize cho dataset, đánh giá độ phù hợp tranning
-kiểm tra đánh giá data csv_agent_platform/generation/data cho generation report
-Qwen2.5-7B LoRA Fine-Tuning
-
-As an ML engineer,
-I want to fine-tune Qwen2.5-7B with LoRA on structured anomaly data → report pairs,
-so that the model generates accurate, professionally-toned reports in Vietnamese and English.
-
-plan chi tiết cho feature engineering
-tạo notebook để phân tích đánh gía data train/test hiện tại
-tôngr pip
-
-Raw CSV
-→ Cleaning
-Drop duplicate rows
-Standardize:
-date → datetime
-currency → numeric
-Fix:
-negative values (price, commission), invalid dates
-
-→ Feature typing
-Chia rõ:
-🔢 Numeric
-price, area, commission, psf
-🏷️ Categorical
-property_type, district, tenure
-📝 Text
-address, client_name
-⏱️ Time
-transaction_date
-
-→ Feature engineering (tabular + TS + text)
-Add:
-ratio features (price/area, etc.)
-time-based (delta time, trend)
-categorical encoding tốt hơn (target encoding)
-price_per_area = price / area
-commission_ratio = commission / price
-Log transform
-log_price = log(price + 1)
-→ Scaling
-Chuẩn hóa:
-RobustScaler (vì có outlier)
-hoặc QuantileTransformer
-B. Time Features
-month = date.month
-quarter = date.quarter
-year = date.year
-➤ Lag features (cho TS model)
-price_lag_1 = price.shift(1)
-price_lag_3 = price.shift(3)
-➤ Rolling stats
-rolling_mean_3
-rolling_std_3
-🔥 C. Aggregated Features (IMPORTANT)
-
-Theo tháng:
-
-mean_price
-std_price
-max_price
-transaction_count
-
-👉 Đây là input cho time-series anomaly
-
-🔥 D. Categorical Encoding
-❌ Không dùng:
-One-hot (vì high cardinality)
-✅ Dùng:
-Target Encoding
-Frequency Encoding
-🔥 E. Text Features (game changer)
-Step:
-truncate 100–200 chars
-TF-IDF:
-TfidfVectorizer(max_features=100)
-
-👉 Output:
-
-50–100 dimensions
-🔥 F. Missing Value Handling
-numeric → median
-categorical → "unknown"
-🔹 1.4 Feature Selection
-Remove:
-constant columns
-highly correlated (>0.9)
-Optional:
-PCA (reduce noise)
-→ Feature selection
-→ Final dataset (train/test)
-plan cho notebook
-🔹 SECTION 1 — Data Overview
-🔹 SECTION 2 — Missing Analysis
-📊 Plot:
-
-Bar chart missing %
-🔹 SECTION 3 — Distribution Analysis
-📊 1. Histogram (MOST IMPORTANT) 2. Boxplot (OUTLIER DETECTION)
-sns.boxplot(x=price)
-📊 3. Log Distribution
-sns.histplot(np.log1p(price))
-🔹 SECTION 4 — Correlation
-sns.heatmap(df.corr())
-
-👉 Tìm:
-
-feature redundant
-feature mạnh
-🔹 SECTION 5 — Anomaly Visualization (KEY)
-📊 4. Score Distribution (bạn đã có 👍)
-
-👉 Plot:
-
-normal vs anomaly
-📊 5. Scatter Plot
-plt.scatter(price, area, c=anomaly_score)
-
-👉 Nhìn:
-
-anomaly cluster
-📊 6. Pairplot (nếu ít feature)
-sns.pairplot(df_sample)
-📊 7. Time Series Plot
-plt.plot(monthly_price)
-
-👉 Nhìn:
-
-spike
-trend
-📊 8. Rolling anomaly
-rolling_std
-🔹 SECTION 6 — Feature Importance
-
-(cho supervised model)
-
-xgboost.plot_importance()
-🔹 SECTION 7 — Train/Test Comparison (RẤT QUAN TRỌNG)
-📊 9. Distribution shift
-sns.kdeplot(train.price)
-sns.kdeplot(test.price)
-
-👉 Detect:
-
-data drift
-📊 10. PSI (Population Stability Index)
-
-👉 Để chứng minh:
-
-train/test giống nhau
-
-5. VISUALIZATION BẮT BUỘC (tóm gọn)
-
-Nếu chỉ chọn must-have:
-
-Histogram + log histogram
-Boxplot
-Correlation heatmap
-Time series plot
-Score distribution
-Train vs Test KDE
-
-===========
-
-1. Missing chart (Top 20)
-
-👉 Nhận định cực quan trọng:
-
-Rất nhiều cột = 100% missing
-Các cột kiểu:
-_high_missing_\*
-buyer_name, address, unit
-
-👉 ❌ Đây không phải “missing bình thường”
-→ Đây là artifact / engineered flags / join lỗi
-
-2. Missing pattern heatmap
-
-👉 Pattern:
-
-Missing không random
-Có block missing theo nhóm feature
-
-🔥 Insight:
-
-Data bị thiếu theo schema / pipeline, không phải do user input
-
-====== 
+- File: src/modules/recruitment/entities/recruitment-setting-item.entity.ts:44
+- Rule: JSON Columns — Always Typed
+- Issue: value?: { email: string; name?: string; items?: any[] } | any — the | any makes the entire type meaningless. The case module's  
+  BaseSettingEntity uses a strict value field with auto-parse on AfterLoad.
+- Fix:  
+  export interface IRecruitmentSettingValue {  
+   email?: string;  
+   name?: string;  
+   items?: { id: string; label: string; required?: boolean }[];  
+  }  
 
 
-🔴 4. Histogram anomaly type
+@Column({ name: 'value', type: 'json', nullable: true })
+value?: IRecruitmentSettingValue;
 
-👉 Có vẻ:
+---
+
+3. ApplicantEntity missing businessUnitId — potential cross-tenant data leak
+
+- File: src/modules/recruitment/entities/applicant.entity.ts
+- Rule: Multi-tenant — main entities must declare businessUnitId
+- Issue: ApplicantEntity has no businessUnitId. The findOrCreateApplicant query only filters by email — so an applicant created in BU-A can be
+  found and updated by BU-B. In the case module, CaseEntity always scopes to businessUnitId.
+- Fix: Add businessUnitId column and pass it through from the application:  
 
 
-❌ 2. USELESS COLUMNS
+@Index()  
+ @Column({ name: 'business_unit_id' })  
+ businessUnitId: number;
 
-Các cột:
+And update findOrCreateApplicant to filter by BU:
+.where('a.email = :email', { email: dto.email })
+.andWhere('a.businessUnitId = :buId', { buId: dto.businessUnitId })
 
-_high_missing_\*
+---
 
-👉 100% drop
+4. RecruitmentPublicController has no authentication — no rate limiting either
 
-3. HIGH MISSING COLUMNS
+- File: src/modules/recruitment/controllers/recruitment-public.controller.ts:17-18
+- Rule: Security — public endpoints need rate limiting
+- Issue: @Controller('recruitment') with no AuthGuard(). This is intentional for the applicant-facing flow, but there's no @RateLimiter() on  
+  any endpoint. The case module equivalent would use rate limiting for unauthenticated routes. Endpoints like validate-token, myinfo-authorize,
+  attachments are exposed to brute-force attacks.
+- Fix: Add rate limiting on sensitive public endpoints:  
+  @RateLimiter({ ttl: 60, limit: 10 })  
+  @Get('validate-token')  
+  async validateToken(...) { ... }
 
-Rule:
+---
 
-if missing_pct > 0.8:
-drop
-🚀 3. FEATURE ENGINEERING PLAN (FINAL VERSION)
-🔷 3.1 Numeric (giữ + nâng cấp)
-KEEP:
-transaction_price
-gross_commission
-tax
-total_amount_paid
-lease_duration_days
-ADD:
-price_per_area (nếu có area)
-commission_ratio = gross_commission / transaction_price
-tax_ratio = tax / transaction_price
-TRANSFORM:
-log_price = log1p(transaction_price)
-🔷 3.2 Categorical
-❌ Drop nếu:
-missing > 80%
-KEEP:
-transaction_type
-property_type
-tenure
-ENCODE:
-frequency_encoding
-🔷 3.3 Text (rất quan trọng nhưng nguy hiểm)
-Problem:
-text dài + nhiễu
-FIX:
-truncate → 100 chars
-Encode:
-TF-IDF (max_features=50)
-🔷 3.4 Datetime → FEATURE VÀNG
-month
-quarter
-year
-Duration features:
-days_to_complete = completion_date - submit_time
-lease_length = lease_expiry - lease_start
-🔷 3.5 Missing as signal (PRO LEVEL)
+WARNING
 
-Thay vì bỏ hết:
+---
 
-is_missing_buyer = buyer_name.isnull()
+5. formData typed as object in DTOs — blocks compiler checks
 
-👉 Missing itself = anomaly signal
+- File: src/modules/recruitment/dto/create-application.dto.ts:42, update-application.dto.ts:36
+- Rule: JSON Columns — Always Typed
+- Issue: formData?: object — should be Record<string, unknown> at minimum to prevent any-like behavior.
+- Fix:  
+  @IsOptional() @IsObject()  
+  formData?: Record<string, unknown>;  
+
+
+---
+
+6. SalespersonInfoDto.address typed as object
+
+- File: src/modules/recruitment/dto/application-sub.dto.ts:80
+- Rule: JSON Columns — Always Typed
+- Issue: address?: object — should be a proper DTO with @ValidateNested(). The RecruitmentAddress class already exists in  
+  recruitment-contact.ts but isn't used here.
+- Fix:  
+  @IsOptional()
+  @IsObject()  
+  @ValidateNested()  
+  @Type(() => RecruitmentAddress)
+  address?: RecruitmentAddress;
+
+---
+
+7. Setting service manually sets createdAt/updatedAt — redundant with TypeORM decorators
+
+- File: src/modules/recruitment/services/recruitment-setting-item.service.ts:131-132,155,229-230
+- Rule: Code Quality — DRY
+- Issue: createdAt: new Date() and updatedAt: new Date() are manually set, but the entity already has @CreateDateColumn() and  
+  @UpdateDateColumn() which TypeORM handles automatically. The case module's settings entity relies on TypeORM for this.
+- Fix: Remove manual timestamp assignments — let TypeORM handle them.  
+
+
+---
+
+8. Setting entity has both isDeleted boolean and @DeleteDateColumn deletedAt — redundant soft-delete
+
+- File: src/modules/recruitment/entities/recruitment-setting-item.entity.ts:55,70
+- Rule: Database conventions — case module uses @DeleteDateColumn only
+- Issue: The entity has both isDeleted: boolean (queried manually with isDeleted: false) and deletedAt (TypeORM soft delete). The case  
+  module's BaseSettingEntity only uses TypeORM's @DeleteDateColumn. This creates confusion about which mechanism controls visibility.
+- Fix: Pick one. Since @DeleteDateColumn is the standard, remove isDeleted and use deletedAt IS NULL (which TypeORM does automatically with  
+  .find() when @DeleteDateColumn is present).  
+
+
+---
+
+9. Controller has heavy business logic — case module delegates to service
+
+- File: src/modules/recruitment/controllers/recruitment-application.controller.ts:111-162
+- Rule: Controller conventions — no business logic in controllers; case module controller's create() is ~10 lines
+- Issue: The sendLink method (lines 111–162) contains MyInfo URL construction, cache anti-spam check, event publishing, and conditional  
+  branching. In the case module, controllers are thin wrappers that delegate entirely to the service.
+- Fix: Move the link-building, anti-spam, and event-publishing logic into RecruitmentApplicationService.sendLink().  
+
+
+---
+
+10. ApplicationHistoryEntity missing updatedAt and deletedAt
+
+- File: src/modules/recruitment/entities/application-history.entity.ts
+- Rule: Base Columns Required — updated_at + deleted_at required by convention
+- Issue: Only has @CreateDateColumn. Audit trails are append-only but the convention still requires these columns.  
+
+
+---
+
+11. RecruitmentSettingItemEntity.id typed as string | number — ambiguous
+
+- File: src/modules/recruitment/entities/recruitment-setting-item.entity.ts:12
+- Rule: Entity conventions
+- Issue: Other recruitment entities consistently use string for bigint IDs. This entity uses string | number, causing casts like id: id as any
+  in the service (line 147).
+- Fix: Standardize to string with the same transformer pattern used in other entities.  
+
+
+---
+
+SUGGESTION
+
+---
+
+12. Repeated findOrFail + scope check pattern — extract to helper
+
+- File: src/modules/recruitment/controllers/recruitment-application.controller.ts (lines 118-124, 172-178, 244-250, 280-286, 311-317, 340-346)
+- Rule: DRY
+- Issue: This pattern repeats 6 times in the controller:  
+  const buScope = await user.hasPermission('update', { moduleName: 'recruitment', entity: 'application' }, BuScope, bu.id);
+  const application = await RecruitmentApplicationEntity.findOrFail<RecruitmentApplicationEntity>(null, {  
+   where: Obj.filter({ id, businessUnitId: bu.id, createdById: buScope === false ? user.id : undefined }),  
+  });  
+  The case module uses user.authorize('action', entity) via policy instead. Consider extracting to a service method:  
+  async findApplicationWithScope(id: string, bu: BusinessUnitEntity, user: UserEntity, action: string) { ... }  
+
+
+---
+
+13. syncDefaultData swallows errors and returns empty array
+
+- File: src/modules/recruitment/services/recruitment-setting-item.service.ts:248-255
+- Rule: Error Handling — no silent error swallowing (unless background job)
+- Issue: The catch block logs but returns [], meaning the caller silently gets no settings. The case module's CaseSettingService doesn't  
+  swallow errors in its onModuleInit.
+- Fix: Consider re-throwing or returning a fallback that the caller can distinguish from "genuinely empty":  
+  catch (error) {  
+   Logging.error('Error syncing default data', error, 'RecruitmentSettingItemService');  
+   throw error; // let caller handle it  
+  }  
+
+
+---
+
+14. FormLayoutEntity missing businessUnitId — all BUs share the same layouts
+
+- File: src/modules/recruitment/entities/form-layout.entity.ts
+- Rule: Multi-tenant (if BUs need different form layouts)
+- Issue: The case module's settings are scoped per businessUnitId via BaseSettingEntity. If all BUs intentionally share form layouts, this is
+  fine. But if different BUs need different CEA compliance questions or disclaimer items, this entity needs BU scoping.  
+
+
+---
+
+Summary Table
+
+┌─────┬────────────┬────────────────────────────────────┬───────────────────────────────────────────────┐
+│ # │ Severity │ File │ Issue │  
+ ├─────┼────────────┼────────────────────────────────────┼───────────────────────────────────────────────┤
+│ 1 │ CRITICAL │ recruitment-application.entity.ts │ JSON columns typed as Record<string, unknown> │  
+ ├─────┼────────────┼────────────────────────────────────┼───────────────────────────────────────────────┤
+│ 2 │ CRITICAL │ recruitment-setting-item.entity.ts │ value typed as any │  
+ ├─────┼────────────┼────────────────────────────────────┼───────────────────────────────────────────────┤
+│ 3 │ CRITICAL │ applicant.entity.ts │ Missing businessUnitId — cross-tenant leak │  
+ ├─────┼────────────┼────────────────────────────────────┼───────────────────────────────────────────────┤  
+ │ 4 │ CRITICAL │ recruitment-public.controller.ts │ No rate limiting on public endpoints │
+├─────┼────────────┼────────────────────────────────────┼───────────────────────────────────────────────┤  
+ │ 5 │ WARNING │ DTOs │ formData typed as object │
+├─────┼────────────┼────────────────────────────────────┼───────────────────────────────────────────────┤  
+ │ 6 │ WARNING │ application-sub.dto.ts │ address untyped, existing DTO unused │
+├─────┼────────────┼────────────────────────────────────┼───────────────────────────────────────────────┤  
+ │ 7 │ WARNING │ setting-item.service.ts │ Manual timestamp assignment │
+├─────┼────────────┼────────────────────────────────────┼───────────────────────────────────────────────┤  
+ │ 8 │ WARNING │ setting-item.entity.ts │ Dual soft-delete mechanism │
+├─────┼────────────┼────────────────────────────────────┼───────────────────────────────────────────────┤  
+ │ 9 │ WARNING │ application.controller.ts │ Heavy business logic in sendLink │
+├─────┼────────────┼────────────────────────────────────┼───────────────────────────────────────────────┤  
+ │ 10 │ WARNING │ application-history.entity.ts │ Missing updatedAt/deletedAt │
+├─────┼────────────┼────────────────────────────────────┼───────────────────────────────────────────────┤  
+ │ 11 │ WARNING │ setting-item.entity.ts │ id typed as string | number │
+├─────┼────────────┼────────────────────────────────────┼───────────────────────────────────────────────┤  
+ │ 12 │ SUGGESTION │ application.controller.ts │ Repeated scope-check pattern │
+├─────┼────────────┼────────────────────────────────────┼───────────────────────────────────────────────┤  
+ │ 13 │ SUGGESTION │ setting-item.service.ts │ Error swallowing in syncDefaultData │
+├─────┼────────────┼────────────────────────────────────┼───────────────────────────────────────────────┤  
+ │ 14 │ SUGGESTION │ form-layout.entity.ts │ No BU scoping │
+└─────┴────────────┴────────────────────────────────────┴───────────────────────────────────────────────┘
+
+The highest-impact fix is #1 (typing salespersonInfo with a proper interface) — this is the root cause of the field-mapping bugs we fixed  
+ earlier and would prevent future regressions at compile time.
