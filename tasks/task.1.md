@@ -237,3 +237,14 @@ vt = VarianceThreshold(threshold=0.0)
 
 # test : submit_time >= 2024-01-01
 
+Quy tắc BĐS Singapore:
+
+┌──────────────┬──────────────┬───────────────────┐
+│ Property Type│ Price Range │ Area Range (sqm) │
+├──────────────┼──────────────┼───────────────────┤
+│ HDB │ $300K-$1.5M │ 45-130 │
+│ Condo │ $500K-$5M │ 40-300 │
+│ Landed │ $2M-$30M │ 150-2000 │
+│ Commercial │ Varies │ Varies │
+└──────────────┴──────────────┴───────────────────┘
+Ngoài range → Flag anomaly
