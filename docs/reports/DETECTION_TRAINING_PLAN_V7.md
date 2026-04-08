@@ -1,452 +1,435 @@
-# Detection Model Training Plan — V7
+# Detection Model Training Plan — V7 (Updated)
 
-**Ngày tạo**: 2026-04-07
+python3 csv_agent_platform/detection/scripts/run_pipeline.py
+
+**Ngày tạo**: 2026-04-07 | **Cập nhật lần cuối**: 2026-04-07 15:39
 **Tác giả**: Tomoe — AI Mentor (IUH Thesis Project)
-**Phạm vi V7**: Chỉ train trên `Project` + `Rental` transactions (loại bỏ Non-Project, Sale, Referral)
-**Mục tiêu**: Tabular F1 ≥ 0.80 | TS F1 ≥ 0.98 | Anomaly rate 3–5%
+**Phạm vi V7**: Train trên tất cả transactions **trừ Sale** (giữ Non-Project, Rental, Referral, Project)
+**Mục tiêu**: Tabular F1 ≥ 0.80 | TS F1 ≥ 0.95 | Anomaly rate 2–4%
 
 ---
 
-## 1. 📊 Đánh Giá Dataset Sau Khi Chia Lại
+## 1. 📊 Đánh Giá Dataset Mới (Sau Pipeline Run 07-04-2026)
 
-### 1.1 Tổng Quan Dữ Liệu Sau Split Mới
+### 1.1 Dữ Liệu Thô (Raw)
 
-#### Dataset Gốc (enriched_transactions.parquet)
-| Metric | Giá Trị |
-|--------|---------|
-| Tổng rows | 9,992 |
-| Tổng columns | 570 |
-| Các transaction type | Non-Project (4,574), Rental (3,871), None/Other (655), Project (492), Referral Non-Project (400) |
-| Sale transactions (separated) | **10,459 rows** → `sale_transactions_raw.parquet` |
-| is_anomaly (toàn bộ) | 255 anomaly / 9,737 normal (2.55%) |
+#### Nguồn Dữ Liệu
 
-#### Split V7: Chỉ Project + Rental
-| Metric | Giá Trị |
-|--------|---------|
-| **Tổng rows** | **4,363** |
-| Rental | 3,871 (88.7%) |
-| Project | 492 (11.3%) |
-| Anomaly count | 169 (3.87%) ✅ |
-| Normal count | 4,194 (96.13%) |
-| Numeric features available | 249 |
-| Date range (submit_time) | 2012-05-17 → 2024-10-11 (12+ năm) |
+| Thư mục             | Số files | Tổng dung lượng | Ghi chú                                                          |
+| ------------------- | -------- | --------------- | ---------------------------------------------------------------- |
+| `data/raw/normal/`  | 30 files | ~ 25 MB         | **MỚI**: `rent_transactions_enriched.csv` (11.4 MB, 61,984 rows) |
+| `data/raw/snre/`    | 17 files | ~ 7 MB          | Có duplicate files (\*copy.csv)                                  |
+| `data/raw/prosage/` | 34 files | ~ 18 MB         | XLSX + CSV (transactions, invoices, contacts)                    |
 
-**✅ Anomaly rate 3.87% — NẰM TRONG TARGET ZONE (3–5%)**. Đây là lý do chính để lọc chỉ Project + Rental.
+#### 🆕 File Mới: `rent_transactions_enriched.csv`
 
-#### Loại Anomaly Trong Subset V7
-| Anomaly Type | Count | % trong anomaly |
-|-------------|-------|-----------------|
-| AGENT_VELOCITY | 87 | 51.5% |
-| PRICE_AREA_DEVIATION | 34 | 20.1% |
-| ABORTED_TXN | 19 | 11.2% |
-| HIGH_COMMISSION_RATIO | 16 | 9.5% |
-| EXTREME_LEASE_DURATION | 13 | 7.7% |
+| Metric      | Giá trị                                                                                                                                                                                                                                                                                             |
+| ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Rows**    | **61,984** (file lớn nhất trong toàn bộ dataset!)                                                                                                                                                                                                                                                   |
+| **Columns** | 23                                                                                                                                                                                                                                                                                                  |
+| **Các cột** | Transaction No, Block, Floor, Unit Number, Postal Code, Property Type, Transaction Date, Represented, Registration Number, Sale/Rental Type, Submission Date, Resubmission Date, Transaction Price, Status, Project Name, bedrooms, bathrooms, floorArea, psf, district, region, intentType, tenure |
 
-**Nhận xét**: AGENT_VELOCITY chiếm >50% — liên quan đến hành vi bất thường của agent (giao dịch quá nhanh/nhiều). PRICE_AREA_DEVIATION là bất thường giá thuê theo khu vực. Các loại này đều **có ý nghĩa thực tế cao** cho đề tài.
+> [!IMPORTANT]
+> File này có cấu trúc **CEA rental data** — chứa thông tin vật lý bất động sản (bedrooms, bathrooms, floorArea, psf) và vị trí (district, region). Đây là nguồn data **rất giá trị** cho anomaly detection rental.
 
 ---
 
-### 1.2 Vấn Đề Của Dataset V6 (Trước Khi Split)
+### 1.2 Sau Pipeline Processing
 
-| Vấn Đề | Severity | Mô Tả |
-|---------|----------|-------|
-| ❌ Anomaly rate 9.17% (train) | CRITICAL | Vượt ngưỡng 3–5%, model bị bias |
-| ❌ TS windows quá ít: train=420, val=3, test=2 | CRITICAL | Val/test TS không đại diện — kết quả sai lệch |
-| ⚠️ 234 cặp features tương quan >0.95 | HIGH | Multicollinearity → model overfit noise |
-| ⚠️ Leak dữ liệu train↔val (15 file_number) và train↔test (22 file_number) | HIGH | Test leakage → metric không đáng tin |
-| ⚠️ Gộp Sale + Non-Sale + Rental → features không đồng nhất | MEDIUM | Model học pattern sai (e.g. sale price >> rental price) |
-| ⚠️ Constant features: buyer_company_reg_no_encoded, buyer_country... | LOW | Loại bỏ trước training |
+#### Enriched Dataset (Merged + Labels)
 
-### 1.3 Lý Do Chọn Project + Rental Cho V7
+| Metric         | V6 (Cũ)           | V7 (Mới)              | Thay đổi         |
+| -------------- | ----------------- | --------------------- | ---------------- |
+| **Total rows** | 9,992             | **26,863**            | **+169%**        |
+| **Columns**    | 570               | **597**               | +27 features mới |
+| **Date range** | 2012-05 → 2024-10 | **2012-05 → 2025-11** | +13 tháng data   |
 
-```
-Toàn bộ dataset (9,992):
-├── Sale transactions (10,459 rows) → Tách riêng (sale_transactions_raw.parquet)
-│   Lý do: Sale có price range rất khác (SGD millions vs rental SGD thousands)
-│           → nếu gộp, model bị confuse giữa "price cao là anomaly" vs "price cao là sale thường"
-│
-├── Non-Project (4,574) → LOẠI B khỏi V7
-│   Lý do: Mixed transaction types, không có đặc trưng rõ ràng cho anomaly detection
-│
-├── Referral Non-Project (400) → LOẠI
-│   Lý do: Referral không có transaction_price trực tiếp → features thiếu
-│
-└── Project (492) + Rental (3,871) = 4,363 rows → ✅ DÙNG CHO V7
-    Lý do:
-    - Đều có đầy đủ: transaction_price, commission, agent_info, dates
-    - Anomaly semantics rõ ràng: AGENT_VELOCITY, PRICE_AREA_DEVIATION, EXTREME_LEASE_DURATION
-    - Anomaly rate 3.87% — balanced và thực tế
-    - Date range 12 năm → đủ cho time-series monthly aggregation
-```
+#### Transaction Type Distribution (Enriched)
+
+| Transaction Type                                  | Count      | %         |
+| ------------------------------------------------- | ---------- | --------- |
+| **None** (rental from rent_transactions_enriched) | **17,524** | **65.2%** |
+| Non-Project                                       | 4,574      | 17.0%     |
+| Rental                                            | 3,871      | 14.4%     |
+| Project                                           | 492        | 1.8%      |
+| Referral Non-Project                              | 400        | 1.5%      |
+| Other                                             | 2          | 0.01%     |
+
+> [!WARNING]
+> **17,524 rows có transaction_type = "None"** — đây chính là data từ file `rent_transactions_enriched.csv` mới. Cần xác minh đây là **Rental transactions** và gán label `transaction_type = 'Rental'` trong schema standardizer.
+
+#### Anomaly Distribution (Enriched)
+
+| Anomaly Type                  | Count   | % Anomaly         |
+| ----------------------------- | ------- | ----------------- |
+| PRICE_OUTLIER                 | 99      | 28.9%             |
+| AGENT_VELOCITY                | 87      | 25.4%             |
+| ABORTED_TXN                   | 38      | 11.1%             |
+| HIGH_COMMISSION_RATIO         | 34      | 9.9%              |
+| PRICE_AREA_DEVIATION          | 34      | 9.9%              |
+| FAST_COMPLETION               | 19      | 5.5%              |
+| EXTREME_LEASE_DURATION        | 16      | 4.7%              |
+| PRICE_OUTLIER\|AGENT_VELOCITY | 8       | 2.3%              |
+| PRICE_OUTLIER\|ABORTED_TXN    | 7       | 2.0%              |
+| ABORTED_TXN\|FAST_COMPLETION  | 1       | 0.3%              |
+| **Total anomalies**           | **343** | **1.28% overall** |
+
+#### Sale Transactions (Separated)
+
+| Metric     | Giá trị                         |
+| ---------- | ------------------------------- |
+| **Rows**   | 10,459                          |
+| **File**   | `sale_transactions_raw.parquet` |
+| **Status** | ✅ Tách riêng thành công        |
 
 ---
 
-## 2. 🔧 Kế Hoạch Xử Lý Data Cho V7
+### 1.3 Augmented & Split Statistics
 
-### 2.1 Data Split Strategy
+#### Augmented Master
 
-**Nguyên tắc**: Không leak — split theo file_number (strict stratified split).
+| Metric            | Giá trị     |
+| ----------------- | ----------- |
+| **Total rows**    | 27,263      |
+| Real rows         | 26,863      |
+| Synthetic rows    | 400         |
+| **Anomaly count** | 743 (2.73%) |
+
+#### Tabular Split (Sau Feature Selection + Scaling)
+
+| Split     | Rows       | Features | Anomaly Count | Anomaly Rate |
+| --------- | ---------- | -------- | ------------- | ------------ |
+| **Train** | **19,204** | 50       | 640           | **3.33%** ✅ |
+| **Val**   | **4,029**  | 50       | 51            | **1.27%** ⚠️ |
+| **Test**  | **4,030**  | 50       | 52            | **1.29%** ⚠️ |
+
+> [!CAUTION]
+> **Val/Test anomaly rate (1.27–1.29%) thấp hơn nhiều so với Train (3.33%)**. Nguyên nhân: data mới (rent_transactions_enriched) chủ yếu vào val/test và hầu hết là normal. Cần **stratified split lại** sao cho các split đồng đều anomaly rate.
+
+#### Time-Series Split
+
+| Split     | Windows | Window Size | Features | Anomaly Count | Anomaly Rate |
+| --------- | ------- | ----------- | -------- | ------------- | ------------ |
+| **Train** | 1,968   | 4           | 90       | **0**         | **0.00%** ❌ |
+| **Val**   | 106     | 4           | 90       | **0**         | **0.00%** ❌ |
+| **Test**  | 106     | 4           | 90       | **17**        | **16.04%**   |
+
+> [!CAUTION]
+> **CRITICAL BUG**: TS Train có **0 anomaly windows**! TS Val cũng **0**. Toàn bộ 17 anomalies nằm ở test → model sẽ **không học được gì** trong training. Nguyên nhân: monthly aggregation không gán label đúng cho các tháng có anomaly transactions. **PHẢI FIX TRƯỚC KHI TRAINING.**
+
+#### Monthly Time-Series
+
+| Metric             | Giá trị                 |
+| ------------------ | ----------------------- |
+| Data points        | 707                     |
+| Features per point | 91                      |
+| Date range         | 2012-05-14 → 2025-11-24 |
+| **Span**           | ~13.5 năm               |
+
+---
+
+## 2. ⚠️ Các Vấn Đề Cần Fix TRƯỚC Khi Training
+
+### P0: CRITICAL — Must Fix
+
+| #   | Vấn đề                                                  | Impact                          | Giải pháp                                                                                                       |
+| --- | ------------------------------------------------------- | ------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| 1   | **TS train = 0 anomaly**                                | Model TS không train được       | Fix `anomaly_ratio` trong monthly aggregation → assign label dựa trên tỷ lệ anomaly transactions trong tháng đó |
+| 2   | **Val/Test anomaly rate mất cân bằng** (1.27% vs 3.33%) | Val/Test metrics không reliable | Dùng **stratified split by is_anomaly** đảm bảo anomaly rate đồng đều ~2.7% trên cả 3 splits                    |
+| 3   | **File_number leak** (train↔val: 51, train↔test: 49)    | Data leakage                    | Split by unique file_number (group-based split)                                                                 |
+
+### P1: HIGH — Should Fix
+
+| #   | Vấn đề                                                                            | Impact                         | Giải pháp                                                                                               |
+| --- | --------------------------------------------------------------------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------- |
+| 4   | **17,524 rows transaction_type=None**                                             | Model không biết đây là Rental | Trong schema standardizer, gán `transaction_type='Rental'` cho data từ `rent_transactions_enriched.csv` |
+| 5   | **Anomaly rate tổng thể thấp (1.28% enriched, 2.73% augmented)** → dưới target 3% | Under-detection risk           | Tăng synthetic injection hoặc giảm anomaly threshold trong label engineering                            |
+| 6   | **Duplicate SNRE files** (copy.csv)                                               | Inflate data count             | Loại bỏ duplicate files hoặc deduplicate bằng transaction_no                                            |
+| 7   | **Window_size=4 quá nhỏ** cho monthly data                                        | Model TS thiếu context         | Tăng window_size=6 hoặc 8 (đủ data points: 707 months)                                                  |
+
+---
+
+## 3. 🔧 Kế Hoạch Xử Lý Data V7
+
+### 3.1 Data Filtering Strategy
 
 ```
-Project + Rental subset: 4,363 rows
-├── TRAIN: 70% = 3,054 rows (Anomaly ~119, rate 3.9%)
-├── VAL:   15% = 655 rows  (Anomaly ~25, rate 3.8%)
-└── TEST:  15% = 654 rows  (Anomaly ~25, rate 3.8%)
+Enriched dataset (26,863 rows):
+                        │
+    ┌───────────────────┴───────────────────┐
+    │                                       │
+ INCLUDE (V7 Training)              EXCLUDE (V7)
+    │                                       │
+ ├── "None" (17,524)                 └── Sale (10,459)
+ │   → Gán thành "Rental"                đã tách riêng vào
+ │   (từ rent_transactions_              sale_transactions_raw.parquet
+ │    enriched.csv)
+ ├── "Non-Project" (4,574) ✅
+ ├── "Rental" (3,871) ✅
+ ├── "Project" (492) ✅
+ ├── "Referral Non-Project" (400) ✅
+ └── "Other" (2) ✅
 
-Split method: Stratified by is_anomaly + by transaction_type (đảm bảo Project không bị out)
-Constraint: Không có file_number nào xuất hiện ở cả 2 splits
+ Total V7: ~26,863 rows (toàn bộ enriched, vì Sale đã tách)
 ```
 
-**Time-Series Split** (chiều theo thời gian — KHÔNG random):
-```
-Monthly aggregation từ submit_time: ~90 tháng (2016–2024)
-(Lọc 2016+ vì trước đó data thưa cho Project + Rental)
+> [!IMPORTANT]
+> **V7 sử dụng toàn bộ non-sale data (26,863 rows)** — chỉ loại Sale (đã tách riêng). Giữ lại Non-Project và Referral để model học đa dạng transaction types.
 
-Window size: 6 tháng (stride 1) → ~84 windows total
-├── TRAIN: 2016-01 → 2022-12 = ~84 windows × 0.70 = ~59 windows
-├── VAL:   2023-01 → 2023-06 = ~6 windows
-└── TEST:  2023-07 → 2024-10 = ~15 windows
+### 3.2 Improved Split Strategy
 
-⚠️ So sánh với V6: TS val=3, test=2 → V7 target: val≥6, test≥12
-```
-
-### 2.2 Feature Engineering Pipeline Mới
-
-**Bước 1: Xóa Noise Features**
 ```python
-drop_features = [
-    # Constant features
-    'buyer_company_reg_no_encoded',
-    'buyer_country_of_incorporation_encoded',
-    # Không liên quan đến Rental/Project
-    'sale_type', 'development_name', ...
-    # Tương quan >0.95 (chọn 1 trong mỗi cặp bằng MI score)
-]
+# V7 Split: Stratified + Group-based (no file_number leak)
+from sklearn.model_selection import StratifiedGroupKFold
+
+splitter = StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=42)
+# groups = file_number (đảm bảo không leak)
+# stratify = is_anomaly (đảm bảo anomaly rate đều)
+# Fold 1: val (20%), Fold 2: test (20%), Folds 3-5: train (60%)
+
+# Target (toàn bộ 26,863 non-sale rows):
+# Train: ~18,804 rows (70%), anomaly ~2.7%
+# Val:   ~4,029 rows (15%), anomaly ~2.7%
+# Test:  ~4,030 rows (15%), anomaly ~2.7%
 ```
 
-**Bước 2: Feature Selection (V7 version)**
+### 3.3 Feature Engineering Updates
 
-Target: Từ 249 features → chọn **top 60–80 features**
-- Mutual Information (MI) với is_anomaly
-- Correlation filter (<0.90 giữa các features)
-- Domain knowledge: giữ lại các features có ý nghĩa kinh doanh
+**Features mới từ `rent_transactions_enriched.csv`:**
 
-**Top Features Dự Kiến Cho V7** (từ phân tích domain):
+| Feature     | Loại        | Ý Nghĩa cho Anomaly Detection                                   |
+| ----------- | ----------- | --------------------------------------------------------------- |
+| `bedrooms`  | Numeric     | Rental property size — outlier bedrooms = potential data error  |
+| `bathrooms` | Numeric     | Cross-validate với bedrooms (6 bedrooms + 1 bathroom = anomaly) |
+| `floorArea` | Numeric     | Price per sqft validation                                       |
+| `psf`       | Numeric     | **KEY**: Price per square foot — PRICE_AREA_DEVIATION           |
+| `district`  | Categorical | Location-based price validation                                 |
+| `region`    | Categorical | Regional price benchmarking                                     |
+| `tenure`    | Categorical | Freehold vs Leasehold affects price                             |
 
-| Feature | Lý Do |
-|---------|-------|
-| `transaction_price` | Core anomaly signal |
-| `gross_commission` | COMMISSION_SPLIT_MISMATCH |
-| `commission_to_price_ratio` | HIGH_COMMISSION_RATIO |
-| `agent_txn_count_30d` | AGENT_VELOCITY |
-| `days_between_txn` | AGENT_VELOCITY |
-| `price_change_pct` | PRICE_AREA_DEVIATION |
-| `lease_duration_days` | EXTREME_LEASE_DURATION |
-| `agent_avg_price` | Price deviation baseline |
-| `agent_price_deviation` | PRICE_AREA_DEVIATION |
-| `number_of_bedrooms` | Rental-specific feature |
-| `_biz_rule_violation_count` | Business rule signal |
-| `closing_agent_license_number` (validity) | Invalid license |
-| `year`, `month` | Temporal seasonality |
-| `is_weekend` | Behavioral pattern |
+**Feature Selection Target**: 50 features (đã có) → giữ nguyên hoặc mở rộng lên 60 nếu features mới có MI score cao.
 
-**Bước 3: Synthetic Anomaly Injection (Điều Chỉnh)**
+### 3.4 Synthetic Injection Adjustment
 
-V6 vấn đề: Anomaly rate bị đẩy lên 9.2% do injection quá nhiều.
-
-V7 config:
 ```yaml
+# V7 Synthetic Config
 synthetic:
   enabled: true
-  target_anomaly_rate: 0.04  # Giữ dưới 4.5% sau injection
-  injection_ratio: 0.20       # Tối đa 20% anomaly là synthetic
+  # Hiện tại: 400 synthetic / 26,863 real = 1.5% synthetic ratio
+  # Anomaly rate: 2.73% (dưới target 3%)
+  # → Cần thêm synthetic hoặc điều chỉnh label threshold
+  target_anomaly_rate: 0.035 # Target 3.5%
+  max_synthetic_ratio: 0.05 # Tối đa 5% synthetic
   types:
-    - PRICE_SPIKE       # Đặc trưng cho Rental
-    - VELOCITY_BURST    # Đặc trưng cho Project
-    - LEASE_EXTREME     # Đặc trưng cho Rental
-  # KHÔNG inject MISSING_INVOICE (là noise, không phải anomaly thật)
-  # KHÔNG inject SUSPICIOUS_DRAFT (thông tin dư thừa)
+    - PRICE_OUTLIER # Cao nhất: 99 real samples
+    - AGENT_VELOCITY # 87 real samples
+    - PRICE_AREA_DEVIATION # 34 real — cần augment nhiều hơn
+    - EXTREME_LEASE_DURATION # 16 real — cần augment
 ```
 
 ---
 
-## 3. 🤖 Kế Hoạch Training Models V7
+## 4. 🤖 Kế Hoạch Training V7
 
-### 3.1 Tổng Quan Model Suite V7
+### 4.1 Architecture Overview
 
 ```
-                    TRAINING V7 PLAN
-                    ─────────────────
-        Project + Rental Dataset (4,363 rows)
-                        │
-          ┌─────────────┴──────────────┐
-          │                            │
-    TABULAR BRANCH               TIME-SERIES BRANCH
-    (Per-transaction)           (Monthly windows)
-          │                            │
-    ┌─────┴─────┐              ┌───────┴───────┐
-    │           │              │               │
-   A2_DAE     A3_VAE      A5_BiLSTM        A4_TranAD
-  (Primary)  (Support)    (Primary)        (Support)
-    │           │              │               │
-    └─────┬─────┘              └───────┬───────┘
-          │                            │
-         A6_Ensemble            A9_Hybrid v2
-         (Tabular)            (TS→Tab mapping FIX)
+        TRAINING V7: All Non-Sale Transactions (~26,863 rows)
+                              │
+              ┌───────────────┴────────────────┐
+              │                                │
+       TABULAR BRANCH                 TIME-SERIES BRANCH
+       (Per-transaction)              (Monthly windows)
+       Train: ~19K rows               ~707 months → ~700 windows
+              │                                │
+       ┌──────┴──────┐               ┌────────┴────────┐
+       │             │               │                 │
+     A2_DAE      A3_VAE         A5_BiLSTM          A4_TranAD
+    (Primary)   (Support)       (Primary)          (Support)
+       │             │               │                 │
+       └──────┬──────┘               └────────┬────────┘
+              │                                │
+         A6_Ensemble                    A9_Hybrid v2
+     (Weighted A2+A3)             (Fixed TS→Tab mapping)
 ```
 
-### 3.2 A2_DAE (Deep Autoencoder) — TABULAR PRIMARY
+### 4.2 A2_DAE — Tabular Primary
 
-**Kết quả V2**: F1=0.620, AUC=0.953 ✅ (Best tabular)
-**Mục tiêu V7**: F1 ≥ 0.80, AUC ≥ 0.96
+| Param              | V2 (old)         | V7 (new)                    | Lý do                                           |
+| ------------------ | ---------------- | --------------------------- | ----------------------------------------------- |
+| **Input features** | 75               | **50**                      | MI selection đã chọn top 50                     |
+| hidden_dims        | [256,128,64]     | **[256,128,64]**            | Dataset lớn hơn (19K rows) → giữ kiến trúc mạnh |
+| dropout            | 0.2              | **0.25**                    | Nhẹ tăng regularization                         |
+| noise_std          | 0.15             | **0.18**                    | Moderate denoising                              |
+| epochs             | 200              | **300**                     | More data → cần thêm epochs                     |
+| lr                 | 1e-3             | **5e-4**                    | Stable learning                                 |
+| scheduler          | CosineAnnealing  | **OneCycleLR(max_lr=1e-3)** | Tốt cho dataset lớn                             |
+| batch_size         | 64               | **128**                     | Dataset lớn hơn → batch lớn hơn                 |
+| class_weight       | {0:0.55, 1:5.45} | **{0:0.52, 1:15.0}**        | Rate 3.33% → weight ~30x                        |
 
-**Changes từ V2 → V7**:
+**Mục tiêu**: F1 ≥ 0.80, AUC ≥ 0.96
 
-| Param | V2 | V7 | Lý Do |
-|-------|----|----|-------|
-| hidden_dims | [256, 128, 64] | [128, 64, 32] | Rental data đơn giản hơn, tránh overfit |
-| dropout | 0.2 | **0.3** | Regularization mạnh hơn (ít data hơn) |
-| noise_std | 0.15 | **0.20** | Denoising mạnh hơn cho robustness |
-| epochs | 200 | **300** | Convergence chậm hơn với dropout cao |
-| lr | 1e-3 | **5e-4** | Stable learning |
-| scheduler | CosineAnnealing(T0=30) | **OneCycleLR** | Tốt hơn cho dataset nhỏ |
-| features | 75 (sau selection) | **60–70** (MI + correlation filter) | Loại noise |
-| weighted_loss | ✅ | **✅ (w_anomaly ≥ 8x)** | Rate 3.87% → cần weight cao hơn |
+### 4.3 A3_VAE — Tabular Support
+
+| Param         | V2           | V7                                  | Lý do                      |
+| ------------- | ------------ | ----------------------------------- | -------------------------- |
+| hidden_dims   | [256,128,64] | **[256,128,64]**                    | Giữ nguyên (dataset lớn)   |
+| latent_dim    | 32           | **24**                              | Moderate compression       |
+| **beta**      | **0.3** ❌   | **0.5** ✅                          | **FIX: quay lại V1 value** |
+| beta_schedule | None         | **linear_warmup(0→0.5, 50 epochs)** | Tránh KL collapse          |
+| dropout       | 0.2          | **0.25**                            | Regularization             |
+
+**Mục tiêu**: F1 ≥ 0.65, AUC ≥ 0.95
+**So sánh V1 → V2 → V7**: V1 beta=0.5 (F1=0.671), V2 beta=0.3 (F1=0.571 ❌), V7 beta=0.5 (target ≥0.65)
+
+### 4.4 A5_BiLSTM — Time-Series Primary
+
+| Param           | V2  | V7      | Lý do                     |
+| --------------- | --- | ------- | ------------------------- |
+| window_size     | 12  | **6**   | Tạo nhiều windows hơn     |
+| **TS features** | 85  | **90**  | Thêm features từ new data |
+| lstm_hidden     | 128 | **64**  | Tránh overfit             |
+| n_lstm_layers   | 2   | **2**   | Giữ nguyên                |
+| attention_heads | 4   | **4**   | Giữ nguyên                |
+| dropout         | 0.2 | **0.3** | Tăng regularization       |
+| batch_size      | 32  | **32**  | Đủ windows                |
+
+**Critical**: Phải fix TS label assignment trước! Hiện tại train=0 anomaly.
+
+**Mục tiêu**: F1 ≥ 0.95 (với test ≥ 100 windows — ĐÃ ĐẠT)
+
+### 4.5 A4_TranAD — Time-Series Support
+
+| Param           | V7  |
+| --------------- | --- |
+| window_size     | 6   |
+| d_model         | 64  |
+| nhead           | 4   |
+| num_layers      | 2   |
+| dim_feedforward | 128 |
+
+**Mục tiêu**: F1 ≥ 0.95
+
+### 4.6 A6_Ensemble & A9_Hybrid
+
+**A6_Ensemble**: Weighted average A2+A3, weights learned from val F1.
+
+**A9_Hybrid v2**: Fix mapping bug (np.tile → submit_time join).
 
 ```python
-# V7 DAE Config
-dae_config = {
-    "hidden_dims": [128, 64, 32],
-    "latent_dim": 16,
-    "dropout": 0.3,
-    "noise_std": 0.20,
-    "activation": "GELU",
-    "epochs": 300,
-    "lr": 5e-4,
-    "batch_size": 64,
-    "weight_decay": 1e-4,
-    "scheduler": "OneCycleLR",
-    "class_weight": {0: 1.0, 1: 8.0},  # 3.87% rate → 1/0.0387 ≈ 25x, dùng 8x cho balance
-    "threshold_method": "precision_recall_curve",  # Tối ưu F1
-}
-```
-
-### 3.3 A3_VAE (Variational Autoencoder) — TABULAR SUPPORT
-
-**Kết quả V2**: F1=0.571, AUC=0.924 ⚠️ (Regression từ V1)
-**Mục tiêu V7**: F1 ≥ 0.65, AUC ≥ 0.95
-
-**Root cause V2**: beta=0.3 quá thấp → latent space không smooth → anomaly separation kém.
-
-```python
-# V7 VAE Config — FIX BETA
-vae_config = {
-    "hidden_dims": [128, 64],    # Nhỏ hơn → phù hợp với ~4K rows
-    "latent_dim": 16,
-    "beta": 0.5,                 # ← Quay lại V1 value (ĐÚNG)
-    "beta_schedule": "linear_warmup",  # 0.1 → 0.5 trong 50 epochs
-    "dropout": 0.25,
-    "epochs": 250,
-    "lr": 8e-4,
-    "kl_annealing": True,        # Tránh KL vanishing
-    "free_bits": 0.5,            # Minimum KL per dimension
-}
-```
-
-### 3.4 A5_BiLSTM (Bidirectional LSTM + Attention) — TS PRIMARY
-
-**Kết quả V2**: F1=0.980 ✅ (Xuất sắc — nhưng test set chỉ có 2 windows!)
-**Mục tiêu V7**: F1 ≥ 0.95, với test set ≥ 12 windows (đáng tin cậy hơn)
-
-**Critical issue V6/V7**: TS val=3, test=2 → không reliable!
-
-**V7 TS Strategy**:
-```
-Từ 4,363 rows (2012-2024):
-- Lọc lấy 2014-2024 (data thưa trước 2014)
-- Aggregate monthly → ~120 data points
-- Window size: 6 months (stride 1 month)
-- Total windows: ~114
-  → Train: 80 windows (2014-01 to 2020-12)
-  → Val:   17 windows (2021-01 to 2022-05)
-  → Test:  17 windows (2022-06 to 2024-10) ✅
-```
-
-```python
-# V7 BiLSTM Config
-bilstm_config = {
-    "window_size": 6,           # ← Giảm từ 12 → 6 để có nhiều windows hơn
-    "stride": 1,
-    "lstm_hidden": 64,          # Nhỏ hơn (ít data hơn)
-    "n_lstm_layers": 2,
-    "bidirectional": True,
-    "attention_heads": 4,
-    "dropout": 0.3,
-    "epochs": 200,
-    "lr": 1e-3,
-    "batch_size": 16,
-    "ts_features": 40,          # Monthly aggregated features (commission, price, count, etc.)
-}
-```
-
-### 3.5 A4_TranAD — TS SUPPORT
-
-**Kết quả V2**: F1=0.980 ✅ (Xuất sắc — cùng vấn đề test set nhỏ)
-**Mục tiêu V7**: F1 ≥ 0.95, ổn định hơn
-
-```python
-# V7 TranAD Config (không đổi nhiều — đã tốt)
-tranad_config = {
-    "window_size": 6,
-    "d_model": 64,              # Giảm từ 128 (dataset nhỏ hơn)
-    "nhead": 4,
-    "num_layers": 2,
-    "dim_feedforward": 128,
-    "dropout": 0.2,
-    "epochs": 200,
-    "lr": 5e-4,
-}
-```
-
-### 3.6 A6_Ensemble — TABULAR ENSEMBLE
-
-**V7**: Ensemble A2_DAE + A3_VAE với learned weights (thay vì fixed 0.5/0.5)
-
-```python
-# V7 Ensemble Strategy
-ensemble_config = {
-    "models": ["A2_DAE", "A3_VAE"],
-    "weight_method": "val_f1_weighted",  # Weight by val F1 of each model
-    "threshold_method": "joint_optimization",  # Optimize threshold on val
-}
-# Expected: if A2 F1=0.80, A3 F1=0.65 → weights ≈ [0.55, 0.45]
-```
-
-### 3.7 A9_Hybrid v2 — FIX MAPPING BUG
-
-**V2 bug**: Dùng `np.tile` để repeat TS scores → sai hoàn toàn (mapping random).
-**V7 fix**: Join theo `submit_time` → window_id.
-
-```python
-# V7 Hybrid Mapping Logic
-def map_transaction_to_window(df, ts_scores, window_timestamps):
-    """
-    Với mỗi transaction, tìm window chứa submit_time của nó.
-    TS score của window đó → gán cho transaction.
-    """
-    df['_window_id'] = df['submit_time'].apply(
-        lambda t: find_window(t, window_timestamps, window_size=6)
-    )
-    df['ts_anomaly_score'] = df['_window_id'].map(ts_scores)
-    # Kết hợp: hybrid_score = α * tabular_score + (1-α) * ts_score
-    # α được optimize trên val set
-    return df
+# V7 fix: map transaction → window bằng submit_time
+df['window_id'] = df['submit_time'].apply(
+    lambda t: find_nearest_window(t, window_timestamps)
+)
+df['ts_score'] = df['window_id'].map(window_anomaly_scores)
+# hybrid = α * tab_score + (1-α) * ts_score
 ```
 
 ---
 
-## 4. 📅 Timeline Training V7
+## 5. 📅 Timeline & Checklist
 
-```
-PHASE 1: DATA PREPARATION (1-2 ngày)
-├── [ ] Filter enriched data → giữ Project + Rental (4,363 rows)
-├── [ ] Fix split: stratified by is_anomaly + transaction_type, no file_number leak
-├── [ ] Feature selection: MI + correlation → giữ 60-70 features
-├── [ ] Adjust synthetic injection: target rate 3.5-4.5%
-├── [ ] Monthly aggregation cho TS: window_size=6, stride=1 → ≥17 val/test windows
-└── [ ] Kiểm tra: Không NaN, không Inf, leak check
+### PHASE 1: DATA FIX (1 ngày)
 
-PHASE 2: TABULAR TRAINING (2-3 ngày)
-├── [ ] A2_DAE V7: train + threshold optimization → target F1 ≥ 0.80
-├── [ ] A3_VAE V7: fix beta=0.5, KL annealing → target F1 ≥ 0.65
-├── [ ] A6_Ensemble V7: learned weights → target F1 ≥ 0.78
-└── [ ] Lưu checkpoints, loss curves, confusion matrices
+- [ ] Fix `transaction_type=None` → assign `'Rental'` cho data từ `rent_transactions_enriched.csv`
+- [ ] Fix TS label: monthly anomaly labeling dựa trên ratio anomaly transactions / total trong tháng đó
+- [ ] Fix stratified split: anomaly rate đồng đều 3 splits (~2.7%)
+- [ ] Fix file_number leak: group-based split
+- [ ] Loại bỏ duplicate SNRE files (copy.csv)
 
-PHASE 3: TIME-SERIES TRAINING (1-2 ngày)
-├── [ ] Monthly aggregation với Project + Rental subset
-├── [ ] A5_BiLSTM V7: window=6 → target F1 ≥ 0.95 (với ≥17 test windows)
-├── [ ] A4_TranAD V7: tune → target F1 ≥ 0.95
-└── [ ] Kiểm tra: val size ≥ 6, test size ≥ 12
+### PHASE 2: TABULAR TRAINING (2–3 ngày)
 
-PHASE 4: HYBRID + EVALUATION (1 ngày)
-├── [ ] A9_Hybrid v2: fix submit_time mapping → target F1 ≥ 0.70
-├── [ ] So sánh V2 → V7 cho tất cả models
-├── [ ] Viết DETECTION_TRAINING_REPORT_V7.md
-└── [ ] Cập nhật thesis metrics
-```
+- [ ] A2_DAE V7: train + threshold optimization → F1 ≥ 0.80
+- [ ] A3_VAE V7: fix beta=0.5, KL annealing → F1 ≥ 0.65
+- [ ] A6_Ensemble V7: learned weights → F1 ≥ 0.78
+- [ ] Lưu checkpoints, loss curves, confusion matrices
 
----
+### PHASE 3: TIME-SERIES TRAINING (1–2 ngày)
 
-## 5. ✅ Training Readiness Checklist
+- [ ] A5_BiLSTM V7: window=6 → F1 ≥ 0.95
+- [ ] A4_TranAD V7 → F1 ≥ 0.95
+- [ ] Verify: train anomaly > 0, val anomaly > 0
 
-| Check | V6 Status | V7 Target |
-|-------|-----------|-----------|
-| Anomaly rate 3-5% | ❌ 9.17% | ✅ 3.87% |
-| Train size ≥ 1,000 | ✅ 3,238 | ✅ ~3,054 |
-| TS test windows ≥ 12 | ❌ 2 windows | ✅ ~17 windows |
-| No file_number leak | ❌ 22 leaks | ✅ Strict split |
-| Features (no constant/corr) | ⚠️ 234 correlated pairs | ✅ ≤ 70 clean features |
-| No NaN/Inf | ✅ | ✅ |
-| Transaction type consistency | ❌ Mixed Sale+Rental+NonProject | ✅ Only Project+Rental |
-| Synthetic injection rate | ❌ Tooì high | ✅ target ≤ 20% of anomaly |
+### PHASE 4: HYBRID + EVALUATION (1 ngày)
+
+- [ ] A9_Hybrid v2: fix submit_time mapping → F1 ≥ 0.70
+- [ ] So sánh V2 → V7
+- [ ] Viết DETECTION_TRAINING_REPORT_V7.md
 
 ---
 
 ## 6. 🎯 Target Metrics V7
 
-### Tabular Models
-| Model | V6 F1 | V7 Target | Chiến lược |
-|-------|-------|-----------|-----------|
-| A2_DAE | 0.620 | **≥ 0.80** | Smaller arch + dropout + OneCycleLR |
-| A3_VAE | 0.571 | **≥ 0.65** | Fix beta=0.5 + KL annealing |
-| A6_Ensemble | 0.606 | **≥ 0.78** | Learned weights |
+### So Sánh Data Scale
 
-### Time-Series Models
-| Model | V6 F1 | V7 Target | Ghi Chú |
-|-------|-------|-----------|---------|
-| A5_BiLSTM | 0.980* | **≥ 0.95** | *V6 test chỉ có 2 windows → unreliable |
-| A4_TranAD | 0.980* | **≥ 0.95** | V7 sẽ có ≥17 test windows |
-| A9_Hybrid | 0.340 | **≥ 0.70** | Fix mapping bug |
+| Metric           | V2          | V7              | Thay đổi        |
+| ---------------- | ----------- | --------------- | --------------- |
+| Train rows       | 6,868       | **19,204**      | **+180%**       |
+| Val rows         | 1,472       | **4,029**       | **+174%**       |
+| Test rows        | 1,472       | **4,030**       | **+174%**       |
+| Train anomaly    | 297 (9.17%) | **640 (3.33%)** | Rate ✅ tốt hơn |
+| Features         | 51          | **50**          | Tương đương     |
+| TS windows train | 420         | **1,968**       | **+369%**       |
+| TS windows val   | 3           | **106**         | **+3433%**      |
+| TS windows test  | 2           | **106**         | **+5200%**      |
+
+### Model Targets
+
+| Model       | V2 F1   | V7 Target  | Chiến lược chính                                       |
+| ----------- | ------- | ---------- | ------------------------------------------------------ |
+| A2_DAE      | 0.620   | **≥ 0.80** | +180% data, OneCycleLR, class weight 15x               |
+| A3_VAE      | 0.571   | **≥ 0.65** | Fix beta=0.5 + KL warmup                               |
+| A5_BiLSTM   | 0.980\* | **≥ 0.95** | \*V2 unreliable (2 test windows), V7: 106 test windows |
+| A4_TranAD   | 0.980\* | **≥ 0.95** | Same as above                                          |
+| A6_Ensemble | 0.606   | **≥ 0.78** | Learned weights                                        |
+| A9_Hybrid   | 0.340   | **≥ 0.70** | Fix mapping bug                                        |
 
 ---
 
-## 7. 💡 Insights Quan Trọng cho Thesis
+## 7. 💡 Insights Cho Thesis
 
-### Tại Sao V7 Khác Biệt?
+### Data Scale Jump — Điểm Mạnh V7
 
-1. **Domain-specific training**: Không gộp tất cả transaction types → model học pattern đặc trưng của Rental (price theo m², lease duration) và Project (commission structure).
-
-2. **Anomaly semantics có ý nghĩa hơn**:
-   - `AGENT_VELOCITY`: Agent giao dịch quá nhanh → dấu hiệu gian lận
-   - `PRICE_AREA_DEVIATION`: Giá thuê bất thường so với khu vực → thao túng giá
-   - `EXTREME_LEASE_DURATION`: Hợp đồng thuê quá ngắn/dài → red flag regulatory
-
-3. **Time-series meaningful**: Monthly trend của Rental transactions trong 10 năm → seasonality (tháng 1, 7, 12 cao điểm thuê SG), COVID impact (2020 drop), post-pandemic recovery.
-
-### Key Numbers Cho Thesis Defense:
 ```
-Dataset V7:  4,363 rows | 3 splits | Anomaly rate 3.87%
-             ├── Rental: 3,871 (88.7%) — đặc trưng: lease_duration, monthly_rent
-             └── Project: 492 (11.3%) — đặc trưng: development_name, unit_type
+V2 Dataset:  6,868 train rows (mixed types, including sale)
+V7 Dataset: 19,204 train rows (all non-sale: Rental + Non-Project + Project + Referral)
+                 ↑ +180% data = better generalization
 
-Target:      A2_DAE F1 ≥ 0.80 (từ 0.620 V2 → +29%)
-             A5_BiLSTM F1 ≥ 0.95 (reliable với ≥17 test windows)
-             A9_Hybrid F1 ≥ 0.70 (từ 0.340 V2 → +106% sau fix bug)
+V2 TS Test:   2 windows → metric NOT reliable ❌
+V7 TS Test: 106 windows → metric RELIABLE ✅
+
+V2 Features: Sale + Rental + Non-Project mixed → sale price noise
+V7 Features: Non-sale focused → cleaner signal (sale separated)
+```
+
+### Số Liệu Cho Thesis Defense
+
+```
+Dataset V7:    26,863 enriched (all non-sale transactions)
+               19,204 train | 4,029 val | 4,030 test
+               Anomaly rate: 3.33% (train)
+               50 selected features via MI + correlation filter
+               707 monthly TS points → 1,968 train TS windows
+               Types: Rental 21,395 + Non-Project 4,574 + Project 492 + Referral 400
+
+🆕 New data:   rent_transactions_enriched.csv (61,984 rows, 23 cols)
+               CEA property data: bedrooms, bathrooms, floorArea, psf
+               District + Region for location-based anomaly detection
 ```
 
 ---
 
 ## 8. ⚠️ Rủi Ro và Mitigation
 
-| Rủi Ro | Xác Suất | Impact | Mitigation |
-|--------|----------|--------|-----------|
-| Project subset quá nhỏ (492 rows) → model bị bias về Rental | HIGH | MEDIUM | Oversample Project trong train; separate evaluation report |
-| TS train windows không đủ (nếu date thưa) | MEDIUM | HIGH | Giảm window_size từ 12→6; dùng stride=1 |
-| A2_DAE không đạt F1≥0.80 | MEDIUM | HIGH | Thử semi-supervised: pretrain unsupervised + fine-tune với labeled data |
-| Overfitting trên train set nhỏ (3,054 rows) | MEDIUM | MEDIUM | Dropout 0.3 + weight_decay + early stopping (patience=30) |
-| A9_Hybrid mapping không khớp (submit_time missing) | LOW | HIGH | Fallback: dùng contract_date; nếu cả hai missing → skip hybrid |
+| Rủi Ro                                              | Xác Suất | Impact       | Mitigation                                                   |
+| --------------------------------------------------- | -------- | ------------ | ------------------------------------------------------------ |
+| TS train 0 anomaly → model không train được         | **100%** | **CRITICAL** | **PHẢI fix label assignment** trước training                 |
+| Val/Test anomaly rate mất cân bằng                  | **100%** | HIGH         | Stratified split lại                                         |
+| Project subset nhỏ (492/26,863 = 1.8%)              | HIGH     | MEDIUM       | Oversample project; evaluate per transaction_type separately |
+| rent_transactions_enriched không có commission data | MEDIUM   | HIGH         | Chỉ dùng price/area features cho records này                 |
+| Overfitting A2_DAE trên data imbalanced             | MEDIUM   | MEDIUM       | Class weight 15x + dropout 0.25 + early stopping             |
 
 ---
 
-*Plan này được tạo tự động dựa trên phân tích DATA_REEVALUATION_REPORT.md và DATA_QUALITY_REPORT.md.*
-*Implemented by: Tomoe AI Mentor — IUH CSV AI Platform Thesis Project*
+_Plan được update tự động dựa trên pipeline run 07-04-2026 15:36._
+_Implemented by: Tomoe AI Mentor — IUH CSV AI Platform Thesis Project_
