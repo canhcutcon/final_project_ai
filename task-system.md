@@ -192,3 +192,35 @@ Failure case images
 
 👉 Trong medical AI:
 → cái này cực kỳ quan trọng
+
+- check xem A7_XGBoost có bị overfitting hay dataleage gì ko?
+- A9_FullEnsemble: Model rank rất tốt, nhưng threshold chọn chưa tối ưu → mất F1
+- A2_DAE + A3_VAE — Unsupervised Autoencoders:
+  Recall rất cao (~0.97–0.99)
+  Precision cực thấp (~0.32)
+  Dataset shift NGƯỢC (hiếm gặp!)
+  Val F1: 0.791
+  Test F1: 0.839 (TỐT HƠN)
+  Validation set khó hơn test
+  Hoặc split chưa chuẩn distribution
+  Reviewer sẽ hỏi ngay: “Why test outperforms validation?”
+  ⚠️ DAE (F1=0.424): Precision OK (0.60) nhưng Recall thấp (0.33)
+  → Chỉ bắt được 33% anomaly — quá ít
+  → Mahalanobis scoring cải thiện nhưng chưa đủ
+  VAE (F1=0.485): Tốt hơn DAE một chút
+  → Nhưng vẫn yếu, recall chỉ 0.40
+  → VAE score bị negative weight trong ensemble → đang noisy
+
+- A5_BiLSTM + A4_TranAD — Time-Series Models:
+  ❌ BiLSTM (F1=0.498): Recall=0.99 nhưng Precision=0.33
+  → Predict gần như TẤT CẢ là anomaly! (324 detected / 108 actual)
+  → Model KHÔNG phân biệt được normal vs anomaly
+  ❌ TranAD (F1=0.491): Cùng vấn đề, AUC=0.50 → RANDOM!
+  → Predict 324/108 — hoàn toàn không phân biệt được
+
+🔍 Root Cause:
+
+- TS val có 0 anomalies → threshold tuning trên val KHÔNG có signal
+- Sau PCA re-split: val có 108/325 (33%) anomaly → nhưng model đã train xong
+- Normal-only training chưa đủ tốt → reconstruction error giống nhau
+  cho cả normal và anomaly

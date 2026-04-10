@@ -433,3 +433,180 @@ Dataset V7:    26,863 enriched (all non-sale transactions)
 
 _Plan được update tự động dựa trên pipeline run 07-04-2026 15:36._
 _Implemented by: Tomoe AI Mentor — IUH CSV AI Platform Thesis Project_
+
+### Update v8
+
+dựa trên csv_agent_platform/detection/notebooks/v8_detaction_result.ipynb tạo notebook v9
+Kết luận XGBoost:
+
+┌─────────────────────────────────────────────────────────────┐
+│ ❌ KHÔNG overfitting (test > val) │
+│ ⚠️ CÓ proxy leakage qua closing_agent_name_freq │
+│ → agent freq cao = agent xử lý nhiều = AGENT_VELOCITY │
+│ → feature BIẾT TRƯỚC ai là anomaly agent │
+│ │
+│ ⚠️ tenure_encoded correlation nhẹ hơn │
+│ nhưng 38.8% importance là BẤT THƯỜNG cho 1 feature │
+│ │
+│ ✅ Các feature khác phân bố đều (0.014-0.030) → hợp lý │
+└─────────────────────────────────────────────────────────────┘
+Cách kiểm chứng cho V9: Chạy XGBoost loại bỏ Feature[11] + Feature[13] rồi so F1. Nếu F1 giảm >15% → confirm proxy leakage.
+
+2. A9_FullEnsemble — Threshold chưa tối ưu
+   Ensemble weights phân tích:
+   weight[semisup] = +1.0802 ← STRONGEST contributor
+   weight[xgb] = +0.9347  
+    weight[dae] = +0.8819  
+    weight[mahal] = +0.2864  
+    weight[vae] = -0.8462 ← NEGATIVE! Gây hại!
+   Vấn đề Threshold:
+
+Threshold = 0.990174 → rất cao (gần 1.0)
+Val: P=0.831, R=0.755, F1=0.791
+Test: P=0.886, R=0.796, F1=0.839
+
+So sánh nếu threshold thấp hơn (ước tính):
+threshold ~0.95 → Recall tăng ~5-8%, Precision giảm nhẹ
+→ F1 có thể đạt 0.85-0.87 trên test
+Root cause: Stacking LR trained ON validation set
+
+# Trong code V8:
+
+meta_lr.fit(full_meta_val_s, dae_val_labels) # ← FIT trên VAL!
+ens_val_proba = meta_lr.predict_proba(meta_val_s) # ← PREDICT trên cùng VAL!
+threshold = find_threshold(ens_val_proba, val_labels) # ← THRESHOLD trên cùng VAL!
+
+TRIPLE LEAKAGE trên validation set:
+
+1. LR weights fit trên val → overfit val
+2. Probability calibrated trên val → overconfident trên val
+3. Threshold tuned trên val → optimal CHỈ cho val
+
+→ Kết quả: threshold = 0.99 rất cao → conservative
+→ Bỏ lỡ nhiều anomaly (R=0.755 trên val, nhưng TEST lại tốt hơn = lucky)
+Fix cho V9:
+
+Dùng NESTED cross-validation:
+Fold 1-4: train LR weights
+Fold 5: tune threshold
+HOẶC: tách val thành val_meta (fit LR) + val_threshold (tune threshold)
+
+3. Dataset Shift — Tại sao Test > Val?
+
+Models có test > val:
+A9_FullEns: 0.791 → 0.839 (+0.048)
+A8_SemiSup: 0.759 → 0.785 (+0.026)
+A7_XGBoost: 0.817 → 0.868 (+0.051)
+
+Models có val > test (ngược lại):
+A2_DAE: 0.527 → 0.424 (-0.103)
+A6_Ensemble: 0.489 → 0.408 (-0.081)
+Phân tích chi tiết:
+
+Data distribution:
+Val: 4,029 rows | 98 anomalies (2.43%)
+Test: 4,030 rows | 98 anomalies (2.43%)
+↑ SAME count, SAME rate
+
+Nhưng LOẠI anomaly có thể khác nhau!
+→ Val có thể chứa nhiều "hard anomalies" (subtle, khó detect)
+→ Test có thể chứa nhiều "easy anomalies" (obvious patterns)
+
+Splitter code dùng group-aware stratified split:
+→ Stratify trên is_anomaly (0/1) → đảm bảo TỶ LỆ giống
+→ NHƯNG KHÔNG stratify trên anomaly_type
+→ Val có thể nhận nhiều BILLING_MISMATCH (khó) hơn test
+→ Test có thể nhận nhiều ABORTED_TXN (dễ, vì status_encoded trực tiếp)
+
+4. DAE + VAE — Unsupervised yếu
+
+Root causes:
+
+DAE (F1=0.424):
+├── Threshold từ Mahalanobis scoring:
+│ alpha=0.7 → nặng MSE (70%), nhẹ Mahalanobis (30%)
+│ → MSE reconstruction error không đủ phân biệt
+│ → Vì normal data đã rất diverse (50 features, real-world)
+│ → Anomaly patterns subtle → reconstruction error ≈ normal
+│
+├── Latent dim = 32 cho 50 features → bottleneck chưa đủ chặt
+│ → Model reconstruct TẤT CẢ tốt, kể cả anomaly
+│
+└── Precision OK (0.60) → khi nó flag, 60% đúng
+Recall BAD (0.33) → bỏ sót 67% anomaly
+→ Threshold quá cao → conservative
+
+VAE (F1=0.485):
+├── Tốt hơn DAE nhẹ (F1 +0.06)
+├── KL scoring thêm tín hiệu nhưng KL_ALPHA=0.1 → quá nhỏ
+├── Beta warmup 0→0.5 → KL chưa converge đủ
+│ → Posterior collapse KHÔNG xảy ra (tốt)
+│ → Nhưng latent space chưa đủ structured
+│
+└── Negative weight trong ensemble (-0.85):
+→ VAE scores NGƯỢC với ground truth!
+→ Anomaly có score THẤP hơn normal ở một số cases
+→ Likely: VAE reconstruct anomaly TỐT hơn vì anomaly patterns
+đơn giản hơn normal patterns (ít diverse hơn)
+Vấn đề: Distribution của MSE scores CHỒNG CHÉO
+→ Không có threshold nào tách tốt được
+→ AUC cao (0.96) nhưng F1 thấp → ranking OK, binary decision BAD
+
+5. BiLSTM + TranAD — Hoàn toàn thất bại
+
+BiLSTM: detected 324/108 actual → Precision = 0.33 = random!
+TranAD: detected 324/108 actual → EXACTLY same! AUC = 0.50
+
+Cả 2 model predict GIỐNG HỆT NHAU = cả 2 đều predict everything as anomaly
+Root Cause Chain:
+
+Step 1: Original TS data split
+ts_train: 420 windows (có anomaly)
+ts_val: 3 windows (0 anomaly!) ← CRITICAL
+ts_test: 2 windows (2 anomaly, 100%)
+
+Step 2: V8 re-split (lines 240-278)
+Combined: 425 windows
+Re-split stratified: → ts_train=1516(?), ts_val=325, ts_test=326
+
+WAIT — 425 windows → 1516 + 325 + 326 = 2167?
+→ Data augmentation đã xảy ra! (sliding window overlap)
+
+Step 3: Normal-only training
+ts_train_normal = 1010 windows (excluded 506 anomalous)
+
+Nhưng: PCA 90→10 features (95% variance)
+→ Mất 5% variance = mất discriminative information
+→ Features sau PCA quá smooth → normal ≈ anomaly
+
+Step 4: Threshold tuning
+Find threshold on val (325 windows, 108 anomaly = 33%)
+→ threshold = 0.28 (BiLSTM) hoặc 0.20 (TranAD)
+→ Prediction: 324/325 = EVERYTHING is anomaly!
+
+Reconstruction Error Distribution (ước tính):
+
+Normal windows: │▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓│ range: [0.25 — 0.35]
+Anomaly windows: │▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓│ range: [0.26 — 0.36]
+↑
+Gần như IDENTICAL! → model KHÔNG học được gì
+
+threshold=0.28 ─────┤
+→ CẢ normal VÀ anomaly đều > threshold
+→ Everything = anomaly
+3 nguyên nhân gốc:
+
+┌──┬────────────────────────────────────────────────────────────┐
+│ 1│ DATA QUANITY: Chỉ 1010 normal windows cho training │
+│ │ → TranAD cần ≥1000 GOOD windows, BiLSTM cần ≥500 │
+│ │ → Với PCA reduced features, càng cần nhiều data hơn │
+├──┼────────────────────────────────────────────────────────────┤
+│ 2│ PCA 90→10: Mất quá nhiều discriminative signal │
+│ │ → 95% variance ≠ 95% useful information │
+│ │ → Anomaly signal có thể nằm trong 5% variance bị bỏ │
+│ │ → Ví dụ: 1 feature có spike nhỏ nhưng critical → bị PCA xóa│
+├──┼────────────────────────────────────────────────────────────┤
+│ 3│ WINDOW SIZE = 8: Quá ngắn cho patterns phức tạp │
+│ │ → Anomaly patterns cần context dài hơn (16-32 steps) │
+│ │ → 8 steps × 10 features = 80 values → quá ít signal │
+└──┴────────────────────────────────────────────────────────────┘
