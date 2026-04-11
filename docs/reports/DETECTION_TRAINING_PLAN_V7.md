@@ -217,7 +217,7 @@ synthetic:
   enabled: true
   # Hiện tại: 400 synthetic / 26,863 real = 1.5% synthetic ratio
   # Anomaly rate: 2.73% (dưới target 3%)
-  # → Cần thêm synthetic hoặc điều chỉnh label threshold
+  # → Cần thêm synthetic hoặc điều chỉnh label thresholdx
   target_anomaly_rate: 0.035 # Target 3.5%
   max_synthetic_ratio: 0.05 # Tối đa 5% synthetic
   types:
