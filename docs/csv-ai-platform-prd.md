@@ -132,14 +132,15 @@ Unit + Integration — pytest cho backend, Jest cho frontend, E2E manual testing
 Tập trung xây dựng giá trị cốt lõi: từ lúc upload file thông qua AI models đến khi xuất ra báo cáo NLP hoàn chỉnh.
 - **Epic 1: Infrastructure & Core Setup** — Thiết lập nền tảng dự án, Docker, Database, CI/CD pipeline
 - **Epic 2: Data Ingestion & Processing** — Upload CSV, tự động nhận diện loại dữ liệu, tiền xử lý và lưu trữ
-- **Epic 3: AI Anomaly Detection Engine** — Tích hợp các model BiLSTM, TranAD, AnoGAN để phát hiện dị thường
+- **Epic 3: AI Anomaly Detection Engine** — Rule Validation + Rule Scoring + ML Models (XGBoost, DAE, Ensemble) 3-layer detection, Decision Layer
 - **Epic 4: NLP Report Generation** — Pipeline 4 bước (Aggregation → Enrichment → Prompt Builder → LLM). Fine-tune Qwen2.5-7B + LoRA trên structured data, LLM chỉ viết văn — không tự tính toán. Hỗ trợ Việt/Anh, xuất PDF
 - **Epic 5: Full Pipeline Orchestration** — Kết nối toàn bộ luồng xử lý bất đồng bộ với Celery + Redis
 - **Epic 6: Frontend Dashboard & UI** — Xây dựng giao diện Next.js: Dashboard, Upload, Analysis, Report, Pipeline
 
-### Phase 2: Security & Production Readiness
-Tập trung bảo vệ hệ thống và tối ưu quản lý đa người dùng.
-- **Epic 7: Security & Authentication** — Xác thực người dùng bằng JWT, đăng ký/đăng nhập, bảo mật APIs
+### Phase 2: AI Auto-Fix, Security & Production Readiness
+Tập trung vào auto-fix pipeline, bảo vệ hệ thống và tối ưu quản lý đa người dùng.
+- **Epic 7: Gemini Agent Auto-Fix Engine** — AI Agent (Gemini 1.5 Flash) suggest fix → Auto-fix/Human Review → Re-validate → Data Fix Log
+- **Epic 8: Security & Authentication** — Xác thực người dùng bằng JWT, đăng ký/đăng nhập, bảo mật APIs
 
 ---
 
@@ -244,56 +245,22 @@ so that I can verify the data was uploaded correctly.
 
 ### Epic 3: AI Anomaly Detection Engine
 
-**Objective:** Triển khai 3 model deep learning (BiLSTM Autoencoder, TranAD, AnoGAN) để phát hiện dị thường. Hệ thống tự chọn model phù hợp theo loại dữ liệu, trả về anomaly scores, chi tiết từng dòng dị thường và các features góp phần.
+**Objective:** Xây dựng hệ thống phát hiện dị thường 3 lớp: Rule Validation (deterministic, dựa trên `business_rules.yaml`) → Rule Scoring (semi-soft, dựa trên `default.yaml` domain_rules) → ML Anomaly Detection (XGBoost, DAE, Ensemble). Decision Layer kết hợp tất cả tín hiệu: reject / flag_for_review / accept.
 
-#### Story 3.1: BiLSTM Autoencoder Integration
+#### Story 3.1: Rule Validation Engine (Layer 1)
+Validate each CSV row against deterministic business rules từ `business_rules.yaml` (13 rule sections).
 
-As a data analyst,
-I want to run BiLSTM Autoencoder on time-series data,
-so that temporal anomalies are detected accurately.
+#### Story 3.2: Rule Scoring Engine (Layer 2)
+Risk scoring dựa trên soft rules từ `default.yaml` `labels.domain_rules` (7 domain rules + 5 anomaly sources).
 
-**Acceptance Criteria:**
+#### Story 3.3: ML Anomaly Detection Models (Layer 3)
+XGBoost CLEAN (F1=0.88), DAE + Mahalanobis, A9 Ensemble stacking.
 
-1. `bilstm_autoencoder.py` load và inference với pretrained weights
-2. Trả về anomaly scores cho từng row
-3. Threshold tự động dựa trên reconstruction error distribution
+#### Story 3.4: Decision Layer & Deduplication
+Unified decision: hard_fail → reject, soft_high OR anomaly_high → flag, else → accept.
 
-#### Story 3.2: TranAD Model Integration
-
-As a data analyst,
-I want to run TranAD model for transformer-based anomaly detection,
-so that complex temporal patterns are captured.
-
-**Acceptance Criteria:**
-
-1. `tranad.py` load và inference thành công
-2. Support multivariate time-series input
-3. Trả về scores và feature importance per anomaly
-
-#### Story 3.3: AnoGAN Model Integration
-
-As a data analyst,
-I want to run AnoGAN for GAN-based anomaly detection on tabular data,
-so that non-temporal anomalies are found.
-
-**Acceptance Criteria:**
-
-1. `anogan.py` load và inference thành công
-2. Hỗ trợ tabular và mixed data types
-3. GAN data balancing nếu dữ liệu imbalanced
-
-#### Story 3.4: Model Selection & Inference API
-
-As a user,
-I want the system to automatically select the best model based on data type,
-so that I get optimal detection results without manual configuration.
-
-**Acceptance Criteria:**
-
-1. `AIService.select_model()` mapping: timeseries → BiLSTM/TranAD, tabular → AnoGAN
-2. `POST /api/v1/analysis/detect` chạy inference, lưu kết quả vào `analysis_results`
-3. `GET /api/v1/analysis/{id}/results` trả về: total_anomalies, anomaly_ratio, scores, metrics
-4. Chi tiết per-row: `{row_idx, score, contributing_features}`
+#### Story 3.5: Detection API & Model Registry
+`POST /api/v1/analysis/detect`, Model Registry, Celery async, pipeline status.
 
 ---
 
@@ -498,11 +465,29 @@ so that I can monitor long-running analyses.
 
 ---
 
-### Epic 7: Security & Authentication (Phase 2)
+### Epic 7: Gemini Agent Auto-Fix Engine (Phase 2)
+
+**Objective:** AI Agent (Gemini 1.5 Flash) nhận error list từ Epic 3 → suggest fix với confidence scoring → Auto-fix (confidence ≥ 0.9) hoặc Human Review → Re-validate bằng Rule Engine → Data Fix Log cho audit. Tối ưu cost bằng batch request, token reduction, Redis cache.
+
+#### Story 7.1: Gemini Agent Service
+Gemini 1.5 Flash suggestion engine — batch request, token reduction, Redis cache layer.
+
+#### Story 7.2: Auto-Fix Engine & Human Review Queue
+Auto-apply high-confidence fixes, route low-confidence to human review queue.
+
+#### Story 7.3: Re-validation Loop & Data Fix Log
+Re-validate fixed rows via Rule Engine, `data_fix_log` table for audit trail.
+
+#### Story 7.4: Agent Fix API & Pipeline Integration
+API endpoints, Celery task integration with Epic 5 pipeline.
+
+---
+
+### Epic 8: Security & Authentication (Phase 2)
 
 **Objective:** Tích hợp hệ thống xác thực người dùng bằng JWT, phân quyền truy cập cơ bản, đảm bảo dữ liệu và báo cáo phân tích được bảo mật riêng tư cho từng người dùng.
 
-#### Story 7.1: JWT Authentication Setup
+#### Story 8.1: JWT Authentication Setup
 As a user,
 I want to register and login with JWT authentication,
 so that my data and analysis results are secured and isolated from other users.
@@ -511,5 +496,5 @@ so that my data and analysis results are secured and isolated from other users.
 1. Tạo bảng `users` trong database với mật khẩu được mã hóa (bcrypt)
 2. Endpoints `POST /auth/register` và `POST /auth/login` hoạt động sinh JWT
 3. JWT token được tạo và verify tại module `core/security.py`
-4. Cập nhật các bảng `datasets`, `analysis_results`, `reports` thêm `user_id` foreign key
-5. Protected endpoints (Epic 2-6) yêu cầu Bearer token hợp lệ và chỉ trả về dữ liệu của user hiện tại
+4. Cập nhật các bảng `datasets`, `analysis_results`, `reports`, `data_fix_log` thêm `user_id` foreign key
+5. Protected endpoints (Epic 2-7) yêu cầu Bearer token hợp lệ và chỉ trả về dữ liệu của user hiện tại
