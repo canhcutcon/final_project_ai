@@ -1,4 +1,5 @@
 # THIẾT KẾ HỆ THỐNG (BACKEND - FRONTEND)
+
 ## CSV AI Platform — System Architecture Document
 
 ---
@@ -102,51 +103,54 @@ backend/
 
 ### 2.2 API Endpoints chính
 
-| Method | Endpoint | Mô tả |
-|---|---|---|
-| `POST` | `/api/v1/upload` | Upload file CSV |
-| `GET` | `/api/v1/upload/{id}/preview` | Xem trước dữ liệu (10 dòng) |
-| `POST` | `/api/v1/analysis/detect` | Chạy anomaly detection |
-| `GET` | `/api/v1/analysis/{id}/results` | Lấy kết quả phát hiện |
-| `POST` | `/api/v1/report/generate` | Tạo báo cáo NLP |
-| `GET` | `/api/v1/report/{id}/download` | Tải PDF báo cáo |
-| `POST` | `/api/v1/pipeline/run` | Chạy full pipeline |
-| `GET` | `/api/v1/pipeline/{id}/status` | Kiểm tra trạng thái pipeline |
+| Method | Endpoint                        | Mô tả                        |
+| ------ | ------------------------------- | ---------------------------- |
+| `POST` | `/api/v1/upload`                | Upload file CSV              |
+| `GET`  | `/api/v1/upload/{id}/preview`   | Xem trước dữ liệu (10 dòng)  |
+| `POST` | `/api/v1/analysis/detect`       | Chạy anomaly detection       |
+| `GET`  | `/api/v1/analysis/{id}/results` | Lấy kết quả phát hiện        |
+| `POST` | `/api/v1/report/generate`       | Tạo báo cáo NLP              |
+| `GET`  | `/api/v1/report/{id}/download`  | Tải PDF báo cáo              |
+| `POST` | `/api/v1/pipeline/run`          | Chạy full pipeline           |
+| `GET`  | `/api/v1/pipeline/{id}/status`  | Kiểm tra trạng thái pipeline |
 
 ### 2.3 Core Services
 
 #### Data Service
+
 ```python
 # services/data_service.py
 class DataService:
     async def upload_csv(self, file: UploadFile) -> DatasetMeta:
         """Upload và lưu CSV vào MinIO"""
-    
+
     async def detect_data_type(self, dataset_id: str) -> str:
         """Nhận diện: 'tabular' | 'timeseries' | 'mixed'"""
-    
+
     async def preprocess(self, dataset_id: str) -> PreprocessResult:
         """Clean, encode, scale dữ liệu"""
-    
+
     async def get_preview(self, dataset_id: str, rows: int = 10) -> dict:
         """Preview dữ liệu đã xử lý"""
 ```
 
 #### AI Service
+
 ```python
 # services/ai_service.py
 class AIService:
     async def select_model(self, data_type: str) -> BaseModel:
         """Chọn model phù hợp dựa trên loại dữ liệu"""
-    
+
     async def detect_anomalies(self, dataset_id: str) -> AnomalyResult:
         """Chạy inference, trả về anomaly scores"""
-    
+
     async def get_anomaly_details(self, result_id: str) -> list[AnomalyDetail]:
         """Chi tiết từng dòng dị thường: score, features góp phần"""
 ```
 
 #### NLP Service
+
 ```python
 # services/nlp_service.py
 class NLPService:
@@ -156,7 +160,7 @@ class NLPService:
         style: str = "detailed"  # "summary" hoặc "detailed"
     ) -> Report:
         """Tạo báo cáo bằng LLM với Chain-of-Thought"""
-    
+
     async def export_pdf(self, report_id: str) -> str:
         """Xuất báo cáo ra PDF, trả về URL download"""
 ```
@@ -238,13 +242,13 @@ frontend/
 
 ### 3.2 Các trang chính
 
-| Trang | Chức năng | UI Components |
-|---|---|---|
-| **Dashboard** | Tổng quan: thống kê, lịch sử phân tích | Charts, Stats cards, Recent list |
-| **Upload** | Kéo thả CSV, preview, chọn model | Drag-drop zone, Data table, Model selector |
-| **Analysis** | Kết quả anomaly detection | Heatmap, Bar chart, Highlighted table |
-| **Report** | Xem báo cáo NLP, tải PDF | Markdown viewer, PDF preview, Download |
-| **Pipeline** | Chạy & theo dõi full pipeline | Step progress bar, Real-time logs |
+| Trang         | Chức năng                              | UI Components                              |
+| ------------- | -------------------------------------- | ------------------------------------------ |
+| **Dashboard** | Tổng quan: thống kê, lịch sử phân tích | Charts, Stats cards, Recent list           |
+| **Upload**    | Kéo thả CSV, preview, chọn model       | Drag-drop zone, Data table, Model selector |
+| **Analysis**  | Kết quả anomaly detection              | Heatmap, Bar chart, Highlighted table      |
+| **Report**    | Xem báo cáo NLP, tải PDF               | Markdown viewer, PDF preview, Download     |
+| **Pipeline**  | Chạy & theo dõi full pipeline          | Step progress bar, Real-time logs          |
 
 ### 3.3 Luồng người dùng (User Flow)
 
@@ -265,19 +269,19 @@ frontend/
 
 ## IV. TECH STACK TỔNG HỢP
 
-| Layer | Technology | Lý do |
-|---|---|---|
-| **Backend API** | FastAPI (Python 3.11+) | Async, type hints, auto docs |
-| **ML Framework** | PyTorch 2.x | Linh hoạt, community lớn |
-| **Task Queue** | Celery + Redis | Xử lý bất đồng bộ pipeline dài |
-| **Database** | PostgreSQL 15+ | ACID, JSON support |
-| **File Storage** | MinIO | S3-compatible, self-hosted |
-| **Frontend** | Next.js 14 (React 18) | SSR, App Router, TypeScript |
-| **Charts** | Recharts / D3.js | Interactive visualization |
-| **LLM** | OpenAI API / Local LLM (Llama) | Report generation |
-| **PDF** | ReportLab / WeasyPrint | Server-side PDF |
-| **Container** | Docker + Docker Compose | Reproducible deployment |
-| **CI/CD** | GitHub Actions | Automated testing |
+| Layer            | Technology                     | Lý do                          |
+| ---------------- | ------------------------------ | ------------------------------ |
+| **Backend API**  | FastAPI (Python 3.11+)         | Async, type hints, auto docs   |
+| **ML Framework** | PyTorch 2.x                    | Linh hoạt, community lớn       |
+| **Task Queue**   | Celery + Redis                 | Xử lý bất đồng bộ pipeline dài |
+| **Database**     | PostgreSQL 15+                 | ACID, JSON support             |
+| **File Storage** | MinIO                          | S3-compatible, self-hosted     |
+| **Frontend**     | Next.js 14 (React 18)          | SSR, App Router, TypeScript    |
+| **Charts**       | Recharts / D3.js               | Interactive visualization      |
+| **LLM**          | OpenAI API / Local LLM (Llama) | Report generation              |
+| **PDF**          | ReportLab / WeasyPrint         | Server-side PDF                |
+| **Container**    | Docker + Docker Compose        | Reproducible deployment        |
+| **CI/CD**        | GitHub Actions                 | Automated testing              |
 
 ---
 
@@ -344,7 +348,7 @@ CREATE TABLE pipeline_runs (
 ### Docker Compose
 
 ```yaml
-version: '3.8'
+version: "3.8"
 services:
   backend:
     build: ./backend
@@ -354,23 +358,23 @@ services:
       - DATABASE_URL=postgresql://user:pass@postgres:5432/csvai
       - REDIS_URL=redis://redis:6379
       - MINIO_ENDPOINT=minio:9000
-  
+
   celery-worker:
     build: ./backend
     command: celery -A app.worker worker -l info
     depends_on: [redis]
-  
+
   frontend:
     build: ./frontend
     ports: ["3000:3000"]
-  
+
   postgres:
     image: postgres:15
     volumes: [pgdata:/var/lib/postgresql/data]
-  
+
   redis:
     image: redis:7-alpine
-  
+
   minio:
     image: minio/minio
     command: server /data --console-address ":9001"
@@ -379,3 +383,10 @@ services:
 volumes:
   pgdata:
 ```
+
+❗ Đừng generate report sync → dùng queue
+❗ Không expose Chain-of-Thought
+❗ Phải summarize data trước khi đưa vào LLM
+✅ Tách LLM adapter + fallback
+✅ Markdown → HTML → PDF (WeasyPrint best choice)
+🚀 Có thể thêm AI reviewer agent để nâng cấp system
