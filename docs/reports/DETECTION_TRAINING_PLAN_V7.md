@@ -610,3 +610,7 @@ threshold=0.28 ─────┤
 │ │ → Anomaly patterns cần context dài hơn (16-32 steps) │
 │ │ → 8 steps × 10 features = 80 values → quá ít signal │
 └──┴────────────────────────────────────────────────────────────┘
+
+đã có kết qua cho training v11
+csv_agent_platform/detection/notebooks/v11_detection_result.ipynb
+csv_agent_platform/detection/outputs/working_v11
