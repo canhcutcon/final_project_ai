@@ -55,12 +55,15 @@ flowchart TD
     B --> C["Story 7.2: Auto-Fix & Human Review"]
     C --> D["Story 7.3: Re-validation & Fix Log"]
     D --> E["Story 7.4: Agent Fix API & Pipeline Integration"]
+    A --> G["Story 7.5: Start-Analysis Modal (Dataset Chooser)"]
     E --> F(["✅ Done: Epic 7"])
+    G --> F
 
     B:::story
     C:::story
     D:::story
     E:::story
+    G:::story
     classDef story fill:#1e3a5f,stroke:#4a9eff,color:#fff
     classDef prev fill:#2a2a2a,stroke:#666,color:#aaa
 ```
@@ -261,6 +264,32 @@ so that I get corrected data end-to-end.
 6. Celery async task cho fix pipeline (non-blocking API)
 7. `auto_fix_enabled` flag — nếu `false`, chỉ suggest fixes, không auto-apply
 
+### Story 7.5: "Start New Analysis" Modal — Dataset Chooser
+
+As a data analyst,
+I want a quick modal to pick an existing dataset (or upload a new one) when starting an analysis,
+so that I don't have to re-upload CSVs that are already ingested in MinIO.
+
+#### Acceptance Criteria
+1. New component `{frontend}/components/StartAnalysisModal.tsx` with props `{ open: boolean; onClose: () => void; onStarted: () => void }` — no modal library added; dùng design tokens hiện có (`surface`, `primary`, `on-surface-variant`)
+2. Modal header "Start New Analysis" + close button (X) top-right; ESC key và click overlay đều close modal mà KHÔNG start analysis
+3. Section 1 — "Choose an existing dataset":
+   - On mount gọi `getDatasets(true)` → `GET /api/v1/datasets?ready_only=true`
+   - States: loading skeleton, empty ("No datasets yet — upload one"), error (có retry button)
+   - Mỗi row hiển thị `filename` + `row_count × column_count` + `data_type` badge
+   - Click row → `startAnalysis({dataset_id, archetype: "timeseries", model: "auto", pre_training_intensity: "high"})` → close modal + call `onStarted()`
+   - Nếu `startAnalysis()` fail → inline error banner trong modal, modal KHÔNG close
+4. Section 2 — Button "Upload new CSV" → `router.push("/upload")` (giữ flow cũ intact)
+5. Backend — `{backend}/app/api/endpoints/datasets.py`: `GET /datasets` thêm query param `ready_only: bool = Query(default=False)`; khi `true` → filter `Dataset.data_type != "detecting"`; default `false` giữ nguyên behavior hiện tại
+6. Frontend API client — `{frontend}/lib/api.ts`: `getDatasets(readyOnly?: boolean)` append `?ready_only=true` khi arg truthy
+7. `{frontend}/app/(pages)/analyses/page.tsx`:
+   - Thay 2 handler `onClick={() => router.push("/upload")}` (header "+ NEW" button và FAB) → `onClick={() => setModalOpen(true)}`
+   - Render `<StartAnalysisModal />` cuối component với `onStarted={() => { setModalOpen(false); loadAnalyses(); }}`
+8. Re-analyze idempotent: chọn cùng 1 dataset nhiều lần → tạo analysis record mới mỗi lần, không block
+9. Unit tests:
+   - Backend: `GET /datasets?ready_only=true` không trả dataset có `data_type="detecting"`
+   - Frontend: click dataset → `startAnalysis` called với đúng default payload, `onStarted` fired
+
 ## Dependencies
 - **Epic 3**: Detection Engine — `RuleValidationEngine` (reuse cho re-validation), `DecisionEngine.get_fixable_rows()` (input errors)
 - **Epic 1**: Infrastructure — Database, Redis (cache layer + Celery broker), Docker
@@ -282,3 +311,4 @@ so that I get corrected data end-to-end.
 - **Fix log là gold mine**: dùng để audit, train future models, và warm Gemini cache
 - **Graceful degradation**: nếu Gemini API down → tất cả errors route to manual review, platform vẫn hoạt động
 - Stories 7.1 → 7.2 → 7.3 → 7.4 là sequential (each depends on previous)
+- **Story 7.5 là parallel track** — UX improvement cho Analyses page, không phụ thuộc Gemini agent. Có thể implement song song hoặc trước 7.1. (Về mặt domain thì thuộc Epic 6 Frontend, nhưng được gộp vào đây theo yêu cầu để đồng bộ release.)
