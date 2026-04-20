@@ -2,6 +2,21 @@
 
 ## Goals and Background Context
 
+Context — Vì sao cần đề cương này
+Học viên (IUH) đang xây dựng một hệ thống production CSV AI Platform (csv_agent_services + csv_agent_platform) phục vụ luận văn thạc sĩ. Đề tài kết hợp hai bài toán AI:
+
+Anomaly Detection trên dữ liệu CSV (tabular + time-series) — giao dịch BĐS
+NLP Report Generation tự động bằng LLM có fine-tune (Qwen2/Gemma với LoRA)
+Hệ thống đã có code, mô hình đã train (V10: XGBoost F1=0.88, BiLSTM F1=0.76, DAE AUC=0.97), nhưng chưa có đề cương thạc sĩ hoàn chỉnh — hiện chỉ có skeleton .tex trong de_cuong_IUH/chapters/ với toàn placeholder [...]. Plan này cung cấp dàn ý chi tiết từng mục để học viên điền nội dung vào các file LaTeX hoặc trình bày trước hội đồng.
+
+Nguồn dữ liệu tham chiếu:
+
+Backend sản phẩm: csv_agent_services/backend/ (FastAPI + Celery + MySQL + MinIO)
+Frontend: csv_agent_services/fronted/ (Next.js 14)
+Pipeline ML nghiên cứu: csv_agent_platform/detection/ (notebooks v8–v11, model V10)
+Template LaTeX: de_cuong_IUH/
+Memory ghi nhận bug V6 dataset: memory/project_final_project_ai.md
+
 ### Goals
 
 - Xây dựng nền tảng phát hiện dị thường (anomaly detection) trên dữ liệu CSV giao dịch bất động sản sử dụng Deep Learning
@@ -93,20 +108,20 @@ Monorepo — `backend/` (FastAPI) và `frontend/` (Next.js) trong cùng reposito
 
 ### Tech Stack
 
-| Layer            | Technology                     | Lý do                                            |
-| ---------------- | ------------------------------ | ------------------------------------------------ |
-| **Backend API**  | FastAPI (Python 3.11+)         | Async, type hints, auto docs                     |
-| **ML Framework** | PyTorch 2.x                    | Linh hoạt, community lớn                         |
-| **Task Queue**   | Celery + Redis                 | Xử lý bất đồng bộ pipeline dài                   |
-| **Database**     | MySQL 8.0+                     | Reliable, widely supported, JSON column support  |
-| **File Storage** | MinIO                          | S3-compatible, self-hosted                       |
-| **Frontend**     | Next.js 14 (React 18)          | SSR, App Router, TypeScript                      |
-| **Charts**       | Recharts / D3.js               | Interactive visualization                        |
-| **LLM (Primary)**| Qwen2-1.5B + QLoRA (fine-tuned) | Report generation — lightweight, Vietnamese support tốt, GPU ≥8GB |
-| **LLM (Backup)** | Gemma 4 2B + QLoRA (fine-tuned) | Backup model khi Qwen2 underperform, Google backing |
-| **PDF**          | ReportLab / WeasyPrint         | Server-side PDF                                  |
-| **Container**    | Docker + Docker Compose        | Reproducible deployment                          |
-| **CI/CD**        | GitHub Actions                 | Automated testing                                |
+| Layer             | Technology                      | Lý do                                                             |
+| ----------------- | ------------------------------- | ----------------------------------------------------------------- |
+| **Backend API**   | FastAPI (Python 3.11+)          | Async, type hints, auto docs                                      |
+| **ML Framework**  | PyTorch 2.x                     | Linh hoạt, community lớn                                          |
+| **Task Queue**    | Celery + Redis                  | Xử lý bất đồng bộ pipeline dài                                    |
+| **Database**      | MySQL 8.0+                      | Reliable, widely supported, JSON column support                   |
+| **File Storage**  | MinIO                           | S3-compatible, self-hosted                                        |
+| **Frontend**      | Next.js 14 (React 18)           | SSR, App Router, TypeScript                                       |
+| **Charts**        | Recharts / D3.js                | Interactive visualization                                         |
+| **LLM (Primary)** | Qwen2-1.5B + QLoRA (fine-tuned) | Report generation — lightweight, Vietnamese support tốt, GPU ≥8GB |
+| **LLM (Backup)**  | Gemma 4 2B + QLoRA (fine-tuned) | Backup model khi Qwen2 underperform, Google backing               |
+| **PDF**           | ReportLab / WeasyPrint          | Server-side PDF                                                   |
+| **Container**     | Docker + Docker Compose         | Reproducible deployment                                           |
+| **CI/CD**         | GitHub Actions                  | Automated testing                                                 |
 
 ### Service Architecture
 
@@ -133,7 +148,9 @@ Unit + Integration — pytest cho backend, Jest cho frontend, E2E manual testing
 ## Implementation Phases
 
 ### Phase 1: Core AI Platform (MVP)
+
 Tập trung xây dựng giá trị cốt lõi: từ lúc upload file thông qua AI models đến khi xuất ra báo cáo NLP hoàn chỉnh.
+
 - **Epic 1: Infrastructure & Core Setup** — Thiết lập nền tảng dự án, Docker, Database, CI/CD pipeline
 - **Epic 2: Data Ingestion & Processing** — Upload CSV, tự động nhận diện loại dữ liệu, tiền xử lý và lưu trữ
 - **Epic 3: AI Anomaly Detection Engine** — Rule Validation + Rule Scoring + ML Models (XGBoost, DAE, Ensemble) 3-layer detection, Decision Layer
@@ -142,7 +159,9 @@ Tập trung xây dựng giá trị cốt lõi: từ lúc upload file thông qua 
 - **Epic 6: Frontend Dashboard & UI** — Xây dựng giao diện Next.js: Dashboard, Upload, Analysis, Report, Pipeline
 
 ### Phase 2: AI Auto-Fix, Security & Production Readiness
+
 Tập trung vào auto-fix pipeline, bảo vệ hệ thống và tối ưu quản lý đa người dùng.
+
 - **Epic 7: Gemini Agent Auto-Fix Engine** — AI Agent (Gemini 1.5 Flash) suggest fix → Auto-fix/Human Review → Re-validate → Data Fix Log
 - **Epic 8: Security & Authentication** — Xác thực người dùng bằng JWT, đăng ký/đăng nhập, bảo mật APIs
 
@@ -252,18 +271,23 @@ so that I can verify the data was uploaded correctly.
 **Objective:** Xây dựng hệ thống phát hiện dị thường 3 lớp: Rule Validation (deterministic, dựa trên `business_rules.yaml`) → Rule Scoring (semi-soft, dựa trên `default.yaml` domain_rules) → ML Anomaly Detection (XGBoost, DAE, Ensemble). Decision Layer kết hợp tất cả tín hiệu: reject / flag_for_review / accept.
 
 #### Story 3.1: Rule Validation Engine (Layer 1)
+
 Validate each CSV row against deterministic business rules từ `business_rules.yaml` (13 rule sections).
 
 #### Story 3.2: Rule Scoring Engine (Layer 2)
+
 Risk scoring dựa trên soft rules từ `default.yaml` `labels.domain_rules` (7 domain rules + 5 anomaly sources).
 
 #### Story 3.3: ML Anomaly Detection Models (Layer 3)
+
 XGBoost CLEAN (F1=0.88), DAE + Mahalanobis, A9 Ensemble stacking.
 
 #### Story 3.4: Decision Layer & Deduplication
+
 Unified decision: hard_fail → reject, soft_high OR anomaly_high → flag, else → accept.
 
 #### Story 3.5: Detection API & Model Registry
+
 `POST /api/v1/analysis/detect`, Model Registry, Celery async, pipeline status.
 
 ---
@@ -294,21 +318,27 @@ Unified decision: hard_fail → reject, soft_high OR anomaly_high → flag, else
 **Hardware:** Fine-tune GPU ≥8GB (Colab T4 free) | Inference GPU ≥4GB hoặc CPU (GGUF)
 
 #### Story 4.1: Aggregation Service
+
 `{ai_services_generation}/src/aggregation/aggregation_service.py` — nhóm anomalies thành clusters, tính sẵn cross-analysis equations.
 
 #### Story 4.2: Enrichment Service
+
 `{ai_services_generation}/src/enrichment/enrichment_service.py` — enrich clusters với ratio, priority, impact_score, semantic_text.
 
 #### Story 4.3: Qwen2-1.5B QLoRA Fine-Tuning (Primary)
+
 Versioned notebooks `{ai_services_generation}/notebooks/train_generation_v1.ipynb` (baseline) → `v2.ipynb` (QLoRA fine-tune). Training script `src/training/train_qwen_lora.py`. LoRA `r=32, alpha=64`. Data ≥5K-10K JSONL samples. Adapter → `models/qwen2-1.5b-lora-adapter/`.
 
 #### Story 4.4: Gemma 4 2B QLoRA Fine-Tuning (Backup)
+
 Notebook `{ai_services_generation}/notebooks/train_generation_v3.ipynb`. Reuse data_loader + evaluate. Adapter → `models/gemma4-2b-lora-adapter/`.
 
 #### Story 4.5: Model Evaluation & Promotion
+
 Notebook `v4.ipynb` — head-to-head comparison. Target: ROUGE-L ≥0.45, BLEU ≥0.30. Khi đạt target → promote best adapter weights + inference code → `{backend}/app/ml/generation/`.
 
 #### Story 4.6: Prompt Template & Report Generation Service
+
 Model Router (Primary → Backup → Template fallback). `POST /api/v1/report/generate` tại `{backend}/` sau promotion.
 
 #### Story 4.7: PDF Export
@@ -412,11 +442,13 @@ so that I can read and share analysis insights.
 3. Chọn ngôn ngữ (Việt/Anh) và style (summary/detailed)
 
 #### Story 6.5: Pipeline Monitor with WebSocket
+
 As a user,
 I want to see real-time pipeline progress with step-by-step updates,
 so that I can monitor long-running analyses.
 
 **Acceptance Criteria:**
+
 1. `PipelineProgress`: step progress bar với 5 bước
 2. `PipelineConfig`: form chọn config (auto_fix, language, report_style)
 3. `useWebSocket` hook: nhận realtime status updates
@@ -429,15 +461,19 @@ so that I can monitor long-running analyses.
 **Objective:** AI Agent (Gemini 1.5 Flash) nhận error list từ Epic 3 → suggest fix với confidence scoring → Auto-fix (confidence ≥ 0.9) hoặc Human Review → Re-validate bằng Rule Engine → Data Fix Log cho audit. Tối ưu cost bằng batch request, token reduction, Redis cache.
 
 #### Story 7.1: Gemini Agent Service
+
 Gemini 1.5 Flash suggestion engine — batch request, token reduction, Redis cache layer.
 
 #### Story 7.2: Auto-Fix Engine & Human Review Queue
+
 Auto-apply high-confidence fixes, route low-confidence to human review queue.
 
 #### Story 7.3: Re-validation Loop & Data Fix Log
+
 Re-validate fixed rows via Rule Engine, `data_fix_log` table for audit trail.
 
 #### Story 7.4: Agent Fix API & Pipeline Integration
+
 API endpoints, Celery task integration with Epic 5 pipeline.
 
 ---
@@ -447,11 +483,13 @@ API endpoints, Celery task integration with Epic 5 pipeline.
 **Objective:** Tích hợp hệ thống xác thực người dùng bằng JWT, phân quyền truy cập cơ bản, đảm bảo dữ liệu và báo cáo phân tích được bảo mật riêng tư cho từng người dùng.
 
 #### Story 8.1: JWT Authentication Setup
+
 As a user,
 I want to register and login with JWT authentication,
 so that my data and analysis results are secured and isolated from other users.
 
 **Acceptance Criteria:**
+
 1. Tạo bảng `users` trong database với mật khẩu được mã hóa (bcrypt)
 2. Endpoints `POST /auth/register` và `POST /auth/login` hoạt động sinh JWT
 3. JWT token được tạo và verify tại module `core/security.py`
