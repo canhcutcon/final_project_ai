@@ -51,14 +51,14 @@ Nguồn dữ liệu tham chiếu:
 - **Mục tiêu cụ thể:**
   1. Xây dựng pipeline tiền xử lý 8 giai đoạn đạt **F1 ≥ 0.85** cho bài toán tabular.
   2. Huấn luyện & triển khai 3 mô hình AD: **XGBoost, BiLSTM, DAE (ensemble)**; so sánh với baseline Isolation Forest/LOF.
-  3. Fine-tune **Qwen2-1.5B + LoRA** sinh báo cáo song ngữ, đánh giá bằng BLEU/ROUGE + human eval.
+  3. Fine-tune **Qwen2-1.5B + LoRA** và **Gemma + LoRA** sinh báo cáo song ngữ, đánh giá bằng BLEU/ROUGE + human eval.
   4. Đóng gói hệ thống Docker Compose (FastAPI + Celery + Next.js) — **latency ≤ 5 phút** cho CSV 10K dòng.
 
 ### 1.3. Đối tượng và phạm vi
 
 - **Đối tượng:** Mô hình AD (supervised/unsupervised), kiến trúc hệ thống micro-service, pipeline sinh báo cáo LLM.
 - **Phạm vi nội dung:** Tabular + weekly time-series; 13 rule nghiệp vụ BĐS; LoRA fine-tune (không pretrain from scratch).
-- **Phạm vi không gian:** Dữ liệu SNRE & Prosage (2012–2025); 3 nhà cung cấp dữ liệu BĐS.
+- **Phạm vi không gian:** Dữ liệu Singapore (2012–2025).
 - **Phạm vi thời gian:** Giai đoạn thực hiện 10/2024 – 06/2026.
 
 ### 1.4. Phương pháp nghiên cứu
