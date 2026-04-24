@@ -502,6 +502,113 @@ Field `source: "ml_feedback"` giúp phân biệt rule do user tạo vs. ML-deriv
 
 ---
 
+## 14. FE Implementation Mapping (Stitch Mocks → React Components)
+
+### 14.1 Mock Inventory
+
+4 bộ Stitch-generated mock đã tồn tại trong [csv_agent_services/fronted/UI/](../../csv_agent_services/fronted/UI/), mỗi bộ gồm `code.html` + `screen.png` + `DESIGN.md` (design system chung — "Sovereign Intelligence Framework"):
+
+| Step | Folder | Covers (FR) | Missing |
+|---|---|---|---|
+| 1 — Upload & Initial Preview | `fronted/UI/Upload & Initial Preview/` | FR dropzone, preview table, row count badge | Column type inference hints, stepper active-state |
+| 2 — Schema Mapping | `fronted/UI/Step 2- Schema Mapping/` | FR-1 layout (source ↔ target), sample chips | Template auto-suggest, save draft wiring |
+| 3 — Validation Review Dashboard | `fronted/UI/Step 3- Validation Review Dashboard/` | FR-1.1 column table, FR-2.1 counter cards, FR-3 global config | `ColumnDetailsModal` 4 tabs, rule editor UI, FR-4 template save/load, FR-2.3 drawer preview flagged rows |
+| 4 — Final Configuration & Run | `fronted/UI/Step 4- Final Configuration & Run/` | `ArchetypeSelector`, `ModelSelector`, run CTA, pipeline progress | Anomaly threshold slider (0.899), summary readback "X rows sẽ vào ML" |
+
+### 14.2 Design System Constraints (trích DESIGN.md)
+
+- **No-line rule** — KHÔNG dùng `1px solid border` cho sectioning. Phân vùng bằng background shift (`surface` → `surface-container-low` → `surface-container-lowest`).
+- **Surface hierarchy 4 tầng**: `surface` (#f7f9fc) → `surface-container-low` (#f2f4f7) → `surface-container-lowest` (#fff) → `surface-bright` (modal glass).
+- **Signature gradient** cho primary CTA: `linear-gradient(135deg, #24389c → #3f51b5)`.
+- **Glassmorphism** cho modals & nav rails: `backdrop-filter: blur(10–20px)`, opacity 80–85%.
+- **Typography**: Inter. Display (hero), Headline (page title, tracking -0.02em), Body (0.875rem), Label-md UPPERCASE cho overline (0.05em tracking).
+- **Charts**: Recharts, palette `primary / secondary / tertiary_fixed_dim`, grid line `outline_variant` 10% opacity.
+- **Status badges**: Running → pulse animation trên `secondary_container`; Completed → `on_secondary_container`; Failed → `error` + `error_container` glow.
+
+### 14.3 Port Strategy
+
+- Giữ nguyên DOM structure của mock `code.html`, convert sang JSX component — không redesign.
+- Mỗi Step = 1 component riêng dưới [csv_agent_services/fronted/components/upload/](../../csv_agent_services/fronted/components/upload/).
+- **Reuse trước khi build mới**:
+  - [`components/PipelineProgress.tsx`](../../csv_agent_services/fronted/components/PipelineProgress.tsx) làm base cho `WizardStepper`.
+  - [`components/StartAnalysisModal.tsx`](../../csv_agent_services/fronted/components/StartAnalysisModal.tsx) làm shell cho `ColumnDetailsModal`.
+  - [`components/TriggerRuleModal.tsx`](../../csv_agent_services/fronted/components/TriggerRuleModal.tsx) làm base cho `RuleEditorForm`.
+  - [`components/SideNavBar.tsx`](../../csv_agent_services/fronted/components/SideNavBar.tsx), [`components/TopAppBar.tsx`](../../csv_agent_services/fronted/components/TopAppBar.tsx).
+- [`tailwind.config.ts`](../../csv_agent_services/fronted/tailwind.config.ts) đã có đủ tokens — KHÔNG thêm CSS mới.
+
+### 14.4 Component Mapping
+
+| Mock element (step) | React component | Reuse? |
+|---|---|---|
+| WizardStepper (shared top) | `components/upload/WizardStepper.tsx` | Extend `PipelineProgress` |
+| DropZone + preview (S1) | Giữ `DropZone`, `StructurePreview` inline trong `page.tsx` | Yes |
+| Source↔Target mapping table (S2) | `components/upload/SchemaMappingStep.tsx` | New |
+| Column config table (S3 left) | `components/upload/ColumnConfigTable.tsx` | New |
+| Counter cards + toggles (S3 right) | `components/upload/ValidationSummaryPanel.tsx` | New |
+| Global config bar (S3 top) | `components/upload/GlobalConfigHeader.tsx` | New |
+| Column details 4 tabs | `components/upload/ColumnDetailsModal.tsx` | Extend `StartAnalysisModal` shell |
+| Rule editor form | `components/upload/RuleEditorForm.tsx` | Extend `TriggerRuleModal` |
+| Flagged rows drawer | `components/upload/FlaggedRowsDrawer.tsx` | New |
+| Threshold slider + model select (S4) | Giữ `ModelSelector`, thêm `AnomalyThresholdSlider.tsx` | Yes + New |
+| Summary readback (S4) | Inline trong `page.tsx` | New |
+
+### 14.5 State Lift-up (`upload/page.tsx`)
+
+```ts
+type Step = 1 | 2 | 3 | 4;
+
+const [step, setStep] = useState<Step>(1);
+const [columnConfigs, setColumnConfigs] = useState<ColumnConfig[]>([]);
+const [ruleSetId, setRuleSetId] = useState("real-estate-v1");
+const [businessDomain, setBusinessDomain] = useState("real-estate");
+const [validationResult, setValidationResult] = useState<ValidationResult | null>(null);
+const [dropHardFails] = useState(true);           // locked ON per FR-2.2
+const [includeRuleScore, setIncludeRuleScore] = useState(true);
+const [anomalyThreshold, setAnomalyThreshold] = useState(0.899);
+const [batchSize, setBatchSize] = useState(25000);
+```
+
+### 14.6 API Contracts (FE wiring)
+
+- `POST /api/v1/datasets/{id}/validate` — gọi khi enter Step 3, re-trigger khi edit rule.
+- `GET /api/v1/rules/sets` — populate Rule set dropdown.
+- `POST | GET /api/v1/templates` — FR-4 save/load.
+- Mở rộng `POST /api/v1/analysis` body: thêm `rule_set_id`, `column_configs`, `drop_hard_fails`, `include_rule_score`, `anomaly_threshold`, `batch_size`.
+- V1 demo: fallback mock trong [`lib/api.ts`](../../csv_agent_services/fronted/lib/api.ts), toggle bằng env flag `NEXT_PUBLIC_MOCK_VALIDATE=true`.
+
+### 14.7 Execution Order (port tasks)
+
+1. Refactor [`upload/page.tsx`](../../csv_agent_services/fronted/app/(pages)/upload/page.tsx) thành wizard shell + `<WizardStepper />` + switch(step). Giữ Step 1 logic hiện tại.
+2. Tạo [`components/upload/WizardStepper.tsx`](../../csv_agent_services/fronted/components/upload/WizardStepper.tsx) — port top stepper từ mock Step 1 HTML.
+3. Tạo [`types/upload.ts`](../../csv_agent_services/fronted/types/upload.ts) — các interface `ColumnConfig`, `Rule`, `ValidationResult`, `RowValidation`, `Template`, `RuleSet` (khớp Section 6).
+4. Thêm 4 API client + mở rộng `startAnalysis` trong [`lib/api.ts`](../../csv_agent_services/fronted/lib/api.ts). Mock fallback nếu env flag ON.
+5. Port Step 2 `SchemaMappingStep` — dùng `preview.columns` auto-fill, output `ColumnConfig[]`.
+6. Port Step 3: `GlobalConfigHeader` → `ColumnConfigTable` (left) → `ValidationSummaryPanel` (right).
+7. Build `ColumnDetailsModal` (4 tabs) + `RuleEditorForm` (nested trong tab Data validations → Advanced).
+8. Build `FlaggedRowsDrawer`.
+9. Port Step 4 — thêm `AnomalyThresholdSlider` + summary readback. Sửa `handleInitialize` gửi payload mở rộng.
+10. I18n pass (vi + en) theo NFR-5.
+11. E2E dev test (xem 14.8).
+
+### 14.8 Dev Verification
+
+- `cd csv_agent_services/fronted && npm run dev`, mở `/upload`.
+- So sánh visual mỗi step với `screen.png` reference — layout match, spacing match.
+- CSV test: upload → mapping → validate (mock) → run. Verify `startAnalysis` payload qua DevTools Network.
+- Back/Next 4 lần không mất state.
+- Test disabled state CTA Step 3 → 4 khi `hard_fails > 0`.
+- `npm run test` — không regression.
+- `npm run build` — TypeScript clean.
+
+### 14.9 Out of Scope (FE v1)
+
+- Backend endpoints thật — dùng mock trong `lib/api.ts`.
+- Rule IDE visual drag-drop — form-based editor là đủ.
+- Multi-user template sharing — scoped per-user.
+- Feedback loop ML → auto-suggest rule — đã có Section 13 (V2 plan).
+
+---
+
 ## 11. Open Questions
 
 1. Rule engine chạy ở đâu — frontend (JS) hay backend service riêng? Ảnh hưởng latency và độ phức tạp dependency rule.
