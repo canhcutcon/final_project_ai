@@ -296,3 +296,54 @@ Phương pháp & điểm mới: Đưa ra taxonomy của datasets, metrics, metho
 Kết quả/Kết luận chính: Tổng hợp gần như đầy đủ các serialization scheme, prompt template, fine-tuning strategy cho LLM trên tabular tính tới 2024.
 Hạn chế: Chưa cover sâu phần anomaly detection (chỉ điểm qua); cập nhật tới giữa 2024.
 Hướng phát triển: AD-specific frameworks, multi-modal tabular (kết hợp text + số), foundation models cho tabular.
+
+mo_dau.tex (4 fixes):
+
+- "end-to-end hoàn chỉnh" → "đầu cuối hoàn chỉnh"
+- "kiểm tra end-to-end" → "kiểm tra đầu cuối"
+- "đánh giá end-to-end" → "đánh giá đầu cuối"
+- "customizable enterprise data-quality rules" → "luật kiểm soát chất lượng dữ liệu doanh nghiệp"
+- "archetype dữ liệu" → "kiểu dữ liệu nguyên mẫu" (×2)
+
+chuong1.tex (1 fix):
+
+- "archetype dữ liệu" → "kiểu dữ liệu nguyên mẫu"
+
+chuong2.tex (3 fixes):
+
+- "System prompt:" → "Lời nhắc hệ thống (system prompt):"
+- "Structured output:" → "Đầu ra có cấu trúc (structured output):"
+- "streaming UI" → "giao diện truyền phát (streaming UI)"
+
+chuong3.tex (12 fixes):
+
+- "chronological split theo năm" → "chia theo thứ tự thời gian (theo năm)"
+- "customizable enterprise data-quality rules" → "luật kiểm soát chất lượng dữ liệu doanh nghiệp"
+- "Auto-detect encoding" → "Tự động phát hiện mã hoá"
+- Pipeline stage names: Schema Normalization, Merging & Enrichment, Windowing Time-Series, Synthetic Augmentation, Feature Selection & Scaling → added Vietnamese
+  translations first
+- "Subset/Padding/Rename/Combo variants" → "Biến thể tập con/độn thêm cột/đổi tên cột/kết hợp"
+- "kiến trúc end-to-end ghép" → "kiến trúc đầu cuối ghép"
+- "pipeline end-to-end" → "pipeline đầu cuối" (×2, incl. figure caption)
+- "Upload & Validation" → "Tải lên và xác thực (Upload & Validation)"
+- "data archetype" / "archetype dữ liệu" → "kiểu dữ liệu nguyên mẫu"
+- "WebSocket listener" → "Trình lắng nghe WebSocket"
+
+chuong4.tex (7 fixes):
+
+- "hệ thống end-to-end" → "hệ thống đầu cuối"
+- "sanity check" (×2) → "kiểm tra cơ bản"
+- "Format Compliance" (header + bullet) → "Tuân thủ định dạng"
+- "out-of-template stress test" → "kiểm tra ứng suất ngoài mẫu"
+- "Đánh giá hệ thống end-to-end" → "Đánh giá hệ thống đầu cuối"
+- "Latency end-to-end" → "Độ trễ đầu cuối"
+- "out-of-the-box" → "với cấu hình mặc định mà không cần tùy chỉnh thêm"
+- "latency end-to-end p50" → "độ trễ đầu cuối p50"
+
+chuong5.tex (5 fixes):
+
+- "Latency end-to-end" → "Độ trễ đầu cuối"
+- "Self-supervised representation learning" + "contrastive learning" → Vietnamese first
+- "Multi-modal anomaly detection" → Vietnamese first
+- "Active learning / Human-in-the-loop" → Vietnamese first
+- "LLM local" + "latency" → "LLM cục bộ" + "độ trễ"
