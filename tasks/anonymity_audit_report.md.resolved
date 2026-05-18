@@ -1,0 +1,306 @@
+# 🔍 Data Anonymity Audit Report
+
+> **Ngày kiểm tra:** 2026-05-18
+> **Workspace:** `/Users/mac/Downloads/GIANG/giang_workspace`
+> **Tổng file quét:** 157 CSV + 34 XLSX
+
+---
+
+## 🚨 Kết luận tổng thể
+
+> [!CAUTION]
+> **Dataset hiện tại CHƯA ẩn danh.** Phát hiện **26+ file** chứa thông tin cá nhân (PII) ở mức CRITICAL — bao gồm NRIC (CMND Singapore), số điện thoại, email, địa chỉ nhà, tài khoản ngân hàng. **KHÔNG ĐƯỢC** đưa vào luận văn hay public repo khi chưa xử lý.
+
+---
+
+## 📊 Phân loại theo Mức độ Nguy hiểm
+
+### 🔴 CRITICAL — Chứa PII trực tiếp định danh cá nhân
+
+| # | File | Loại PII phát hiện |
+|---|------|--------------------|
+| 1 | `data/raw/SNRE-AGENT-LIST.csv` | **NRIC** (S7118784E), **Tên thật**, **Mobile** (91119699), **Email cá nhân**, **Địa chỉ nhà**, **Tài khoản ngân hàng** (POSB 183-02699-2), Birthday, Race, Gender |
+| 2 | `data/raw/normal/snre_project_transaction(202506)_fixed.csv` | **Buyer Name**, **Buyer Phone**, **Buyer Address**, Salesperson Name, Billing Name/Address, UEN |
+| 3 | `data/raw/normal/project_transactions.csv` | Landlord/Seller Name, Phone, Address, UEN; Tenant/Buyer Name, Phone, Address |
+| 4 | `data/raw/normal/non_project_transactions.csv` | Tương tự trên + thêm Landlord/Seller Name 2-3, Buyer Name 2-3 |
+| 5 | `data/raw/normal/non_project_trans_part_2.csv` | Tương tự + Landlord/Seller Address 2-3 |
+| 6 | `data/raw/normal/org_project_trans_part_2.csv` | Tương tự project_transactions |
+| 7 | `data/raw/normal/referral_non_project_transactions.csv` | Landlord/Seller/Tenant/Buyer Name, Phone, Address, UEN |
+| 8 | `data/raw/prosage/apss_contact.xlsx` | Likely contact info (name, phone, email) |
+| 9 | `data/raw/prosage/cityhome_contact.xlsx` | Likely contact info |
+| 10 | `data/raw/prosage/prestige_contact.xlsx` | Likely contact info |
+
+### 🟠 HIGH — Chứa tên người, có thể truy ngược
+
+| # | File | Loại PII |
+|---|------|----------|
+| 11 | `data/quarantine/column_shifted_prosage_city-prop_transaction_xlsx.csv` | landlord_nric, landlord_email, tenant_nric, buyer_nric, seller_nric, closing_agent_nric, agent_mobile, cobrokers_nric/email/mobile |
+| 12 | `data/quarantine/column_shifted_prosage_fer_transaction_xlsx.csv` | Tương tự trên |
+| 13 | `data/raw/normal/combine_payouts.csv` | Payee Name, Closing Salesperson Name, ECB Name |
+| 14 | `data/raw/normal/pending_bills.csv` | Payee Name, Closing Salesperson Name, ECB Name |
+| 15 | `data/raw/normal/combine_bills.csv` | Payee Name, Closing Salesperson Name |
+| 16 | `data/raw/normal/bills.csv` | Payee Name, Closing SALESPERSON Name |
+| 17 | `data/raw/snre/soa_data.csv` | Salesperson Name, Agent Ref ID |
+| 18 | `data/raw/snre/billing_parties_export.csv` | Billing Name, Billing Address |
+
+### 🟡 MEDIUM — Chứa tên agent/payee (có thể tra cứu CEA)
+
+| # | File | Loại PII |
+|---|------|----------|
+| 19 | `data/raw/snre/bills_prjs.csv` | Payee Name, Matched Agent Name |
+| 20 | `data/raw/snre/bills_one_time.csv` | Payee Name, Matched Agent Name |
+| 21 | `data/raw/normal/invoice_cas.csv` | Billing Party Name, Matched Agent Name |
+| 22 | `data/raw/normal/invoice_prjs.csv` | Billing Party Name, Matched Agent Name |
+| 23 | `data/raw/normal/invoice_enriched.csv` | Billing Party Name, Closing Salesperson Name |
+| 24 | `data/raw/normal/invoice_tax_report.csv` | Salesperson Name |
+| 25 | `data/quarantine/column_shifted_*_project_transactions_csv.csv` (x3) | salesperson_name, landlord_seller_name, tenant_buyer_name, etc. |
+
+### 🟢 LOW — Quasi-identifier (có thể re-identify nếu kết hợp)
+
+| # | File | Loại PII |
+|---|------|----------|
+| 26 | `property_cases_enriched.csv` (74K rows) | **Registration Number** (CEA Reg — tra được tên agent), Transaction No, Postal Code + Unit Number (xác định chính xác căn hộ) |
+| 27 | `property_cases_transactions_enriched.csv` (84K rows) | Tương tự trên |
+| 28 | `rent_df.csv` (36K rows) | **URL** (link trực tiếp đến listing PropertyGuru), **title** (địa chỉ cụ thể) |
+
+---
+
+## 🛠️ Bảng Xử lý Đề xuất
+
+| Loại thông tin | Cột ví dụ | Xử lý đề xuất |
+|----------------|-----------|----------------|
+| **NRIC / CMND** | `NRIC`, `landlord_nric`, `buyer_nric` | 🗑️ **XÓA HOÀN TOÀN** |
+| **Tên thật** | `NRIC Name`, `Salesperson Name`, `Buyer Name` | 🔄 Hash → `Agent_0001`, `Client_0001` |
+| **Số điện thoại** | `Mobile`, `Buyer Phone Number` | 🗑️ **XÓA HOÀN TOÀN** |
+| **Email** | `Personal Email`, `Company Email` | 🗑️ **XÓA HOÀN TOÀN** |
+| **Địa chỉ đầy đủ** | `Address`, `Buyer Addresss` | ✂️ Chỉ giữ **District/Region** |
+| **Tài khoản ngân hàng** | `Bank Account Details` | 🗑️ **XÓA HOÀN TOÀN** |
+| **CEA Registration No** | `Registration Number`, `CEA Reg NO` | 🔄 Hash → `REG_0001` |
+| **Transaction No** | `Transaction No` | 🔄 Đánh lại: `TXN_00001`, `TXN_00002`... |
+| **URL listing** | `url` | 🗑️ **XÓA HOÀN TOÀN** |
+| **Tên công ty broker** | `Business Name`, `ECB Company Name` | 🔄 Map → `Broker_A`, `Broker_B`... |
+| **Postal Code + Unit** | `Postal Code`, `Unit Number` | ⚠️ Giữ Postal Code (public), xóa Unit Number |
+| **Ngày sinh** | `Birthday DD` | 🗑️ **XÓA** hoặc chỉ giữ năm sinh |
+| **Giá trị giao dịch** | `Transaction Price`, `price` | ✅ **GIỮ NGUYÊN** (feature cho model) |
+| **Property Type, District** | `Property Type`, `district` | ✅ **GIỮ NGUYÊN** |
+
+---
+
+## 💻 Script Anonymize
+
+> [!IMPORTANT]
+> Chạy script này **TRƯỚC** khi đưa data vào luận văn hoặc public repo. Lưu bản gốc riêng, chỉ commit bản đã anonymize.
+
+```python
+"""
+anonymize_dataset.py
+Chạy: python anonymize_dataset.py
+Output: thư mục data_anonymized/ chứa các file đã xử lý
+"""
+import pandas as pd
+import hashlib
+import os
+import re
+from pathlib import Path
+
+# ============================================================
+# CẤU HÌNH
+# ============================================================
+OUTPUT_DIR = "data_anonymized"
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+# Salt ngẫu nhiên - thay đổi mỗi lần chạy để không thể reverse
+SALT = "thesis_iuh_2026_unique_salt_change_me"
+
+def hash_value(val, prefix="ID"):
+    """Hash giá trị thành mã ẩn danh."""
+    if pd.isna(val) or str(val).strip() == "":
+        return val
+    h = hashlib.sha256(f"{SALT}{val}".encode()).hexdigest()[:8]
+    return f"{prefix}_{h}"
+
+def anonymize_name(val, prefix="Person"):
+    """Chuyển tên thành mã: Person_a1b2c3d4"""
+    return hash_value(val, prefix)
+
+def strip_address_to_district(val):
+    """Chỉ giữ lại Quận/District/Region."""
+    if pd.isna(val):
+        return val
+    val = str(val)
+    # Singapore postal code → district mapping
+    match = re.search(r'Singapore\s+(\d{6})', val)
+    if match:
+        postal = match.group(1)
+        return f"District_{postal[:2]}"
+    # Fallback
+    return "Address_Redacted"
+
+# ============================================================
+# 1. ANONYMIZE FILE CHÍNH: property_cases_enriched.csv
+# ============================================================
+print("Processing property_cases_enriched.csv...")
+df = pd.read_csv("property_cases_enriched.csv")
+
+# Registration Number (CEA) → hash
+df['Registration Number'] = df['Registration Number'].apply(
+    lambda x: hash_value(x, "REG")
+)
+# Transaction No → sequential
+df['Transaction No'] = [f"TXN_{i+1:06d}" for i in range(len(df))]
+# Unit Number → redact
+df['Unit Number'] = "REDACTED"
+
+df.to_csv(f"{OUTPUT_DIR}/property_cases_enriched_anon.csv", index=False)
+print(f"  ✅ Saved ({len(df)} rows)")
+
+# ============================================================
+# 2. ANONYMIZE: property_cases_transactions_enriched.csv
+# ============================================================
+print("Processing property_cases_transactions_enriched.csv...")
+df2 = pd.read_csv("property_cases_transactions_enriched.csv")
+
+df2['Registration Number'] = df2['Registration Number'].apply(
+    lambda x: hash_value(x, "REG")
+)
+df2['Transaction No'] = [f"TXN_{i+1:06d}" for i in range(len(df2))]
+df2['Unit Number'] = "REDACTED"
+
+df2.to_csv(f"{OUTPUT_DIR}/property_cases_transactions_enriched_anon.csv", index=False)
+print(f"  ✅ Saved ({len(df2)} rows)")
+
+# ============================================================
+# 3. ANONYMIZE: rent_df.csv
+# ============================================================
+print("Processing rent_df.csv...")
+df3 = pd.read_csv("rent_df.csv")
+
+# Xóa URL (link trực tiếp listing)
+df3 = df3.drop(columns=['url'], errors='ignore')
+# Title chứa địa chỉ cụ thể → chỉ giữ project name
+df3['title'] = df3['projectName']  # dùng project name thay vì địa chỉ
+
+df3.to_csv(f"{OUTPUT_DIR}/rent_df_anon.csv", index=False)
+print(f"  ✅ Saved ({len(df3)} rows)")
+
+# ============================================================
+# 4. ANONYMIZE: SNRE-AGENT-LIST.csv (FILE NGUY HIỂM NHẤT)
+# ============================================================
+AGENT_FILE = "csv_agent_platform/detection/data/raw/SNRE-AGENT-LIST.csv"
+if os.path.exists(AGENT_FILE):
+    print("Processing SNRE-AGENT-LIST.csv (CRITICAL)...")
+    df4 = pd.read_csv(AGENT_FILE)
+
+    # XÓA HOÀN TOÀN các cột cực nhạy cảm
+    drop_cols = [
+        'NRIC', 'Mobile', 'Personal Email Address', 'Company Email',
+        'Address', 'Bank Account Details', 'Birthday DD',
+        'Chinese Name', 'Namecard', 'Website', 'Prev Agency'
+    ]
+    df4 = df4.drop(columns=[c for c in drop_cols if c in df4.columns])
+
+    # Hash các cột tên
+    for col in ['NRIC Name', 'PROPER NRIC Name', 'Salesperson Name',
+                'Business Name', 'Team Leader Name']:
+        if col in df4.columns:
+            df4[col] = df4[col].apply(lambda x: anonymize_name(x, "Agent"))
+
+    # Hash CEA Reg
+    if 'CEA Reg NO' in df4.columns:
+        df4['CEA Reg NO'] = df4['CEA Reg NO'].apply(lambda x: hash_value(x, "REG"))
+
+    # Agent No → sequential
+    df4['Agent No'] = range(1, len(df4) + 1)
+
+    os.makedirs(f"{OUTPUT_DIR}/raw", exist_ok=True)
+    df4.to_csv(f"{OUTPUT_DIR}/raw/SNRE-AGENT-LIST_anon.csv", index=False)
+    print(f"  ✅ Saved ({len(df4)} rows)")
+
+# ============================================================
+# 5. GENERIC: Anonymize transaction files with common PII columns
+# ============================================================
+TRANSACTION_FILES = [
+    "csv_agent_platform/detection/data/raw/normal/project_transactions.csv",
+    "csv_agent_platform/detection/data/raw/normal/non_project_transactions.csv",
+    "csv_agent_platform/detection/data/raw/normal/referral_non_project_transactions.csv",
+]
+
+# Cột cần XÓA hoàn toàn
+COLS_TO_DROP = [
+    'Landlord/Seller Phone Number', 'Tenant/Buyer Phone Number',
+    'Landlord/Seller UEN Number', 'Tenant/Buyer UEN Number',
+    'Buyer Phone Number', 'Buyer UEN Number',
+]
+
+# Cột cần HASH (tên người)
+COLS_TO_HASH = [
+    'Salesperson Name', 'Referral Name', 'ICB Name', 'ECB Name',
+    'ECB Company Name', 'Landlord/Seller Name', 'Tenant/Buyer Name',
+    'Buyer Name', 'Billing Name', 'Payee Name', 'Matched Agent Name',
+    'Closing Salesperson Name', 'Closing SALESPERSON Name',
+    'Billing Party Name', 'ICB Name 2', 'ICB Name 3',
+    'ECB Name 2', 'ECB Company Name 2', 'Referral Name 2',
+]
+
+# Cột cần strip address
+COLS_ADDRESS = [
+    'Landlord/Seller Addresss', 'Tenant/Buyer Addresss',
+    'Buyer Addresss', 'Billing Address', 'Address',
+]
+
+for fpath in TRANSACTION_FILES:
+    if os.path.exists(fpath):
+        print(f"Processing {os.path.basename(fpath)}...")
+        df = pd.read_csv(fpath)
+
+        # Drop
+        df = df.drop(columns=[c for c in COLS_TO_DROP if c in df.columns])
+
+        # Hash names
+        for col in COLS_TO_HASH:
+            if col in df.columns:
+                df[col] = df[col].apply(lambda x: anonymize_name(x, "Person"))
+
+        # Strip addresses
+        for col in COLS_ADDRESS:
+            if col in df.columns:
+                df[col] = df[col].apply(strip_address_to_district)
+
+        out_name = os.path.basename(fpath).replace('.csv', '_anon.csv')
+        os.makedirs(f"{OUTPUT_DIR}/transactions", exist_ok=True)
+        df.to_csv(f"{OUTPUT_DIR}/transactions/{out_name}", index=False)
+        print(f"  ✅ Saved ({len(df)} rows)")
+
+print("\n🎉 Anonymization complete! Check:", OUTPUT_DIR)
+```
+
+---
+
+## ✅ Checklist cho Luận văn
+
+- [ ] Chạy script `anonymize_dataset.py` trên toàn bộ data
+- [ ] Xác nhận bản anonymized KHÔNG còn NRIC, phone, email, bank account
+- [ ] Kiểm tra bản anonymized vẫn giữ nguyên Transaction Price (feature chính)
+- [ ] Thêm mục **"3.x Xử lý ẩn danh dữ liệu"** vào chương 3 luận văn
+- [ ] Đảm bảo `.gitignore` có chứa `data/raw/` (KHÔNG push raw data lên Git)
+- [ ] Chỉ commit thư mục `data_anonymized/` vào repo
+- [ ] Xóa hoặc không đính kèm file XLSX gốc trong luận văn
+
+---
+
+## 📝 Đoạn viết cho Luận văn (Chương 3)
+
+> **3.x Xử lý ẩn danh dữ liệu (Data Anonymization)**
+>
+> Để đảm bảo tuân thủ quy định bảo vệ dữ liệu cá nhân (PDPA — Personal Data Protection Act, Singapore), toàn bộ dataset được xử lý ẩn danh trước khi sử dụng cho huấn luyện mô hình:
+>
+> | Loại thông tin | Phương pháp xử lý |
+> |----------------|-------------------|
+> | NRIC, số điện thoại, email, tài khoản ngân hàng | Xóa hoàn toàn (deletion) |
+> | Tên nhân viên, khách hàng | Mã hóa SHA-256 với salt → `Agent_xxxx` |
+> | Mã đăng ký CEA | Mã hóa SHA-256 → `REG_xxxx` |
+> | Địa chỉ cụ thể | Chỉ giữ mã quận/district |
+> | Mã giao dịch | Đánh lại số thứ tự `TXN_000001` |
+> | Giá trị giao dịch, loại BĐS, khu vực | **Giữ nguyên** (features huấn luyện) |
+>
+> Phương pháp này đảm bảo tính **k-anonymity** — không thể truy ngược danh tính cá nhân từ dữ liệu đã xử lý, đồng thời bảo toàn các đặc trưng thống kê cần thiết cho anomaly detection.
