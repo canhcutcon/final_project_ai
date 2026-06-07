@@ -347,3 +347,5 @@ chuong5.tex (5 fixes):
 - "Multi-modal anomaly detection" → Vietnamese first
 - "Active learning / Human-in-the-loop" → Vietnamese first
 - "LLM local" + "latency" → "LLM cục bộ" + "độ trễ"
+
+= fix ngày
