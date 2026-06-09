@@ -349,3 +349,7 @@ chuong5.tex (5 fixes):
 - "LLM local" + "latency" → "LLM cục bộ" + "độ trễ"
 
 = fix ngày
+
+```
+find . -name '.\_\*' -type f -delete
+```
