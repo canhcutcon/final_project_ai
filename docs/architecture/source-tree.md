@@ -23,7 +23,9 @@ csv_agent_services/
 │   ├── .env / .env.example           # runtime config (DB/Redis/MinIO/JWT/Gemini)
 │   ├── alembic/
 │   │   ├── env.py                    # migration environment
-│   │   └── versions/                 # 11 migration revisions (init → templates/config)
+│   │   └── versions/                 # 11 revisions existed (init → templates/config) but only
+│   │                                 #   compiled __pycache__ remains — .py sources are gone from
+│   │                                 #   the working tree; `alembic upgrade head` will not work as-is
 │   ├── app/
 │   │   ├── main.py                   # FastAPI app + CORS + router registration + /health
 │   │   ├── api/

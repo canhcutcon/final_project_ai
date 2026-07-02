@@ -27,7 +27,7 @@
 | Database | MySQL | 8.0.35 | Primary relational store | docker-compose `mysql:8.0.35` |
 | ORM/Query Builder | SQLAlchemy | >=2.0.29 | ORM (async + sync) | aiomysql in API, pymysql in Celery |
 | DB Drivers | aiomysql / pymysql | >=0.2.0 / >=1.1.0 | Async & sync MySQL access | Async endpoints + sync workers |
-| Migrations | Alembic | >=1.13.1 | Schema migrations | 11 revisions under `alembic/versions/` |
+| Migrations | Alembic | >=1.13.1 | Schema migrations | Wired up (`alembic.ini`, `env.py`); `versions/` currently has no `.py` sources checked in (only stale `__pycache__` for 11 prior revisions) — verify before relying on `upgrade head` |
 | Object Storage | MinIO | server: latest, client: >=7.2.5 | CSV/Parquet/PDF storage | S3-compatible blob store |
 | Caching | Redis | alpine (server), redis>=5.0.0 (client) | Celery broker + result backend | Also documented as future fix cache |
 | Queue/Jobs | Celery[redis] | >=5.3.0 | Async detection pipeline | 5-task chain; `solo` pool for native libs |
@@ -42,8 +42,8 @@
 | Excel IO | openpyxl | >=3.1.0 | Read Prosage XLSX | Source data ingestion |
 | Serialization | joblib | >=1.3.0 | Scaler/selector `.pkl` | Persist preprocessing artifacts |
 | LLM — Generation | Transformers + PEFT + TRL + bitsandbytes | (QLoRA stack) | Qwen2/Gemma fine-tune + inference | 4-bit nf4 QLoRA per `generation_config.yaml` |
-| LLM — Base models | Qwen2-1.5B-Instruct / Gemma-2-2B-it | HF | Report generation | Primary / backup model router |
-| LLM — External API | google-generativeai (Gemini 1.5 Flash) | >=0.8.0 | AI fix suggestions | `gemini_fix_service.py` |
+| LLM — Base models | Qwen/Qwen2-1.5B-Instruct / google/gemma-2-2b-it | HF | Report generation | Primary/backup per `model_router.py`; config labels the backup "gemma4" (`gemma4-2b-lora-adapter`) but its `adapter_config.json.base_model_name_or_path` is `google/gemma-2-2b-it` — naming vs. actual base model mismatch, verify which is intended |
+| LLM — External API | google-generativeai (`gemini-2.5-flash-lite`) | >=0.8.0 | AI fix suggestions | `gemini_fix_service.py`; local Ollama `qwen2.5:3b-instruct` fallback when Gemini unavailable |
 | Templating | Jinja2 | >=3.1.4 | Report prompt + fallback templates | `report_prompt.j2`, `fallback_report.j2` |
 | PDF/Report | WeasyPrint / Markdown / reportlab / pdfplumber | >=61 / >=3.6 / >=4.2 / >=0.11 | HTML→PDF export & parsing | Report export with raw-bytes fallback |
 | Plotting | matplotlib | >=3.8 (svc) / >=3.7 (det) | Charts in reports/notebooks | Training curves, benchmark plots |
