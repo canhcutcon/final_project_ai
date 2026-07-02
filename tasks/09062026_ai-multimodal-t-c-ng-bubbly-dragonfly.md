@@ -1,3 +1,6 @@
+git config --global user.name "canhcutcon"
+git config --global user.email "giangvo0206@gmail.com"
+
 # Plan: Chuyên đề 2 & 3 — Multimodal AI (Time-series Image + Tabular)
 
 ## Context
