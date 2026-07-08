@@ -17,27 +17,19 @@ xem file `04072026_bug_transpose_preview.md`.
 
 Kết quả test: `test_sheets.py` + `test_grid.py` = **26 passed, 1 failed** (failure là drift pandas 3.0, xem #F).
 
+| 8 | ✅ **A. PDF bucket mismatch** | Quyết định: thống nhất bucket `reports`. Sửa `pipeline_tasks.py` ghi PDF bằng `client.put_object("reports", ..., content_type="application/pdf")` (khớp reader `report.py:321` + `nlp_service`), thay vì `upload_file()` (hard-code `csv-datasets` + text/csv). Import OK. |
+| 9 | ✅ **D. README lệch model** | Xoá 2 dòng phantom TranAD/AnoGAN khỏi bảng model (readme.md = README.md, cùng inode). Model thật: xgboost, bilstm, ensemble, isolation_forest (fallback). |
+| 10 | ✅ **E. PRD cũ lệch** | Thêm banner ARCHIVED/SUPERSEDED đầu `docs/detection-data-processing-pipeline-prd.md`, trỏ về `csv-agent-services-prd.md`. Không xoá (giữ lịch sử). |
+| 11 | ✅ **F. Test drift pandas 3.0** | Pin `pandas>=2.2.1,<3` trong requirements + downgrade venv về pandas 2.3.3. Test `test_select_sheet` pass. Full suite **52 passed**. |
+| 12 | ✅ **C. Component không dùng** | Xác minh 3 component (CompleteImportButton, ReviewEntriesGrid, CleaningSuggestionsPanel) không page nào import; backend đã có API (`/complete-import`, prompts). Ghi rõ vào **câu hỏi mở #1** trong `csv-agent-services-prd.md` (kèm chi phí wiring thấp). |
+
+Cập nhật: **B đã làm xong** (quyết định: nối cả hai vào data thật).
+
+| 13 | ✅ **B. UI giả → data thật** | (1) Thêm backend `GET /api/v1/report` (list) trong `report.py` + `getReports()` trong `api.ts`. (2) Rewrite `reports/page.tsx` từ mock "Q3 2024" thành listing thật (fetch getReports, link `/reports/{id}`, nút download PDF khi has_pdf). (3) Dashboard trends: bỏ SVG hardcode, vẽ polyline từ `getDashboardTrends` (labels/primary/secondary). Frontend `tsc --noEmit` = **0 errors**; backend import OK. |
+| 14 | ✅ **PRD open questions chốt** | #2 ship LoRA · #3 single-tenant (thêm cột tenant_id nullable) · #4 branding = "CSV Agent Services". Đã ghi vào `csv-agent-services-prd.md` §8. |
+| 15 | ✅ **Branding UI** | Đổi "Sovereign Intelligence"/"Intelligence Framework v1.0" → "CSV Agent Services" (layout.tsx title/desc, SideNavBar). Bỏ flavor "Sovereign Data Privacy Framework". tsc 0 errors. |
+
 ## ⏳ CẦN QUYẾT ĐỊNH / CHƯA LÀM
-
-### A. Bug chặn PDF pipeline — bucket mismatch (1 dòng, cần chọn hướng)
-- **Ghi:** `pipeline_tasks.py:430` `upload_file(...)` → bucket **`csv-datasets`** (storage.py:19), key `reports/report_{id}.pdf`.
-- **Đọc:** `report.py:321` `get_object("reports", ...)` → bucket **`reports`**.
-- **Thêm:** `nlp_service.py:79` (writer thứ 2) ghi vào bucket **`reports`** → khớp reader.
-- ⇒ PDF do PIPELINE (Celery) sinh nằm ở `csv-datasets` nhưng download tìm ở `reports` → tải fail.
-- **2 lựa chọn 1 dòng:**
-  - (A1) Sửa reader `report.py:321` đọc bucket `csv-datasets` (`minio_service.get_file(report.pdf_path)`) — khớp pipeline, NHƯNG làm hỏng path `nlp_service`.
-  - (A2) Sửa writer để pipeline ghi vào `reports` — nhưng `upload_file` hard-code bucket `csv-datasets`, không phải 1 dòng sạch.
-  - → **Khuyến nghị:** thống nhất 1 bucket cho report PDF. Cần chốt: dùng `reports` hay `csv-datasets`? (chưa sửa, chờ quyết định)
-
-### B. UI "giả" (mock/hardcode)
-- Trang **Reports** trên menu = tài liệu mock tĩnh "Q3 2024".
-- Biểu đồ **trends** ở dashboard = SVG hardcode.
-- Báo cáo thật chỉ xem được qua `/reports/{id}`.
-- **Quyết định:** nối dây vào data thật, hay gắn nhãn "demo/placeholder"? (chưa làm)
-
-### C. 5 component đã build+test nhưng không trang nào dùng
-- Toàn bộ luồng **cleaning → review → complete-import**; backend đã có đủ API.
-- User: đưa thành **câu hỏi mở số 1 trong PRD** (nối dây hay xoá). (chờ)
 
 ### D. README lệch model
 - README dòng 184-185 liệt kê **TranAD, AnoGAN** nhưng `app/ml/models/` KHÔNG có (chỉ có bilstm_classifier, dae_encoder, xgboost_detector, v10, v11).
