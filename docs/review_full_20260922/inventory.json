@@ -1,0 +1,72 @@
+[
+  {
+    "path": "iuh_master_thesis/chapters/abbreviations.tex",
+    "sha256": "5d3e486a0d3c5d69f82b9dd6d100de5ffb4d36668caa053719afbe4391ccc8c5",
+    "lines": 57
+  },
+  {
+    "path": "iuh_master_thesis/chapters/cash_results.tex",
+    "sha256": "f0c0974960f89cf6da80234b6290ab4ff2eaa0333cb91a156abaea24a305d0ea",
+    "lines": 255
+  },
+  {
+    "path": "iuh_master_thesis/chapters/cash_theory.tex",
+    "sha256": "06baf65a83c25b1eef9aa61f462d11b7f32c738a5bf8f9c5852fff8810814c12",
+    "lines": 170
+  },
+  {
+    "path": "iuh_master_thesis/chapters/chuong1.tex",
+    "sha256": "f6d612ca2cc379f27fd0b6d9cd3c9ead8a6295510a334dbce2ce73cd23ff5dc9",
+    "lines": 251
+  },
+  {
+    "path": "iuh_master_thesis/chapters/chuong2.tex",
+    "sha256": "ee9a746d5e8852c0a594ea739b4825e5365de3a2e405873ebf4baa4f20376c56",
+    "lines": 217
+  },
+  {
+    "path": "iuh_master_thesis/chapters/chuong3.tex",
+    "sha256": "a9b8979ea03e2e5b30213104b88a8c05ace4b60a4cd6eefd65d60497de2fa9d5",
+    "lines": 708
+  },
+  {
+    "path": "iuh_master_thesis/chapters/chuong4.tex",
+    "sha256": "9fd363cef85f641c941dee2eee97a315a8a527059819925b3fda3377be793f1a",
+    "lines": 840
+  },
+  {
+    "path": "iuh_master_thesis/chapters/chuong5.tex",
+    "sha256": "bbf6b0a18ccc752f06b8686ee7a5ad8755e78ad6a4895c1bad3c32e1d9d56f0f",
+    "lines": 198
+  },
+  {
+    "path": "iuh_master_thesis/chapters/cong_trinh.tex",
+    "sha256": "eaf955a284852c3f1121e183511385f3150cd4c081f08482525eb5d4a665e40c",
+    "lines": 17
+  },
+  {
+    "path": "iuh_master_thesis/chapters/ke_hoach.tex",
+    "sha256": "e3383c1d8c1ad7aa14c62f13eea7b5ce0c94e9ec35ad230d8933e9813550832f",
+    "lines": 199
+  },
+  {
+    "path": "iuh_master_thesis/chapters/ly_lich.tex",
+    "sha256": "1064a8f2f3b24bc51ec4c0e07143353b2e6d4a4da173dcd5026cad7acbda3723",
+    "lines": 70
+  },
+  {
+    "path": "iuh_master_thesis/chapters/mo_dau.tex",
+    "sha256": "edc37738f5ed43e0036f9b441f01995612fdca6ea56fd9b4568caa76fdcb5816",
+    "lines": 147
+  },
+  {
+    "path": "iuh_master_thesis/chapters/phu_luc.tex",
+    "sha256": "152bf5eda565da12eb35791d960c49e7216114afd2561643bb13742d4cd83da3",
+    "lines": 408
+  },
+  {
+    "path": "iuh_master_thesis/main.tex",
+    "sha256": "ac4887a7653842cad74ffdd0ef946e7d3ce07b362aa7e8fa48ac9583597aa91e",
+    "lines": 609
+  }
+]

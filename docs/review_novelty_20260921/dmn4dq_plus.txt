@@ -1,0 +1,956 @@
+                                                                Expert Systems With Applications 296 (2026) 129170
+
+
+                                                                       Contents lists available at ScienceDirect
+
+
+                                                          Expert Systems With Applications
+                                                              journal homepage: www.elsevier.com/locate/eswa
+
+
+
+
+DMN4DQ+: Optimising data repair to enhance data usability
+Álvaro Valencia-Parra a,∗, Ángel Jesús Varela-Vaca                                              a , Luisa Parody         b,
+
+Ismael Caballero c , María Teresa Gómez-López a
+a
+  Dpto. Lenguajes y Sistemas Informáticos, IDEA Research group, Universidad de Sevilla, Sevilla, Spain
+b
+  Dpto. Métodos Cuantitativos, Universidad Loyola Andalucía, Sevilla, Spain
+c Information Systems and Technologies Institute, University of Castilla, La Mancha, Ciudad Real, Spain
+
+
+
+
+a r t i c l e            i n f o                             a b s t r a c t
+
+Keywords:                                                    Data quality has become crucial in decision-making and data analysis. There is an intrinsic relationship between
+Data quality                                                 data quality and usability; however, acceptable levels of data quality depend on the contextual requirements
+Data repair                                                  and operational priorities of an organisation. The context of use, business needs, and the organisation’s appetite
+Corrective actions
+                                                             for risk all inﬂuence the usability of data. Achieving adequate levels of usability sometimes requires speciﬁc
+Constraint programming
+                                                             corrections, which can be costly and may incur have far-reaching consequences. This paper introduces the concept
+                                                             of target usability, by representing the minimum level of usability determined by business analysts at which data
+                                                             records can be used without compromising organisational performance. When data records fail to meet this
+                                                             threshold, a combination of corrective actions can be implemented to improve both quality and usability. To
+                                                             achieve near-optimal outcomes, the data quality analyst can eﬀectively combine these sets of actions. This paper
+                                                             proposes DMN4DQ+, an extension of DMN4DQ, where the optimal combination of corrective actions can be
+                                                             derived from the application of constraint optimisation techniques based on the data quality rules described in
+                                                             decision models, the cost model of the actions, and on the usability proﬁle of the record to be improved. The
+                                                             development of a technological stack has conveniently supported DMN4DQ+, and it has been evaluated using
+                                                             a real dataset, thereby demonstrating its applicability and performance.
+
+
+
+
+1. Introduction                                                                                     in a speciﬁc domain without risking the performance of the organisa-
+                                                                                                    tional business processes, according to the appetite for risk. In contrast
+    Data quality is more important than ever for organisations because                              “data quality” is typically deﬁned as the degree to which data is ﬁt for
+data has become the cornerstone asset for strategic, tactical, and opera-                           intended use (Shankaranarayanan & Cai, 2006; Valencia-Parra et al.,
+tional decisions (Pérez-Álvarez et al., 2018; Shankaranarayanan & Cai,                              2019). In this respect, data with an inadequate level of quality may be
+2006). Therefore, organisations must consider only data with suitable                               entirely usable (e.g., there is no other data available about a customer
+quality levels to prevent, or at least alleviate, undesirable consequences                          to deliver their products and meet their needs, and somebody must pro-
+(Gualo et al., 2021; Subramanian, 2025; Wang et al., 2024). Examples of                             vide the product nonetheless). On the other hand, data with an adequate
+these consequences include incorrect decision-making, operational per-                              level of quality may be unusable due to an unacceptable trade-oﬀ be-
+formance issues, damage to corporate image, and increased undesirable                               tween cost and beneﬁts. However, it can be stated that the higher the
+costs. Failure to address these issues can result in signiﬁcant resource                            levels of data quality, the more usable the data becomes. Consequently,
+losses. Redman reported that the cost per item of poor quality data for                             there is a need to continuously assess and improve data quality to en-
+US companies reaches approximately 3.1 USD trillion per year (Redman,                               sure it meets the minimum required level of usability for its intended
+2016a).                                                                                             purpose.
+    Even when there is a close relationship between data quality and                                    However, it is necessary to identify both those data records with in-
+“data usability”, both concepts must be understood at diﬀerent levels.                              adequate levels of quality (those records are considered non-conformance
+Data usability refers to the degree to which data can be potentially used                           data) and their underlying root cause. Identifying non-conformance data
+
+
+    ∗ Corresponding author.
+
+     E-mail addresses: avalencia@us.es (Á. Valencia-Parra), ajvarela@us.es (Á.J. Varela-Vaca), mlparody@uloyola.es (L. Parody), Ismael.Caballero@uclm.es
+(I. Caballero), maytegomez@us.es (M.T. Gómez-López).
+
+https://doi.org/10.1016/j.eswa.2025.129170
+Received 30 October 2024; Received in revised form 23 July 2025; Accepted 24 July 2025
+Available online 30 July 2025
+0957-4174/© 2025 The Author(s). Published by Elsevier Ltd. This is an open access article under the CC BY-NC license (http://creativecommons.org/licenses/by-
+nc/4.0/).
+Á. Valencia-Parra et al.                                                                                         Expert Systems With Applications 296 (2026) 129170
+
+
+requires measuring and assessing the levels of quality against a set of           Section 5 explains the real-case application of DMN4DQ+ using the
+business rules that describe the adequate use of the data for the organi-         technical stack developed herein. Section 6 reviews relevant prior work
+sation’s intended purpose.                                                        and is followed by the conclusions and future work.
+    Depending on the nature of the underlying root cause (i.e., violation
+of speciﬁc business rules) of the non-conformance data, data quality an-          2. Background
+alysts must identify, select, and apply the most suitable set of corrective
+actions for data improvement. Among these actions, the most widely                   To introduce our approach, a description of the case study, which
+used is data cleaning (Ilyas & Chu, 2019; Subramanian, 2025), which               will be discussed throughout the article, is provided. The most relevant
+aims to detect and correct data values that violate any of the stated             concepts regarding DMN4DQ, data quality improvement, and Constraint
+business rules. Examples of data cleaning actions include editing mis-            Programming are also explained.
+spellings and ﬁlling in missing values. It is worth highlighting that the
+execution of corrective actions can aﬀect one or more records and that            2.1. Data improvement: data cleansing
+their performance depends on the order of execution and always implies
+a cost (Redman, 2016b) (e.g., in terms of human and computational re-                 The concept of “data improvement” goes beyond the idea of “data
+sources). Identifying the optimal combination or set of corrective actions        cleansing”. “Data cleansing” aims to modify the value of speciﬁc at-
+involves analysing not only the dependencies between the stated busi-             tributes in the data to match the expected value. However, this is not
+ness rules related to data quality but also the wide range of possible            the only means for organisations to improve their data. For example,
+corrective actions to apply, the cost of implementing these actions, and          in another context, a redesign of the business process that utilises data
+the nature of the data repository. It is a signiﬁcant challenge to provide        may be required, together with the training of individuals who play the
+data analysts with appropriate tools to assess design alternatives and            role of data consumers to prevent them from making mistakes. All these
+choose speciﬁc corrective actions that optimise (i.e., reduce) the total          actions can be considered improvements of data and go beyond the con-
+cost of improving the data. Due to the high number of possibilities and           cept of mere “data cleansing”.
+aspects that must be considered, we propose using the Constraint Pro-                 According to ISO 8000-61 (2022), data quality improvement in-
+gramming paradigm for both modelling and solving this optimisation                volves the process of identifying data quality issues based on the results
+problem (Rossi et al., 2006a).                                                    of data quality assessment to correct non-conformance data. However, for
+    To address this research challenge, we extended the DMN4DQ frame-             the sake of understandability, in the data management domain, the ex-
+work (Valencia-Parra et al., 2021) to identify the optimal set of correc-         pressions data error or even data quality problem (Gualo et al., 2021; Ilyas
+tive actions that maximise the usability of data records in a given dataset       & Chu, 2019) are typically preferred over the more accurate term of non-
+while balancing cost-eﬀectiveness. The DMN4DQ framework, grounded                 conformity, which is widely used in quality management. The frequency
+in the Decision Model and Notation (DMN) standard, enables data qual-             and periodicity of the appearance of data errors or non-conformance data
+ity analysts to model business rules for data quality measurement and             make it possible to identify two types of patterns: random data errors
+assessment in a systematic manner. Decision Model and Notation is a               and systematic (Bertossi, 2011; Ilyas & Chu, 2019). Systematic data er-
+standard designed by the Object Management Group (OMG, 2019) to                   rors are typically caused by failures in the design of information systems
+model and execute decision logics. It has been designed to be easily un-          or in the business process in which the data is used. Random data er-
+derstandable by both business and technical users. It provides a visual           rors are typically caused by random factors (e.g., a speciﬁc issue with a
+notation for decision requirements and a formal language for decision             data collector device or due to inevitable human error). Fixing random
+logic. These features make DMN suitable for applications in data qual-            data errors requires data cleaning techniques (e.g., HoloClean Boeckling
+ity management, where the speciﬁcation, traceability, and automation              et al., 2022, Renuver Breve et al., 2022, and Derand Song et al., 2020).
+of complex business rules are critical.                                           On the other hand, the correction of systematic data errors can need one
+    The primary contribution of this paper is DMN4DQ+, an exten-                  type of corrective action to ﬁx the “systematic” cause (e.g., redesigning
+sion of the DMN4DQ framework. DMN4DQ+ is methodological work                      the business processes or training data quality analysts) and a second
+that supports data quality analysts to evaluate data quality and identify         type of corrective action (e.g., data cleansing) to ﬁx the errors that the
+optimal corrective actions to meet user requirements, thereby leverag-            “systematic” cause has produced over time. In this paper, our focus is
+ing the concept of a usability proﬁle, which characterises data usabil-           solely on data cleansing techniques.
+ity in speciﬁc contexts based on business rules. It models corrective                 Ilyas and Chu (2019) identiﬁed two main activities as part of a
+actions and their costs and facilitates targeted data usability improve-          data cleansing project: (i) Non-conformity detection, aimed at iden-
+ments, supported by a technological stack validated with real datasets.           tifying those non-conformance data records (i.e., those that violated the
+Using Constraint Programming (CP) as an Artiﬁcial Intelligence tech-              stated business rules); and (ii) Non-conformity repairing or correc-
+nique, DMN4DQ+ identiﬁes optimal actions transparently and trace-                 tion, which consists of transforming or changing the values of the data
+ably, which aligns with business needs. Unlike opaque machine learning            record so that they meet the stated business rules. To render the identi-
+models, CP ensures decisions are auditable and based on explicit rules.           ﬁcation of non-conformance records and their corresponding root cause
+    To clarify our proposal, a simple case study from Valencia-Parra et al.       more accessible, DMN4DQ was introduced; a summary will be presented
+(2021) is ﬁrst given, while Section 5 evaluates its applicability in a more       in Section 2.2. It is necessary to select (in the case of multiple alterna-
+complex scenario. The dataset, a CSV catalogue of Amazon Web Services             tives) and apply a set of potential corrective actions to the records that
+server instances,1 includes 21 attributes. For data quality assessment,           need to be updated to clean the data. However, data cleansing comes at a
+there are three key attributes are: (1) InstanceFamily, a string categoris-       cost, and selecting the optimal combination of feasible and cost-eﬀective
+ing the instance (e.g., Memory optimised, General purpose); (2) Clock-            corrective actions remains an open problem that requires further inves-
+Speed, a string indicating CPU speed (e.g., “3.0 GHz”); and (3) Memory,           tigation. To produce an approach to the optimal set of corrective actions,
+a string for RAM size (“16 GiB”).                                                 the foundations of the Constraint Optimisation paradigm are recalled in
+    The rest of the paper is structured as follows: Section 2 outlines            Section 2.3.
+the foundations of DMN4DQ+, including DMN4DQ. Section 3 intro-
+duces new DMN4DQ+ elements. Section 4 details the use of Constraint               2.2. DMN4DQ in a nutshell
+Programming to identify optimal actions to improve data usability.
+                                                                                      DMN4DQ was ﬁrst presented in Valencia-Parra et al. (2021) as a
+                                                                                  DMN-based framework for generating recommendations on the usabil-
+  1 https://www.kaggle.com/datasets/akashsarda/aws-ec2-pricing-data               ity of each data record in a dataset. Decision Model and Notation (DMN)
+
+                                                                              2
+Á. Valencia-Parra et al.                                                                                         Expert Systems With Applications 296 (2026) 129170
+
+
+is a modelling language and standard notation established by the Object           requirements (expressed as “Business Rules for Data Values” (BR.DV)).
+Management Group (OMG) to delineate decision rules (OMG, 2019). It                Business Rules for Data Values tend to analyse the data format, for in-
+enables the modelling of decisions, which can be customised to meet the           stance, for the case study presented above and as exempliﬁed in Fig. 1,
+speciﬁc requirements. To this end, DMN simpliﬁes the declarative de-              the outputs BR.DV.01 and BR.DV.02 are “false” if ClockSpeed and Mem-
+scription and formalisation of decisions using the “if-then” structure,           ory are “null”; the output of BR.DV.03 and BR.DV.04 are “false” if the
+where if the input satisﬁes a constraint, then an output is obtained,             format of ClockSpeed and Memory fail to follow the speciﬁc patterns;
+through the use of tables to represent each decision rule, where each             and the output of BR.DV.05 is an Integer according to the values of
+row is an ‘if-then’ structure. To date, DMN has been used in various              Memory, ClockSpeed, and InstanceFamily.
+contexts, but it is also applicable to the assessment of data quality. Fur-           The results of the evaluation of these BD.DVs are used as the input for
+thermore, DMN enables for combining various decision tables to be com-            the “Business Rules for Data Quality Measurements” (BR.DQM). For exam-
+bined hierarchically, where the output of one decision can serve as the           ple, the output of the evaluation of BR.DV.01 and BR.DV.02 is used as
+input for another. This fact enables decision-making rules to become              the input to evaluate BR.DQM.Completeness to measure the complete-
+more complex. Using the combination of DMN tables, the meaning of                 ness of the data. On the other hand, the outputs of the evaluation of
+usability can be tailored to meet user requirements. Usability is based           BR.DV.03 and BR.DV.04 are used as the input to evaluate BR.DQM.Ac-
+on the level of data quality according to the business needs and the or-          curacy to measure the accuracy in obtaining the values 0, 50, or
+ganisation’s appetite for risk. The generation of these recommendations           100.
+involves the deﬁnition of several types of Business Rules for Data Deci-              The output produced by the evaluation of these BD.DQMs is used as
+sions (BR.DD) structured according to the business perception of data             the input for the assessment. During the assessment, the measurements
+quality for the intended use of the data. One of the conceptual pillars           obtained for every data quality characteristic are aggregated accord-
+of DMN4DQ involves the diﬀerentiation between the concepts of mea-                ing to the data quality requirements (expressed as “Business Rules for
+surement and assessment. During the measurement process, the goal is              Data Quality Assessment” (BR.DQA)) to determine the overall level of
+to determine the compliance of the data records against stated data               quality of a given record. For example, the output of the evaluation of
+
+
+
+
+                                                             Fig. 1. DMN Hierarchy Diagram.
+
+                                                                              3
+Á. Valencia-Parra et al.                                                                                                  Expert Systems With Applications 296 (2026) 129170
+
+
+BR.DQM.Completeness, BR.DQM.Accuracy, and BR.DQM.Consistency is                           of constants given as inputs of the problem (list of weights and costs of
+utilised to ascertain whether the assessment is suitable, suﬃcient, or                    the potential elements to be included), variables to represent whether
+poor. Based on the results of the assessment and taking into account                      the element is to be included or not, the contratins on the limit of the
+both the business necessities and the organisation’s appetite for risk, ex-               possible values that the variables can take, and the objective to max-
+pressed through “Business Rules for Data Usability Decisions” (BR.DUD),                   imise, the total cost in this case. Every possible combination of ele-
+a recommendation is generated regarding the usability of the data.                        ments that can be 𝑖𝑛𝑐𝑙𝑢𝑑𝑒𝑑 in the knapsack is analysed, and those that
+                                                                                          maximise a 𝑡𝑜𝑡𝑎𝑙𝐶𝑜𝑠𝑡 without exceeding a 𝑚𝑎𝑥𝑖𝑚𝑢𝑚𝑊 𝑒𝑖𝑔ℎ𝑡 are selected.
+2.3. Constraint optimisation problems                                                     The use of COP enables the problem to be modelled instead of hav-
+                                                                                          ing to deﬁne an algorithm, since the COP solver will analyse the pos-
+    To determine the most suitable combination of actions to transform                    sible values of the variables through the application branch and bound
+an unusable record into a usable record, the application of the Constraint                techniques.
+Programming (CP) paradigm (Rossi et al., 2006b) is proposed. A disci-                         The problem addressed in this work has a well-deﬁned combina-
+pline within Artiﬁcial Intelligence (AI), CP is particularly adept at ad-                 torial structure with clearly speciﬁed constraints, making it naturally
+dressing problems characterised by a need to satisfy a set of constraints.                suited to be modeled using CP. Additionally, CP’s applicability spans
+While not all problems in Computer Science are faced with CP, many                        logistics, scheduling, planning, networks, cybersecurity and other do-
+speciﬁc challenges within various subﬁelds can be eﬀectively modelled                     mains (Geibinger et al., 2024; Green et al., 2024; Jiménez-Piqueras
+and solved using CP techniques. This fact includes, but is not limited to,                et al., 2023; Laghrissi et al., 2016; Urli & Kilby, 2017; Varela-Vaca et al.,
+problems in optimisation, scheduling, resource allocation, and decision-                  2021), thereby demonstrating its eﬀectiveness despite computational
+making under constraints. In these contexts, CP oﬀers a framework for                     challenges.
+the identiﬁcation of solutions that adhere to a given set of rules or lim-
+itations. A Constraint Optimisation Problem (COP) is a Constraint Sat-                    3. DMN4DQ+, a solution for eﬃcient data repairing
+isfaction Problem (CSP) where an optimisation function determines the
+best solution from the set of possibilities according to the function to be                   Before entering into a in-depth the description of DMN4DQ+, let us
+optimised. The basis of CP stands on the resolution of a CSP. There-                      recall that data usability largely depends on data quality; consequently,
+fore, to better understand what constitutes a COP is, a deﬁnition is                      to increase the usability of data, it is possible to improve the levels
+introduced.                                                                               of data quality. However, data quality improvement does indeed come
+                                                                                          with a cost, which can be optimised in a cost-driven way. This cost op-
+Deﬁnition 1. A CSP represents a reasoning framework consisting of
+                                                                                          timisation can be achieved by selecting only those corrective actions
+variables, domains and constraints ⟨𝑉 , 𝐷, 𝐶⟩, where 𝑉 is a set of 𝑛 vari-
+                                                                                          which minimise the total cost of the improvement projects. To the best
+ables {𝑣1 , 𝑣2 , …, 𝑣𝑛 } whose values are taken from ﬁnite domains {𝐷𝑣1 ,
+                                                                                          of our knowledge, no investigations have been conducted to address the
+𝐷𝑣2 , …, 𝐷𝑣𝑛 } respectively, and 𝐶 is a set of constraints on their values.
+                                                                                          relationship between data usability, data management, and cost-driven
+The constraint 𝑐𝑘 (𝑥𝑘1 , …, 𝑥𝑘𝑚 ) is a predicate deﬁned on the Cartesian
+                                                                                          data quality improvement, which renders our investigation highly inno-
+product 𝐷𝑘1 × … × 𝐷𝑘𝑚 . This predicate is true iﬀ the assignment of
+                                                                                          vative. After having participated in several academic and practitioner
+the value of each variable 𝑥𝑘𝑖 satisﬁes the constraint 𝑐𝑘 .
+                                                                                          data quality management projects, our motivation focused on provid-
+    The search for solutions for a CSP is based on the concept of instan-                 ing data quality analysts with the necessary methodological and tech-
+tiation. An assignment of a variable, or instantiation, is a variable-value               nological tools to support cost-driven data quality improvement, thereby
+pair (𝑥, 𝑎) which represents the assignment of the value 𝑎 to the vari-                   increasing the usability of the data at a controlled cost. After having de-
+able 𝑥. An instantiation of a set of variables is a tuple of ordered pairs,               veloped DMN4DQ and testing it in real-world contexts, it was decided to
+where each sorted pair (𝑥, 𝑎) assigns the value 𝑎 to the variable 𝑥. A                    extend this framework to support cost-driven data quality improvement.
+tuple ⟨(𝑥1 , 𝑎1 ), … , (𝑥𝑖 , 𝑎𝑖 )⟩ is consistent if it satisﬁes all the constraints       To provide a uniﬁed outcome, it was decided to build DMN4DQ+ on
+formed by the variables of the tuple. Several possible solutions can be                   top of DMN4DQ, and, consequently, DMN4DQ+ supersedes DMN4DQ
+found to satisfy a CSP, but sometimes only the most suitable solution                     for the data quality improvement projects. Hence, DMN4DQ+ aims to
+must be obtained: that which optimises (maximises or minimises) the                       ﬁnd the optimal cost-beneﬁt set of corrective actions to convert a set
+solution. In these cases, a COP must be considered.                                       of records having the same “usability proﬁle” to achieve a “usability tar-
+                                                                                          get” of “usable” value in accordance with the stated business rules. To
+Deﬁnition 2. A COP is a CSP in which the solutions found optimise
+                                                                                          achieve these data improvements using data repair, this paper extends
+(minimise or maximise) an objective function f.
+                                                                                          DMN4DQ by adding the required components to address data quality
+   The typical Knapsack problem (Kellerer et al., 2004) can be described                  improvement management concerns, including the notion of cost. In this
+as a COP as shown in Fig. 2. The knapsack problem is formed of a set                      section, the new add-ins for DMN4DQ+ are presented and formalised.
+
+
+
+
+                                                              Fig. 2. Schema of the Knapsack COP model.
+
+                                                                                      4
+Á. Valencia-Parra et al.                                                                                              Expert Systems With Applications 296 (2026) 129170
+
+
+
+
+                                                                  Fig. 3. DMN4DQ+ method.
+
+
+3.1. DMN4DQ+ method                                                                  3. Select the “usability proﬁles” whose records must be repaired.
+                                                                                        The records with the same “usability proﬁle” are grouped to later
+    To facilitate the understanding of the proposal, the method is de-                  apply the same corrective actions.
+scribed using the workﬂow shown in Fig. 3.                                           4. Create a list of corrective actions. These actions are intended to
+    Six elements are involved in the workﬂow are:                                       address speciﬁc data quality issues that may be detected in data at-
+                                                                                        tributes. The actions will be applied to the records that have the
+ • Dataset: This contains the records whose usability is to be deter-                   selected “usability proﬁles”.
+   mined and improved. An example of such a dataset is presented for                 5. Determine the optimal combination of the feasible and cost-
+   Amazon Web Services in Section 2.2.                                                  eﬀective set of corrective actions to improve the levels of data
+ • DMN model: This contains the hierarchies of business rules devel-                    quality towards the desired level of usability of the record selected
+   oped following the DMN4DQ methodology (Valencia-Parra et al.,                        by the user. From among the existing approaches towards ﬁnding
+   2021). An example of a DMN hierarchical model is presented in                        the optimal combination, our proposal utilises the Constraint Pro-
+   Fig. 1.                                                                              gramming paradigm.
+ • List of corrective actions: These are the actions that can change the
+
+   dataset quality. Corrective actions that can be applied to the example
+   include string replacement and data reformatting.                                 3.2. Link the business rules for data values to identify data quality
+ • Usability proﬁle (UP) of each record of the dataset: This is the de-              problems
+   scription of the conditions under which a record should be used
+   for a given purpose. An example of a usability proﬁle is BR.DUD=                      Data quality problems include anomalies in datasets that can trigger
+   ‘Do not use’, BR.DQA = ‘Bad’, BR.DQM.Completeness = ‘Not com-                     the non-usability of the data according to the measurement and the as-
+   plete’, BR.DQM.Accuracy = 0, BR.DQM.Consistency = ‘Inconsis-                      sessment described in each case (Quindroit et al., 2023; Woodall et al.,
+   tent’, BR.DV.01 = false, BR.DV.02 = true, BR.DV.03 = false,                       2014). Typically, it is easier for stakeholders to identify common data
+   BR.DV.04 = true, BR.DV.05 = 1, and BR.DV.06 = ‘Inconsistent’.                     quality problems (e.g., missing values, incorrect values, incorrect syn-
+   The formal deﬁnition is presented below.                                          tax, and domain violations). However, to address the data quality prob-
+ • Target usability: This describes the minimum amount of usabil-                    lems, data quality analysts should focus on both identifying the business
+   ity (to be deﬁned by business analysts) at which the data record                  rules for data values (BR.DVs) and determining those that have been vi-
+   should be used in the organisation. An example can be BR.DUD=                     olated, which cause the data quality issues. To a certain extent, it can
+   ‘Use’, BR.DQA = ‘Suﬃcient’, BR.DQM.Completeness = ‘Com-                           be stated that data quality problems should be characterised as a prob-
+   plete’, BR.DQM.Accuracy = 50, BR.DQM.Consistency = ‘Consis-                       lem of non-conformity for one or more data quality characteristics or
+   tent’, BR.DV.01 = true, BR.DV.02 = true, BR.DV.03 = false,                        dimensions (de Almeida et al., 2013). For the identiﬁed data quality
+   BR.DV.04 = true, BR.DV.05 = 2, and BR.DV.06 = ‘Consistent’.                       characteristics, it is, therefore, possible to identify and group the corre-
+ • Optimal list of actions: This is a subset of the list of corrective actions       sponding business rules for the data values (Caballero et al., 2022). Con-
+   to perform to achieve the target usability with the minimum cost.                 sequently, business stakeholders and data quality analysts can work col-
+   Examples of corrective actions include modifying the data format                  laboratively to represent data quality problems as violations of business
+   and managing the relationship with data providers to prevent null                 rules for data values (BR.DVs) for the attributes involved (see Fig. 4).
+   data values. The ﬁnal list of actions will be obtained using Constraint           Business stakeholders must specify which data quality problems are the
+   Programming.                                                                      most damaging to the business; data quality analysts must then deter-
+                                                                                     mine which business rule violations need to be prioritised for repair.
+   In summary, there are ﬁve steps that the DMN4DQ+ method intro-
+duces (which are described in the following subsection) are:
+
+1. Link the business rules for data values (BR.DVs) to identify data
+   quality problems. The possible data quality problems are related
+   to the values of the tuples, and hence are also associated with the
+   BR.DVs. Since each corrective action is intended to address one or
+   more data quality problems (rooted in the violation of BR.DV(s)), it
+   is possible to track those BR.DV(s) that could be aﬀected by a speciﬁc
+   corrective action.
+2. Generate for every record the corresponding “usability proﬁles”
+   (see Section 3.3) The results of the usability recommendations gen-
+   erated using DMN4DQ (Valencia-Parra et al., 2019; Valencia-Parra                  Fig. 4. Relationship between BR.DVs, data quality problems, corrective actions,
+   et al., 2021) are taken as the basis for these usability proﬁles.                 and dataset attributes.
+
+                                                                                 5
+Á. Valencia-Parra et al.                                                                                               Expert Systems With Applications 296 (2026) 129170
+
+
+                           Table 1
+                           Data quality problems associated with each BR.DV of the guiding example.
+                            Implied Attributes    DQ Problem                             Type of DQ Problem   DQ Dimension     BR.DV
+
+                            ClockSpeed            Missing Value                          SAST                 Completeness     BR.DV.01
+                            Memory                Missing Value                          SAST                 Completeness     BR.DV.02
+                            ClockSpeed            Syntax Violation                       SAST                 Accuracy         BR.DV.03
+                            Memory                Syntax Violation                       SAST                 Accuracy         BR.DV.04
+                            Memory, ClockSpeed    Violation of functional dependency     MAST                 Consistency      BR.DV.05
+
+
+
+DMN4DQ can support this mapping between data quality problems and                           •The evaluation of BR.DV.05 is 0 due to InstanceFamily:
+violations of business rules for data values.                                                “Memory optimised” and 𝑀𝑒𝑚𝑜𝑟𝑦 not fulﬁlling the condition (note
+    Data quality problems can be classiﬁed according to their diﬀer-                         that, since it fails to follow the expected pattern, it is not possible
+ent levels of granularity (Oliveira et al., 2005; Quindroit et al., 2023;                    to evaluate whether it fulﬁls the numerical condition).
+Woodall et al., 2014), depending on the number of attributes and tuples                2. The evaluation of the BR.DQMs generates the following results:
+implied in such problems: (i) single attributes in single tuples (SAST);                   • BR.DQM.Completeness evaluation generates Not complete since
+
+(ii) multiple attributes in single tuples (MAST); (iii) single attributes in                 the evaluation of BR.DV.01 produced false.
+multiple tuples (SAMT); and (iv) multiple attributes in multiple tuples                    • BR.DQM.Accuracy evaluation generates 0 since the evaluation of
+
+(MAMT).                                                                                      both BR.DV.03 and BR.DV.04 generated false.
+    Table 1 illustrates these types of problems. For the SAST problem,                     • BR.DQM.Consistency evaluation generates Inconsistent since the
+
+it is assumed that a business rule, coded as BR.DV.01, exists for the                        evaluation of BR.DV.05 produced 0.
+𝐶𝑙𝑜𝑐𝑘𝑆𝑝𝑒𝑒𝑑 attribute, which states that a value must be present. Should                3. The evaluation of the BR.DQAs generates the following results:
+this business rule be violated, then a problem arises, as is the case with                 • The evaluation of BR.DQA produces Poor since the evaluation
+
+a SAST issue. Similarly, it is assumed that the business rule coded as                       of the BR.DQM.Completeness produced Not complete, the eval-
+BR.DV.05 represents a functional dependency between the attributes                           uation of BR.DQM.Accuracy generated 0, and the evaluation of
+𝑀𝑒𝑚𝑜𝑟𝑦 and 𝐶𝑙𝑜𝑐𝑘𝑆𝑝𝑒𝑒𝑑. If this business rule is violated for a single tu-                    BR.DQM.Consistency led to Inconsistent.
+ple, then there is a MAST problem. As an example of a SAMT problem,                    4. Lastly, the evaluation of the BR.DUDs generates the following results:
+the case of the attribute 𝑀𝑒𝑚𝑜𝑟𝑦 is assumed, for which the selected data                   • The evaluation of the BR.DUD generates Do not use because the
+
+type is 𝑐ℎ𝑎𝑟𝑎𝑐𝑡𝑒𝑟 instead of 𝑖𝑛𝑡𝑒𝑔𝑒𝑟 resulting in the capture of invalid                     evaluation of BR.DQA generated Not suitable or Suﬃcient.
+values for memory. Finally, as an example of MAMT, let us consider
+                                                                                          Visually, the backtrack of the generation of the usability of the rec-
+the business rules that have a functional dependency between the at-
+                                                                                       ommendation of this record 𝑟1 can be represented as shown in Fig. 5.
+tributes 𝑀𝑒𝑚𝑜𝑟𝑦 and 𝐶𝑙𝑜𝑐𝑘𝑆𝑝𝑒𝑒𝑑. The inadequate selection of datatype
+                                                                                          Usability proﬁles provide valuable information for the solving of
+for 𝑀𝑒𝑚𝑜𝑟𝑦 leads to a consistency problem for 𝐶𝑙𝑜𝑐𝑘𝑆𝑝𝑒𝑒𝑑 in those tu-
+                                                                                       data quality problems since they enable a better analysis of the prob-
+ples where 𝑀𝑒𝑚𝑜𝑟𝑦 takes a value larger than ‘9’, which results in no
+                                                                                       lem’s root causes. Given that a record has a speciﬁc usability recom-
+valid value for 𝐶𝑙𝑜𝑐𝑘𝑆𝑝𝑒𝑒𝑑.
+                                                                                       mendation of “Do not use”, it is possible to identify, through a backwards
+    Given that the DMN4DQ is focused only on single tuples (also called
+                                                                                       analysis, what (aka the violation of the business rules for data values)
+records) due to the inherent limitations of DMN to represent Busi-
+                                                                                       provoked the problems.
+ness Rules for Data Values, the types of problems that are detected by
+                                                                                          This idea of retaining information regarding the traceability of the
+DMN4DQ and consequently dealt with by DMN4DQ+ are only SAST
+                                                                                       generation of the usability recommendation for a record enables the
+and MAST. This fact is, therefore, recognised as an inherent limitation
+                                                                                       deﬁnition of the concept of usability proﬁle of a record.
+of the DMN4DQ and DMN4DQ+ frameworks. However, this tuple can
+be extracted directly from the dataset, or generated using, for example,               Deﬁnition 3 (Usability proﬁle of a data record). Given a DMN
+join or aggregation operators, thereby allowing the inclusion of multi-                model, 𝐷, the usability proﬁle (𝑢𝑝𝑟𝑖 ) for a data record 𝑟𝑖 is a tuple
+ple attributes of various tuples in a single tuple whose usability can be              ⟨𝑑𝑒𝑐𝑖𝑠𝑖𝑜𝑛, 𝑎𝑠𝑠𝑒𝑠𝑠𝑚𝑒𝑛𝑡, 𝑚𝑒𝑎𝑠𝑢𝑟𝑒𝑚𝑒𝑛𝑡𝑠, 𝑜𝑏𝑠𝑒𝑟𝑣𝑎𝑡𝑖𝑜𝑛𝑠⟩ where:
+analysed.                                                                               • decision ∈ D.BR.DUD.output;
+    For the guiding example presented in Fig. 1, Table 1 presents several               • assessment ∈ D.BR.DQA.output;
+data quality problems associated with each BR.DV.                                       • measurements = {BR.DQM.Dim1: 𝑚 , BR.DQM.Dim2: 𝑚 , …,
+                                                                                                                                1                  2
+                                                                                          BR.DQM.Dimn: 𝑚𝑛 }, where BR.DQM.Dimi is the name of the table
+3.3. Generate “Usability Proﬁles”
+                                                                                          for the quality dimension, such that 𝑚𝑖 ∈ D.BR.DQM.Dimi.output;
+                                                                                          and
+    To introduce the concept of “usability proﬁles”, the guiding example                • observations = {BR.DV.V1: 𝑣 , BR.DV.V2: 𝑣 , …, BR.DV.Vm: 𝑣 },
+                                                                                                                       1             2                𝑚
+is continued where the following data record is considered:
+                                                                                          where BR.DV.Vi is the name of BR.DV table, such that 𝑣𝑖 ∈
+    𝑟1 = ⟨𝐶𝑙𝑜𝑐𝑘𝑆𝑝𝑒𝑒𝑑 ∶ 𝑛𝑢𝑙𝑙, 𝑀𝑒𝑚𝑜𝑟𝑦 ∶ 16, 0𝐺𝐵, InstanceFamily: “Mem-
+                                                                                          D.BR.DV.Vi.output.
+ory optimised”⟩.
+    To generate the “usability recommendation” for this record 𝑟1 , the                    Let us denote 𝑈 𝑃 as the set of all possible “usability proﬁles” 𝑢𝑝𝑖
+evaluation of the associated business rules gathered in the correspond-                that have been detected in 𝐷𝑆 after the generation of data usability
+ing DMN tables is simulated (see Fig. 1):                                              recommendations. Various records may have the same “usability proﬁle”.
+                                                                                       This fact enables the deﬁnition of cluster, leading to better management
+1. The evaluation of the various BR.DVs generate the following results:                of data quality actions, as shown later in this paper.
+    • The evaluation of BR.DV.01 generates false due to 𝐶𝑙𝑜𝑐𝑘𝑆𝑝𝑒𝑒𝑑 ∶
+
+      𝑛𝑢𝑙𝑙.                                                                            Deﬁnition 4 (Cluster of Records with the same usability proﬁle). Given
+    • The evaluation of BR.DV.02 generates true since it is not null.                  a usability proﬁle 𝑢𝑝𝑖 , 𝑐𝑘 is a cluster of records of the dataset {𝑟𝑖 … 𝑟𝑗 },
+    • The evaluation of BR.DV.03 generates false since 𝐶𝑙𝑜𝑐𝑘𝑆𝑝𝑒𝑒𝑑 is                   if 𝑢𝑝(𝑟𝑖 ) == 𝑢𝑝(𝑟𝑗 ), and there does not exist a 𝑟𝑘 ∉ for {𝑟𝑖 … 𝑟𝑗 } where
+      𝑛𝑢𝑙𝑙.                                                                            𝑢𝑝(𝑟𝑘 ) == 𝑢𝑝(𝑟𝑗 ).
+    • The evaluation of BR.DV.04 generates false since 𝑀𝑒𝑚𝑜𝑟𝑦 does                        Since every cluster 𝑐𝑘 ⊂ 𝐷𝑆 has the same usability proﬁle 𝑢𝑝𝑖 then
+      not match the pattern indicated in row number 2 (note that the                   the records 𝑟𝑖 in 𝑐𝑘 experience the same data quality problems. Con-
+      decimal point is given as “,” instead of “.”).                                   sequently, records with the same usability proﬁle can be grouped into
+
+                                                                                 6
+Á. Valencia-Parra et al.                                                                                                        Expert Systems With Applications 296 (2026) 129170
+
+
+
+
+Fig. 5. Usability proﬁle 𝑢𝑝1 shows the value returned for each DMN table at each hierarchical level for the record 𝑟1. The row of the DMN table that was triggered
+is shown in brackets.
+
+
+Clusters of Records to enable batch processing towards data quality im-                      set of corrective actions that, once performed, ensure that all records 𝑟𝑖
+provement.                                                                                   within 𝑐𝑘 achieve the stated usability target “Use”.
+                                                                                                 To this end, the concept of “corrective action” is introduced in
+                                                                                             Deﬁnition 6.
+3.4. Create a list of corrective actions
+                                                                                             Deﬁnition 6 (Corrective action for a usability proﬁle). A corrective
+    The corrective actions can aﬀect the set of attributes of the “cluster of                action 𝑐𝑎 for a given “usability proﬁle” is a sequence of actions on the
+records with the same usability proﬁle”. When a “set of corrective actions”                  values of one or more attributes of the records 𝑟𝑖 of a given cluster 𝑐𝑘 ⊂
+are applied, data usability can be improved to achieve the “usability                        𝐷𝑆 to produce changes to achieve the stated usability target.
+target”. These terms are deﬁned below.
+                                                                                                  A corrective action is composed of several parts (see Table 3): (i) cor-
+Deﬁnition 5 (Usability Target). Let 𝑡𝑢𝑑 ∈ 𝐷.𝐵𝑅.𝐷𝑈 𝐷 be the usability                         rective action name, according to the last column of Table 2; (ii) the
+target as the desired output of the evaluation of the usability recommen-                    data quality problem to be repaired, and the associated data qual-
+dation given by a DMN model, 𝐷.                                                              ity dimension, according to the second and third columns of Table 2;
+                                                                                             (iii) the list of attribute(s) to be repaired; (iv) the operations to be
+   Let us assume that a cluster 𝑐𝑘 ⊂ 𝐷𝑆, with a usability proﬁle 𝑢𝑝1 ,                       performed to achieve the usability target; (v) the consequences of ap-
+has a recommendation of “Do not use” subsequent to the evaluation of                         plying the operation; (vi) the requirements and conditions that must
+the corresponding 𝐵𝑅.𝐷𝑈 𝐷. Let us assume that business stakeholders                          be met for the operation to be performed; and (vii) the estimated cost
+are interested in improving the usability from “Do not use” to “Use” for                     of performing the operation.
+the 𝑐𝑘 , given the usability target “Use”. Through the inspection of the                          Table 3 illustrates the various parts of the corrective actions and their
+“usability proﬁle” of 𝑐𝑘 , the objective therefore is to ﬁnd the optimal                     structure for the guiding example.
+
+
+                      Table 2
+                      Set of Data Quality Problems and potential corrective actions.
+                           Type   DQ Problem                                DQ Dimensions             Proposed corrective actions
+
+                                  Missing value                             Completeness              Data enrichment, data rules
+                                  Syntax violation                          Accuracy, Consistency     Regex string replacement, data reformatting
+                                  Incorrect value                           Accuracy                  Data standardisation, data type conversion
+                           SAST   Domain violation                          Completeness, Accuracy    Data rules, data standardisation
+                                  Invalid substring                         Accuracy                  Data standardisation, regex string replacement
+                                  Misspelling                               Accuracy                  Data standardisation, regex string replacement
+                                  Imprecise value                           Accuracy                  Data standardisation, regex string replacement
+
+                                  Incorrect value                           Accuracy                  Data rules
+                                  Inconsistent data format                  Accuracy                  Data rules, regex string replacement, data reformatting
+                           MAST   Semi-empty tuple (missing data)           Completeness              Data rules, data enrichment
+                                  Violation of functional dependency        Accuracy, Consistency     Data rules
+                                  Violation of business domain constraint   Accuracy, Consistency     Data rules
+
+
+                                                                                         7
+Á. Valencia-Parra et al.                                                                                       Expert Systems With Applications 296 (2026) 129170
+
+
+                           Table 3
+                           A corrective action from the guiding example.
+
+
+
+
+    At this point, a limitation for the corrective actions needs to be as-          for determining the complete list of implications for the corrective
+sumed. Given the current restriction on DMN4DQ regarding the genera-                action.
+tion of recommendations for single records, the execution of corrective             Regarding the corrective action depicted in the example of Table 3,
+actions on aﬀected attributes can only address SAST and MAST problems               the consequences of repairing the InstanceFamily attribute, as deter-
+(see the ﬁrst two columns of Table 2) to achieve a given usability target           mined by the operation to be performed, are that the evaluation of
+in DMN4DQ+. Before delving further into this example, a description                 the DMN table BR.DV.04 would trigger the row with ID “3”, thereby
+of each of the corrective action parts is provided.                                 returning the value “2”.
+                                                                                  • Requirements and conditions
+
+ • Name, DQ problem and dimension, attribute(s), and operation                      Speciﬁc corrective actions (e.g., data rules) may involve an opera-
+   In accordance with Deﬁnition 6 and Table 3, the ﬁrst part of a correc-           tion that depends on the value of other attributes in the data record
+   tive action includes the name of the corrective action to be applied. It         as input to repair the value of the data attribute. These depen-
+   must consist of one of the corrective actions deﬁned in Table 2, and             dencies can be modelled in DMN4DQ+ through 𝑟𝑒𝑞𝑢𝑖𝑟𝑒𝑑𝐴𝑡𝑡𝑟𝑖𝑏𝑢𝑡𝑒𝑠
+   it must be aligned to the following parts of the corrective actions:             and 𝑐𝑜𝑛𝑑𝑖𝑡𝑖𝑜𝑛𝑠. The 𝑟𝑒𝑞𝑢𝑖𝑟𝑒𝑑𝐴𝑡𝑡𝑟𝑖𝑏𝑢𝑡𝑒𝑠 enables the speciﬁcation of
+   the DQ problem to be ﬁxed (𝑑𝑞𝑃 𝑟𝑜𝑏𝑙𝑒𝑚) and the aﬀected dimension                 the data attributes that are required to perform the corrective ac-
+   (𝑑𝑞𝐷𝑖𝑚𝑒𝑛𝑠𝑖𝑜𝑛). The attributes to be repaired must subsequently be                tion, while the 𝑐𝑜𝑛𝑑𝑖𝑡𝑖𝑜𝑛𝑠 allows the speciﬁcation of which BR.DVs
+   speciﬁed (𝑎𝑡𝑡𝑟𝑖𝑏𝑢𝑡𝑒𝑠). These attributes are then modiﬁed by the op-              must be met for 𝑟𝑒𝑞𝑢𝑖𝑟𝑒𝑑𝐴𝑡𝑡𝑟𝑖𝑏𝑢𝑡𝑒𝑠 to be employed. In other words,
+   eration (𝑜𝑝𝑒𝑟𝑎𝑡𝑖𝑜𝑛) deﬁned in the corrective action. The values of the           𝑐𝑜𝑛𝑑𝑖𝑡𝑖𝑜𝑛𝑠 enables the modelling of the degree to which data quality
+   attributes of the data records in the Cluster of Records with the same           problems associated with 𝑟𝑒𝑞𝑢𝑖𝑟𝑒𝑑𝐴𝑡𝑡𝑟𝑖𝑏𝑢𝑡𝑒𝑠 must be solved.
+   usability proﬁle are modiﬁed according to the speciﬁed operation.                In order to identify the most suitable corresponding actions to be
+   Regarding the corrective action depicted as an example in                        carried out over the aﬀected attributes for known data quality prob-
+   Table 3, the attribute to be repaired is InstanceFamily. The data                lems (see Fig. 4), the identiﬁed set of data quality problems described
+   quality problem to be solved involves a functional dependency                    by Woodall et al. (2014) and Oliveira et al. (2005), the corrective
+   that has been violated. This problem aﬀects the consistency data                 actions proposed by Woodall et al. (2014), and the data quality di-
+   quality dimension. Essentially, the value of InstanceFamily depends              mension classiﬁcation performed by de Almeida et al. (2013) are
+   on the value of the attributes ClockSpeed and Memory. There-                     employed. To better guide data quality analysts when proposing po-
+   fore, the corrective action is data rules (see Table 2), and the                 tential corrective actions, the third column in Table 2 is introduced
+   operation is intended to assign a value to InstanceFamily. These                 as a map between SAST and MAST problems and corrective actions.
+   data rules take the following form: “If 𝑀𝑒𝑚𝑜𝑟𝑦 >= 64 𝐺𝐻𝑧 then                    Following the example in Table 3, the corrective action to be applied
+   𝐼𝑛𝑠𝑡𝑎𝑛𝑐𝑒𝐹 𝑎𝑚𝑖𝑙𝑦 = 𝑀𝑒𝑚𝑜𝑟𝑦 𝑜𝑝𝑡𝑖𝑚𝑖𝑠𝑒𝑑, else if 𝐶𝑙𝑜𝑐𝑘𝑆𝑝𝑒𝑒𝑑 >= 2.9 𝐺𝐻𝑧                (that is, the data rules) requires the attributes ClockSpeed and Mem-
+   then 𝐼𝑛𝑠𝑡𝑎𝑛𝑐𝑒𝐹 𝑎𝑚𝑖𝑙𝑦 = 𝐶𝑜𝑚𝑝𝑢𝑡𝑒 𝑜𝑝𝑡𝑖𝑚𝑖𝑠𝑒𝑑, else 𝐼𝑛𝑠𝑡𝑎𝑛𝑐𝑒𝐹 𝑎𝑚𝑖𝑙𝑦 =                 ory. To use these attributes, they must be complete and accurate.
+   𝐺𝑒𝑛𝑒𝑟𝑎𝑙 𝑝𝑢𝑟𝑝𝑜𝑠𝑒”.                                                                The 𝑐𝑜𝑛𝑑𝑖𝑡𝑖𝑜𝑛𝑠 enable these necessities to be indicated for the cor-
+ • Consequences                                                                     rective action to be applied. In this case, the evaluation of BR.DV.01
+   The consequence of the corrective action is related to the compliance            and BR.DV.02 must return true (i.e., ClockSpeed and Memory must
+   of the BR.DV is associated with the data quality problem to which                not be null), and the evaluation of BR.DV.03 and BR.DV.04 must
+   the corrective action refers. As can be observed in Table 3, the con-            return true (i.e., ClockSpeed and Memory must fulﬁl the established
+   sequences have the following structure ⟨𝑏𝑟.𝑑𝑣, 𝑟𝑜𝑤𝑇 𝑟𝑖𝑔𝑔𝑒𝑟𝑒𝑑⟩, where             format so that these attributes can be processed by this corrective
+   𝑏𝑟.𝑑𝑣 is the reference number of the BR.DV to which this consequence             action).
+                                                                                  • Cost of corrective action
+   refers and 𝑟𝑜𝑤𝑇 𝑟𝑖𝑔𝑔𝑒𝑟𝑒𝑑 is the numeric id of the row that is trig-
+   gered once the value of the attribute has been repaired. Note that               Lastly, the business expert must estimate and establish a cost for the
+   the user can specify more than one consequence if several BR.DVs                 execution of every type of corrective action over the dataset. This
+   are involved. Note also that, in this proposal, the user is responsible          must be represented as a numerical value that indicates the cost in
+
+                                                                              8
+Á. Valencia-Parra et al.                                                                                             Expert Systems With Applications 296 (2026) 129170
+
+
+
+
+                                                   Fig. 6. Example of dependencies between corrective actions.
+
+
+
+     terms of both computational and/or human resources required to ex-                  the conditions of the corrective action are evaluated. In this case,
+     ecute the action. Since estimating an exact cost can be complicated                 three conditions are not met. Therefore, this corrective action can-
+     and overwhelming at this point, a qualitative estimation of the po-                 not be applied.
+     tential costs is proposed, which considers the experience of the data             • Step 2 and Step 3. If the selected usability proﬁle (𝑢𝑝 in this
+                                                                                                                                                     1
+     quality analysts. For instance, this description can be carried out us-             example) does not meet the required conditions, then the opti-
+     ing a Likert scale adjusted to the speciﬁc context of use to establish              mal set of corrective actions whose consequences satisfy the re-
+     relative and subjective costs through the comparison of the diﬃculty                quired conditions is selected. In this case, two corrective actions
+     implied in executing each rule. Therefore, in the remainder of the pa-              could work: “Data enrichment for ClockSpeed attribute” and “Regex
+     per, Likert scales are employed, although using real cost estimation                replacement for Memory attribute”. It should be borne in mind
+     would not vary the sense of DMN4DQ+.                                                that the data steward must previously deﬁne all these corrective
+     In the example of Table 3, the cost has been assigned a value of 1 on               actions.
+     a scale of {1, 2, 3, 4, 5}, which implies the minimum cost. Compared              • Step 4. Lastly, the corrective action “Data rules for InstanceFamily
+
+     to the performance of other corrective actions, this means that this                attribute” can be applied since all the conditions are met.
+     corrective action does not entail a high human cost and has constant
+     computational complexity.                                                            This example reveals the strong connection between corrective ac-
+                                                                                      tions and also illustrates the multiple alternative combinations of ac-
+                                                                                      tions. The combinations strongly depend on the Clusters of Records with
+3.5. Create a list of corrective actions                                              the same usability proﬁle to be repaired and on the target.
+                                                                                          Before delving into how to select the combination of corrective ac-
+    It is worth recalling that, when it comes to achieving the given usabil-          tions to apply, the concept of list of corrective actions (Deﬁnition 7) is
+ity target and depending on the nature of the root causes (business rules             introduced.
+for data value violation), diﬀerent combinations of corrective actions
+could be outlined following the various paths of the “usability proﬁle”.
+These combinations are bounded by the conditions set in each correc-                  Deﬁnition 7 (List of corrective actions). A list of corrective actions
+tive action. They enable DMN4DQ+ to include all the required actions                  𝐶𝐴 = {𝑐𝑎1 , 𝑐𝑎2 , … 𝑐𝑎𝑛 } groups the corrective actions that can be eligible
+whose consequences satisfy the conditions of other actions. Fig. 6 shows              to repair the data quality problems related to a Cluster of Records with
+an example of how the conditions and requirements of one corrective                   the same usability proﬁle.
+action can be satisﬁed by applying other corrective actions.
+                                                                                          The data steward is responsible for deﬁning all these corrective ac-
+ •   Step 1. In this step, the corrective action “Data rules for Instance-            tions. This list is crucial since how a record with a usability proﬁle can
+     Family attribute”, depicted in Table 3 is applied to 𝑟1 , which forms            be repaired to achieve a usability target depends on the set of corrective
+     part of the Cluster of Records with the same usability proﬁle 𝑢𝑝1 . First,       actions that can be applied to such records.
+
+                                                                                  9
+Á. Valencia-Parra et al.                                                                                            Expert Systems With Applications 296 (2026) 129170
+
+
+
+
+                                          Fig. 7. Schema of the COP, constraints, variables and function to optimise.
+
+
+4. Ascertaining the optimal combination of corrective actions the                       – cost is directly mapped to the cost of the corrective action.
+improvement of data usability                                                           – consequences is a list composed of objects of type Consequence.
+                                                                                           Each object thereof is assigned to a consequence of the corrective
+    Our goal is to identify the cost-eﬀective combination of corrective                    action. A Consequence contains two attributes: brdv and rowTrig-
+actions that enhances the usability of the dataset. This section presents                  gered. brdv describes the BRDV where the actions are applied, and
+a COP-based approach to determine the best corrective actions, by mod-                     rowTriggered describes the row of the DMN table aﬀected by the
+elling the impact of each action’s cost on the usability target in a declar-               actions. Information in greater detail is given in Section 3.4.
+ative way. This COP examines possible action combinations for business                  – actionsRequired is a list of lists of Integers. Each nested list indi-
+data quality rules. The total cost is the sum of the costs of the selected                 cates one possible combination of corrective actions that must be
+actions: our intention involves minimising this sum. The model is an                       performed before the current corrective action is applied. The In-
+adaptation of the Knapsack problem (Section 2.3), where feasible ac-                       teger represents the position of the action in lActions. This list is
+tions are constrained by the rules of the DMN hierarchical table, rather                   created before the creation of the COP, based on expert knowl-
+than by a weight limit. Fig. 7 illustrates the input constants, variables,                 edge and the usability proﬁle to be repaired. For example, to use
+constraints, and objective function of the COP.                                            the corrective action on InstanceFamily and obtain the value ‘2’ in
+                                                                                           the evaluation of BR.DV.05, it is also necessary to apply a correc-
+4.1. Constants                                                                             tive action to ClockSpeed and Memory that modiﬁes the output
+                                                                                           obtained for the evaluation of BR.DV.01 and BR.DV.02.
+   The COP relies on a series of input constants that are deﬁned de-                 • selectedBrdvs is a list of Integer values. Each element of the list rep-
+pending on the problem. The business expert must deﬁne the following                   resents a BR.DV, and each value of the list is the row ID triggered
+elements: (i) the DMN data quality model; (ii) the usability proﬁle to                 for the usability proﬁle that has been selected for repair.
+be repaired; (iii) the usability target; and (iv) the list of possible cor-          • targetDud is an Integer value representing the row ID of the output
+rective actions. These elements are subsequently mapped to the COP                     value of the DMN table BR.DUD that corresponds to the user-selected
+model. The following elements must be included in a COP: the DMN                       target usability decision.
+data quality model, the usability proﬁle to be repaired, the usability
+target, and the list of corrective actions. To facilitate understanding of
+the COP, certain constants are derived from the problem description, as             4.2. Variables
+described below.
+                                                                                       The variables have these purposes: (i) select the corrective actions to
+ • #ACTIONS is an Integer parameter that indicates the number of pos-               be applied; (ii) keep track of the costs of applying each corrective action;
+   sible corrective actions to be applied as deﬁned by the business ex-             and (iii) keep track of the output values of the DMN values according to
+   pert.                                                                            the selected corrective actions.
+ • #BRDV is the number of DMN tables in the BR.DV hierarchical level.
+ • lActions is a representation of the list of corrective actions deﬁned.            •   actions is an array where each position 𝑖 points to the 𝑖th corrective
+   Each corrective action is described as indicated in Table 3 and is                    action from the list of corrective actions deﬁned by the user, and
+   mapped into the data structure Action, (Fig. 8), which is composed                    indicates through a Boolean value whether the 𝑖th action is selected
+   of the following attributes:                                                          (𝑇 𝑟𝑢𝑒) or not (𝐹 𝑎𝑙𝑠𝑒).
+
+
+
+
+                                                       Fig. 8. Action and Consequence data structures.
+
+                                                                               10
+Á. Valencia-Parra et al.                                                                                                    Expert Systems With Applications 296 (2026) 129170
+
+
+
+
+                                                 Fig. 9. Building of the constraints related to the required actions.
+
+
+ • costs is an array where each position 𝑖 represents either the cost of                 analyse the impact and added value of DMN4DQ+ in the same use case.
+   applying the action indicated by actions[𝑖], or is set to 0 if no action              We highlight how the extension enhances decision-making support and
+   is needed.                                                                            cost-beneﬁt reasoning capabilities compared to the original framework.
+ • TDV is an array in which each position 𝑖 represents the row ID of the                     The scenario is based on Amazon Web Services cloud server in-
+   target value BR.DV according to the action indicated by actions[𝑖].                   stance dataset. Due to data quality issues, some instances in the cata-
+ • TDQM is an array where each position (𝑡𝑑𝑞𝑚 , 𝑡𝑑𝑞𝑚 , …) represents                     logue cannot be sold, since listed server instances may not correspond to
+                                                 1        2
+   the row triggered after the evaluation of a DMN table related to a                    real server instances. Validation involves a large-scale application over
+   speciﬁc dimension (e.g., Completeness, Consistency.).                                 1, 048, 570 records to demonstrate the practical feasibility and traceabil-
+ • TDQA is an Integer variable that represents the row ID of the output                  ity of the proposed framework. The dataset, described in Valencia-Parra
+   of the BR.DQA evaluation.                                                             et al. (2021), contains attributes such as CPU, memory, storage, OS, lo-
+ • TDUD is an Integer variable that represents the row ID of the output                  cation, and price for each instance.
+   of the BR.DUD evaluation.                                                                 All the material employed in this validation, including the code of
+                                                                                         DMN4DQ+, the implementation of the COP, the DMN model used to
+4.3. Objective function and constraints                                                  evaluate the usability of the data, and the results obtained, are attached
+                                                                                         to this paper.2
+    The objective function minimises the summation of the array costs                        The DMN model used herein reﬁnes the model from the referenced
+of every action applied. Lastly, following Fig. 7, the Constraints are of                study by detailing 13 BR.DV tables with 45 decision rules. It incorporates
+two types:                                                                               three data quality dimensions (Completeness, Accuracy, Consistency)
+                                                                                         and 11 decision rules across 13 inputs. Data quality assessment involves
+ • 𝐶𝑑𝑚𝑛 represents a set of constraints built according to the DMN                       ﬁve rules and three inputs, while the BR.DUD hierarchy includes two
+   model. The process of generating constraints from a DMN model                         rules on data record usability, thereby totalling 63 decision rules.
+   has previously been studied in the literature (Feldman, 2016), and
+   reference is made to these techniques in building our COP. These                      5.1. Feasibility and scalability
+   constraints are intended to bind the domain of the variables 𝑇 𝐷𝑄𝑀
+   and 𝑇 𝐷𝑄𝐴, according to the values of 𝑇 𝐷𝑉 using propagation. It                          To assess the feasibility of our proposal on this use case, a data usabil-
+   also sets the value of 𝑇 𝐷𝑈 𝐷 according to the selected 𝑡𝑎𝑟𝑔𝑒𝑡𝐷𝑢𝑑.                    ity evaluation was conducted and the Elapsed Real-Time (ERT) for COP
+ • 𝐶
+     𝑎𝑐𝑡𝑖𝑜𝑛 involves constraints that describe whether each action                       resolution was measured. The implementation leverages dmn4spark3
+   𝑎𝑐𝑡𝑖𝑜𝑛[𝑖] is selected (true) or not (false). If an action is selected, then it        with COPs solved via Choco-solver.4
+   sets the cost of such action in 𝑐𝑜𝑠𝑡[𝑖]. The consequences and require-                    The metrics that are evaluated are: the diﬀerent usability proﬁles
+   ments are as follows. Consequences. The list of consequences of that                  found according to the number of records, the ERT consumed per record
+   action (𝑙𝐴𝑐𝑡𝑖𝑜𝑛𝑠[𝑖]) is looped. Therefore, for each consequence, the                  required to evaluate each suability proﬁle, and the ERT for solving the
+   output value of the aﬀected BR.DV is set according to the attribute                   COPs. These three metrics can help us to evalute the average number
+   rowTriggered of the consequence (i.e., 𝑇 𝐷𝑉 [𝑐𝑜𝑛𝑠𝑒𝑞𝑢𝑒𝑛𝑐𝑒.𝑏𝑟𝑑𝑣] =                      of usability proﬁles that can be found in a dataset, the consumed time
+   𝑐𝑜𝑛𝑠𝑒𝑞𝑢𝑒𝑛𝑐𝑒.𝑟𝑜𝑤𝑇 𝑟𝑖𝑔𝑔𝑒𝑟𝑒𝑑).                                                           to ascertain the usability proﬁles, and the consumed time to ﬁnd the
+                                                                                         optimal conﬁguration of actions.
+4.4. Actions required                                                                        First, the usability proﬁle for each of the 1,048,570 dataset records
+                                                                                         was calculated, yielding 66 proﬁles based on the DMN model, with 47
+    These are built from the attribute actionsRequired of the action being               marked as Do not use and therefore requiring repair. Fig. 10 shows these
+processed. To better explain how these constraints are built, a function                 66 proﬁles along the x-axis, where the ﬁrst 47 are marked as Do not use,
+(setActionsRequiredConstraints) has been created that takes the list of lists            while the y-axis (logarithmic scale) shows the number of records per pro-
+of Integers actionsRequired. Fig. 9 summarises how the constraints are                   ﬁle. Notably, proﬁle 48 contains the most records (519,934), whereas
+built. In short, 𝑎𝑐𝑡𝑖𝑜𝑛𝑠𝑅𝑒𝑞𝑢𝑖𝑟𝑒𝑑[𝑖] is the 𝑖th list, and 𝑎𝑐𝑡𝑖𝑜𝑛𝑠𝑅𝑒𝑞𝑢𝑖𝑟𝑒𝑑[𝑖][𝑗]           nine proﬁles (4, 16, 17, 28, 34, 40, 54, 55, and 59) each contain just
+is the 𝑗th element of the 𝑖th list, which is an Integer value indicating the             one record. Overall, 694,361 records are marked as Use, while 354,209
+corrective action required. Each 𝑖th list indicates a possible combination               records are marked as Do not use.
+of actions that must be selected altogether.                                                 Secondly, Fig. 11 illustrates the eﬃciency of dataset usability evalua-
+                                                                                         tion and usability proﬁle computation, and focuses on average execution
+5. Validating DMN4DQ+ through a real case study                                          time per record per proﬁle. The process involves: (1) evaluating dataset
+                                                                                         tuples; (2) grouping execution times by usability proﬁle and dividing
+    This section presents a case study designed to evaluate the feasibil-                by record count per proﬁle; and (3) repeating the second step ﬁve times
+ity, scalability, and practical value of the DMN4DQ+. Since the proposal                 to obtain average ERTs. The results indicate no correlation between us-
+builds upon the existing DMN4DQ methodology, we reuse the case study                     ability proﬁles and ERT per record, with an average ERT per record of
+analysed in our previous work (Valencia-Parra et al., 2021). This exist-                 0.0003 s. Four proﬁles (34, 46, 55, and 57) have notably higher ERTs,
+ing study aimed to (i) demonstrate the feasibility and scalability of the                which can be attributed to their association with very few records (in
+approach through a scalable set of tools implementing the methodology,
+and (ii) validate its applicability in a real-world use case. In this section,            2 DMN4DQ+ resources: https://doi.org/10.5281/zenodo.15657538
+
+that validation is extended to DMN4DQ+, providing a speciﬁc imple-                        3
+                                                                                              dmn4spark: https://github.com/IDEA-Research-Group/dmn4spark
+mentation of the proposed extension. We demonstrate its feasibility and                   4 Choco-solver: https://choco-solver.org/
+
+
+
+                                                                                    11
+Á. Valencia-Parra et al.                                                                                               Expert Systems With Applications 296 (2026) 129170
+
+
+
+
+                                            Fig. 10. Number of records within each usability proﬁle after the evaluation.
+
+
+
+
+                           Fig. 11. ERTs per record for the evaluation of each usability proﬁle. The ERTs are the average of ﬁve executions.
+
+
+certain cases, just one record). To evaluate the scalability of the pro-               these proﬁles, the DMN4DQ+ framework successfully generated a valid
+posal according to the number of records, the potential ERT must be                    solution consisting of one or more corrective actions that can transform
+analysed to ascertain the usability proﬁle per tuple. According to the                 the proﬁle into a usable state. This fact results in a repairability rate of
+information shown in Fig. 11, this lies between 0.0001 and 0.001 s.                    100 % at the proﬁle level. In terms of data coverage, usability proﬁles
+Therefore, a dataset of 1,000,000 records can take a maximum of 1000                   that can be successfully repaired imply 354,209 records, which corre-
+s, that is approximately 16 min. However, this evaluation can be paral-                sponds to approximately 33.7 % of the dataset.
+lelised if the number of records is very high and the total ERT must be                    However, although a 33.7 % of the dataset can be repaired, data
+reduced.                                                                               stakeholders must take into account both the cost and the coverage of
+     Thirdly, the feasibility of COP resolution was tested (Fig. 12) with              each corrective action. Fig. 13 depicts, for each usability proﬁle, the cost
+17 corrective actions. A COP was launched for each usability proﬁle                    for its repair (i.e., changing columns so that all the records with that UP
+to select the optimal proﬁles based on corrective action costs, with the               are marked as usable), and the number of rows associated with that UP
+experiment repeated ﬁve times. Fig. 12 shows the average ERT per pro-                  (i.e., the coverage).
+ﬁle, with a global average ERT of 39 s. The scalability of the solution                    The results presented in Table 4 provide a comprehensive summary
+is linked to the complexity of solving the Constraint Optimisation Prob-               of the corrective actions suggested by the DMN4DQ+ framework for re-
+lems. The complexity is related to the number of usability proﬁles found               pair of usability proﬁles marked as do not use. This table illustrates how
+labelled as ‘Do not use’, 47 in this example, since one COP must be                    DMN4DQ+ enables data stakeholders to perform a clear cost-beneﬁt
+created and solved for each of these proﬁles. On the other hand, the                   analysis for informed decision making. For instance, data stakeholders
+number of records per usability proﬁle does not impact the evaluation                  can immediately see that applying a single action, Data enrichment, de-
+time due to having to ﬁnd the optimal data repair actions, as Fig. 12                  ﬁned in this case study as “contacting the data source to retrieve miss-
+shows.                                                                                 ing values or enriching it through external joins”, would enable 33 %
+                                                                                       of the dataset to be repaired. This action alone exerts an impacts on
+5.2. Cost-beneﬁt and decision support potential                                        over 346,000 rows. Note that, thanks to the design of DMN4DQ+, the
+                                                                                       cost of the corrective action that aﬀects these rows is bounded and pre-
+   A total of 47 usability proﬁles were labelled as “Do not use” accord-               dictable. The data stakeholder can also understand the impact of ac-
+ing to the business rules deﬁned in the DMN4DQ model. For each of                      tions with minimal cost, such as Data standardisation and Regex string
+
+                                                                                  12
+Á. Valencia-Parra et al.                                                                                                   Expert Systems With Applications 296 (2026) 129170
+
+
+
+
+                                   Fig. 12. COP resolution ERTs per usability proﬁle. The ERTs are the average of ﬁve executions.
+
+
+
+
+Fig. 13. For each usability proﬁle initially classiﬁed as Do not use, the ﬁgure displays (i) the cost of converting the proﬁle into usable (right-hand scale, in grey), and
+(ii) the number of records associated with that proﬁle in the dataset (left-hand scale, in red).
+
+
+replacement. In this case study, combining these two actions enables the                 therefore encouraged to assume these speciﬁc proposals as a means
+recovery of 948 rows.                                                                    to implement data corrective actions, such as those described in
+                                                                                         Section 3.1.
+6. Related work                                                                              In McGilvray (2021), Redman (2016b), the authors recognised that
+                                                                                         organisations must perform a trade-oﬀ analysis between the costs of
+   Even when there exist certain speciﬁc approaches to data cleans-                      repairing data quality and the costs derived from the consequences
+ing, such as HoloClean (Boeckling et al., 2022), Renuver (Breve et al.,                  of managing and using data with substandard data quality (Ge &
+2022), and Derand (Song et al., 2020) to name just a few, the                            Helfert, 2013). To better carry out this analysis, it could be inter-
+main focus of this contribution is to provide the adequate means                         esting to analyse both types of costs (Even & Shankaranarayanan,
+to select the optimal method to enhance of the data. Readers are                         2009). Unfortunately, very little research has been conducted to
+
+                                                                                    13
+Á. Valencia-Parra et al.                                                                                                    Expert Systems With Applications 296 (2026) 129170
+
+
+                   Table 4
+                   Corrective actions required to repair non-usable usability proﬁles. Each row represents a unique (or combination) of actions identiﬁed
+                   by the COP as the optimal solution for converting the UPs into usable.
+                     Actions                                                Attributes                               Cost     UPs     Rows        % Total
+
+                     Data enrichment                                        Clock Speed                              5        8       346,625     33.05
+                     Data enrichment                                        Memory                                   5        5       2394        0.23
+                     Data enrichment                                        Operating System                         5        7       724         0.07
+                     Data standardisation                                   Operating System                         1        8       222         0.02
+                     Regex string replacement                               Memory                                   1        4       6           0.00
+                     Data enrichment + Regex string replacement             Clock Speed, Memory                      6        1       2           0.00
+                     Data enrichment + Data enrichment                      Clock Speed, Memory, Operating System    10       8       1492        0.14
+                     Data enrichment + Data enrichment + Data enrichment    Clock Speed, Memory, Operating System    15       2       637         0.06
+                     Data enrichment + Data standardisation                 Clock Speed, Operating System            6        4       107         0.01
+
+
+
+model these costs. These analyses have typically been conducted ad                        tive of the technology (it supposes the data to be independent of the
+hoc.                                                                                      technology).
+    It is estimated that the impact of managing and using data with
+inadequate levels of quality incurs a sizable cost for organisations. It                  7. Threats to validity
+is often diﬃcult to estimate the monetary beneﬁts of improving data
+quality; several authors have characterised these beneﬁts in terms of in-                      In the following paragraphs, the threats to the validity of the
+creased usability of data by considering that the more usable the data is,                DMN4DQ+ framework are analysed based on the aspects identiﬁed in
+the fewer costs are expected to be incurred to ﬁx data with inadequate                    Runeson et al. (2012).
+quality levels (Laney, 2017; Watts et al., 2009). In this respect, several                     Construct validity: Many of the limitations and threats to the va-
+authors have proposed assessing data quality from the perspective of                      lidity of DMN4DQ+ are inherited from those speciﬁed for DMN4DQ in
+potential usability. Our investigation concludes that there is a pressing                 Valencia-Parra et al. (2021). Due to the very nature of the DMN and
+need to reduce the cost of improving data quality (e.g., data cleansing)                  FEEL language, which enables the deﬁnition of business rules for indi-
+for the maximisation of its usability. This conlusion is drawn by calcu-                  vidual records in a single table, the main limitation of DMN4DQ and
+lating the optimum set of corrective actions to attain suﬃcient levels of                 DMN4DQ+ is that they must both be applied record by record from
+data quality for the required level of usability. However, DMN4DQ+                        the same table. Hence, there is no support for data quality management
+does not prescribe a speciﬁc cost estimation model; consequently, it can                  involving a set of records within the same table or across diﬀerent ta-
+beneﬁt from using any of the suitable cost models described in the fol-                   bles. Due to this limitation, our speciﬁcation states that the only data
+lowing paragraphs.                                                                        quality problems that DMN4DQ+ can handle are SAST and MAST prob-
+    In Ge and Helfert (2013), Ge and Helfert classify the cost of im-                     lems (see Table 2). However, by establishing the necessary contextual-
+proving data quality according to four main criteria: (1) data quality                    isations, one way to alleviate this situation is by using the concept of
+costs in terms of origin and life cycle; (2) data quality costs per ef-                   a “cluster of records with the same usability proﬁle”. Another concern
+fect; (3) data quality costs per dimension; and (4) data quality costs                    that could be considered a limitation of the framework is that, by deﬁ-
+in terms of progression. To characterise these costs, several authors                     nition, DMN4DQ+ is agnostic to the speciﬁc “data quality cost model”.
+have proposed diﬀerent cost estimation models, such as Fan in Fan                         However, this can be a beneﬁt when it comes to generalising the re-
+(2015), who presents a function cost (𝐷, 𝐷𝑟 ) to represent the eﬀorts                     sults. Lastly, the selection of the COP as a model to determine the most
+required to repair an instance 𝐷 of a relational schema 𝑅. Fan re-                        suitable combination of corrective actions to improve the data usabil-
+ported the existence of several repair models based on how the func-                      ity can be considered a threat to the construct validity. However, we
+tion cost is deﬁned: S-repair, C-repair, CC-repair, and U-repair. Each                    propose that COP is assumed herein as a suﬃciently well-proven opti-
+cost estimation model introduces several parameters to model the var-                     misation framework that applies to most potential scenarios in the scope
+ious aspects involved. For instance, Wijsen (2005) introduces weight-                     of DMN4DQ+.
+related attributes of the tuple to be repaired and a distance function                         Internal validity: One threat to the internal validity of DMN4DQ+
+to model the eﬀort required to ﬁx the value of inadequate quality.                        could be the quality and stability of the business rules used during
+On the other hand, Ilyas and Chu (2019), in their contribution to-                        the generation of recommendations on the usability of the datasets.
+wards formalising a cost model, establish the description length 𝐷𝐿                       However, the process of validating the business rules inherited from
+as a unit for the model 𝑀 for the length of the model 𝐿(𝑀) plus                           DMN4DQ alleviates this situation. Another threat to internal validity
+the length to encode the data values in the relation to be improved                       could involved the capability of the data quality analyst and business
+𝐿(𝐼|𝑀) ∶ 𝐷𝐿 = 𝐿(𝑀) + 𝐿(𝐼|𝑀). The goal is to ﬁnd 𝑀 such that 𝐷𝐿 is                         expert to deﬁne the problem in a way that the COP can ﬁnd a suitable
+minimised.                                                                                solution.
+    Finally, it should be borne in mind that although speciﬁc authors                          External validity: This refers to the potential interest of other practi-
+introduce methods to ﬁnd a trade-oﬀ between the cost of repairing data                    tioners and researchers in the approach. To alleviate this threat, several
+quality and minimisation of the impact of problems due to inadequate                      components have been provided (e.g., the workﬂow and the techno-
+levels of quality (Laney, 2017), most of these studies are conducted ad                   logical stack), which could attract their interest. Ideally, their feedback
+hoc, and they remain highly focused on speciﬁc scenarios of the use                       could be obatined to improve DMN4DQ+. Moreover, our proposal does
+of data, with and/or for particular technologies. For instance, Even                      not provide a method to deﬁne exhaustively deﬁne every single business
+et al. (2010) explores models for cost-eﬀective data quality manage-                      rule for data quality that can exist in an organisation. This means that
+ment for ERP, and Ardagna et al. (2018) introduces a relation based on                    no mechanisms is oﬀered to evaluate whether the described data qual-
+Conﬁdence-Cost-Time for Big Data. In this respect, DMN4DQ+ would                          ity rules adequately address the entire data quality problem. The list of
+pioneer a generic method based on optimisation techniques to ﬁnd the                      corrective actions is not exhaustive and may be expanded as more use
+trade-oﬀ between the cost of achieving adequate levels of quality and                     cases emerge. However, this is not a negative aspect for our proposal;
+the beneﬁts of using usable data, in accordance with the organisation’s                   it is expected that feedback from other practitioners and researchers to
+appetite for risk. This framework can be used regardless of the con-                      achieve this aim. The same holds true regarding a potential catalogue
+text (based on the agnostic deﬁnition of business rules) and irrespec-                    of data quality improvement costs.
+
+                                                                                     14
+Á. Valencia-Parra et al.                                                                                                 Expert Systems With Applications 296 (2026) 129170
+
+
+8. Conclusions and future work                                                     Appendix. Acronyms
+
+    Data quality is a critical issue in the application of decision-making              The acronyms are shown in Table A.1.
+and data analysis. The usability of the data depends on the context of
+use, the business needs, and the organisation’s appetite for risk. To en-                       Table A.1
+sure suitable levels of usability, speciﬁc corrections may be necessary                         Acronyms.
+(e.g., corrective actions) for data whose quality requires improvement.                           Acronym       Meaning
+Data corrections can be expensive and may incur wide-reaching ramiﬁ-                              BR.DD         Business Rules for Data Decision
+cations. This paper presents DMN4DQ+ as an extension of DMN4DQ,                                   BR.DQA        Business Rules for Data Quality Assessment
+where the optimal combination of corrective actions can be derived                                BR.DQM        Business Rules for Data Quality Measurement
+from the application of constraint optimisation techniques based on the                           BR.DUD        Business Rules for Data Usability Decision
+                                                                                                  BR.DV         Business Rules for Data Values
+data quality rules described in DMN, the cost model of the actions, and
+                                                                                                  DQ            Data Quality
+the usability proﬁle of the record to be improved. The proposal, conve-                           COP           Constraint Optimisation Problem
+niently supported by the development of a technological stack, has been                           CP            Constraint Programming
+evaluated using a real dataset, which shows its applicability and perfor-                         CSP           Constraint Satisfaction Problem
+                                                                                                  DMN           Decision Model and Notation
+mance. For future work, we propose extending the solution to consider
+                                                                                                  DMN4DQ        DMN for Data Quality
+actions that aﬀect multiple records and usability proﬁles. Moreover, it                           ERT           Elapsed Real-Time
+would be it is interesting to analyse the proﬁles of the records before                           FEEL          Friendly Enough Expression Language
+assessing the data quality to facilitate the creation of Business Rules for                       MAMT          Multiple Attributes in Multiple Tuples
+Data Values. We also plan to expand the types of business rules that can                          MAST          Multiple Attributes in Single Tuples
+                                                                                                  SAMT          Single Attributes in Multiple Tuples
+be assessed and are involved in a data quality improvement process.
+                                                                                                  SAST          Single Attributes in Single Tuples
+Furthermore, Constraint optimisation problems can be solved using an
+exhaustive analysis, where the applicability of a local search can be a
+feasible option; for example, the application of genetic algorithms ap-
+plied to constraint problems. We plan to study this research line in the           References
+future.
+                                                                                   Ardagna, D., Cappiello, C., Samá, W., & Vitali, M. (2018). Context-aware data quality
+                                                                                       assessment for big data. Future Generation Computer Systems, 89, 548–562. https://
+                                                                                       doi.org/10.1016/j.future.2018.07.014
+CRediT authorship contribution statement                                           Bertossi, L. (2011). Database repairs and consistent query answering. Morgan & Claypool
+                                                                                       Publishers.
+   Álvaro Valencia-Parra: Conceptualization, Methodology, Software,                Boeckling, T., De Tré, G., & Bronselaer, A. (2022). Cleaning data with selection rules.
+                                                                                       IEEE Access, 10, 125212–125229. https://doi.org/10.1109/ACCESS.2022.3222786
+Validation, Formal analysis, Investigation, Writing – original draft, Vi-          Breve, B., Caruccio, L., Deufemia, V., & Polese, G. (2022). RENUVER: A missing value
+sualization; Ángel Jesús Varela-Vaca: Conceptualization, Methodol-                     imputation algorithm based on relaxed functional dependencies. In Proceedings of the
+ogy, Supervision, Writing – review & editing; Luisa Parody: Formal                     25th international conference on extending database technology, EDBT 2022, Edinburgh,
+                                                                                       UK, March 29 - April 1, 2022 (pp. 1:52–1:64). OpenProceedings.org.
+analysis, Writing – review & editing; Ismael Caballero: Resources, Su-             Caballero, I., Gualo, F., Rodríguez, M., & Piattini, M. (2022). BR4DQ: A methodology for
+pervision, Writing – review & editing; María Teresa Gómez-López:                       grouping business rules for data quality evaluation. Information Systems, 109, 102058.
+Funding acquisition, Supervision, Writing – review & editing, Project                  https://doi.org/10.1016/j.is.2022.102058
+                                                                                   de Almeida, W. G., de Sousa, R. T., de Deus, F. E., Daniel Amvame Nze, G., & de Mendonça,
+administration.                                                                        F. L. L. (2013). Taxonomy of data quality problems in multidimensional data ware-
+                                                                                       house models. In 2013 8th Iberian conference on information systems and technologies
+                                                                                       (CISTI) (pp. 1–7). IEEE.
+Data availability                                                                  Even, A., & Shankaranarayanan, G. (2009). Utility cost perspectives in data quality man-
+                                                                                       agement. Journal of Computer Information Systems, 50(2), 127–135. https://www.
+                                                                                       tandfonline.com/doi/abs/10.1080/08874417.2009.11645391
+    Data will be made available on request.
+                                                                                   Even, A., Shankaranarayanan, G., & Berger, P. D. (2010). Evaluating a model for cost-
+                                                                                       eﬀective data quality management in a real-world CRM setting. Decision Support Sys-
+                                                                                       tems, 50(1), 152–163. https://doi.org/10.1016/J.DSS.2010.07.011
+Declaration of competing interest                                                  Fan, W. (2015). Data quality: From theory to practice. ACM SIGMOD Record, 44(3), 7–18.
+                                                                                       https://doi.org/10.1145/2854006.2854008
+    The authors declare the following ﬁnancial interests/personal rela-            Feldman, J. B. (2016). What-if analyzer for DMN-based decision models. RuleML.
+                                                                                   Ge, M., & Helfert, M. (2013). Cost and value management for data quality. In S. W.
+tionships which may be considered as potential competing interests:                    Sadiq (Ed.), Handbook of data quality, research and practice (pp. 75–92). Springer.
+Maria Teresa Gomez-Lopez reports ﬁnancial support was provided by                      https://doi.org/10.1007/978-3-642-36257-6_4
+Spain Ministry of Science and Innovation. Ismael Caballero reports ﬁ-              Geibinger, T., Mischek, F., & Musliu, N. (2024). Investigating constraint programming
+                                                                                       and hybrid methods for real world industrial test laboratory scheduling. Journal of
+nancial support was provided by Spain Ministry of Science and Innova-                  Scheduling, 27(6), 607–622. https://doi.org/10.1007/S10951-024-00821-0
+tion. Alvaro Valencia-Parra reports ﬁnancial support was provided by               Green, A. F., Beck, J. C., & Coles, A. J. (2024). Using constraint programming for disjunc-
+University of Seville. If there are other authors, they declare that they              tive scheduling in temporal AI planning. In P. Shaw (Ed.), 30th international confer-
+                                                                                       ence on principles and practice of constraint programming, CP 2024, September 2–6, 2024,
+have no known competing ﬁnancial interests or personal relationships                   Girona, Spain (pp. 12:1–12:17). Schloss Dagstuhl - Leibniz-Zentrum für Informatik
+that could have appeared to inﬂuence the work reported in this paper.                  (vol. 307). LIPIcs. https://doi.org/10.4230/LIPICS.CP.2024.12
+                                                                                   Gualo, F., Rodriguez, M., Verdugo, J., Caballero, I., & Piattini, M. (2021). Data qual-
+                                                                                       ity certiﬁcation using ISO/IEC 25012: Industrial experiences. Journal of Systems and
+Acknowledgments                                                                        Software, 176, 110938.
+                                                                                   Ilyas, I. F., & Chu, X. (2019). Data Cleaning (vol. 28). ACM Books. ACM. https://doi.org/
+                                                                                       10.1145/3310205
+   This research was partially funded by projects AETHER-US                        ISO 8000-61 (2022). Data quality — Part 61: Data quality management: Process reference
+(PID2020-112540RB-C44), KOSMOS-US (PID2024-155363OB-C42),                              model. Standard International Organization for Standardization.
+                                                                                   Jiménez-Piqueras, C., Ruiz, R., Parreño-Torres, C., & Alvarez-Valdés, R. (2023). A con-
+ALBA-US (TED2021-130355B-C32) and AETHER-UCLM (PID2020-
+                                                                                       straint programming approach for the premarshalling problem. European Journal of
+112540RB-C42), both supported by the Spanish Ministry of Science and                   Operational Research, 306(2), 668–678. https://doi.org/10.1016/J.EJOR.2022.07.042
+Innovation (MCIN/AEI/10.13039/501100011033) and the “European                      Kellerer, H., Pferschy, U., & Pisinger, D. (2004). Knapsack problems. Springer Berlin
+Union NextGenerationEU/PRTR”. It also received funding from Project                    Heidelberg. https://doi.org/10.1007/978-3-540-24777-7
+                                                                                   Laghrissi, A., Retal, S., & Idrissi, A. (2016). Modeling and optimization of the network
+ADAGIO (SBPLY/21/180501/000061) by the JCCM and FEDER, as                              functions placement using constraint programming. In D. E. Boubiche, H. Ham-
+well as VI PPIT-US from Universidad de Sevilla.                                        dan, & A. Bounceur (Eds.), Proceedings of the international conference on big data and
+
+                                                                              15
+Á. Valencia-Parra et al.                                                                                                                     Expert Systems With Applications 296 (2026) 129170
+
+
+   advanced wireless technologies, BDAW 2016, Blagoevgrad, Bulgaria, November 10-11,                   Subramanian, V. (2025). Data quality engineering. In Applied machine learning for data
+   2016 (pp. 52:1–52:8). ACM. https://doi.org/10.1145/3010089.3010137                                      science practitioners , pp. 135–172). Wiley Data and Cybersecurity. https://doi.org/10.
+Laney, D. B. (2017). Infonomics: How to monetize, manage, and measure information as                       1002/9781394155408.ch6
+   an asset for competitive advantage. Routledge.                                                      Urli, T., & Kilby, P. (2017). Constraint-based ﬂeet design optimisation for multi-
+McGilvray, D. (2021). Executing data quality projects: Ten steps to quality data and                       compartment split-delivery rich vehicle routing. In J. C. Beck (Ed.), Principles
+   trusted information (TM). Academic Press.                                                               and practice of constraint programming - 23rd international conference, CP 2017, Mel-
+Oliveira, P., Rodrigues, F., & Henriques, P. R. (2005). A formal deﬁnition of data quality                 bourne, Vic, Australia, August 28 - September 1, 2017, proceedings (pp. 414–430).
+   problems. In F. Naumann, M. Gertz, & S. E.Madnick (Eds.), Proceedings of the 2005                       Springer (vol. 10416). Lecture Notes in Computer Science. https://doi.org/10.1007/
+   international conference on information quality (MIT ICIQ conference), November 10–12,                  978-3-319-66158-2_27
+   2006. MIT.                                                                                          Valencia-Parra, Á., Parody, L., Varela-Vaca, Á. J., Caballero, I., & Gómez-López, M. T.
+OMG, (2019). Decision model and notation (DMN). Object Management Group Version                            (2019). DMN for data quality measurement and assessment. In BPM 2019 International
+   1.2. https://www.omg.org/spec/DMN                                                                       workshops, Vienna, Austria, September 1–6, 2019 (pp. 362–374). Springer (vol. 362).
+Pérez-Álvarez, J. M., Maté, A., Gómez-López, M. T., & Trujillo, J. (2018). Tactical business-              LNBIP.
+   process-decision support based on KPIs monitoring and validation. Computers in In-                  Valencia-Parra, Á., Varela-Vaca, Á. J., Gómez-López, M. T., & Ceravolo, P. (2019).
+   dustry, 102, 23–39. https://doi.org/10.1016/j.compind.2018.08.001                                       CHAMELEON: Framework to improve data wrangling with complex data. In 40th
+Quindroit, P., Fruchart, M., Degoul, S., Perichon, R., Martignène, N., Soula, J., Marcilly, R.,            International conference on information systems, ICIS 2019. Association for Information
+   & Lamer, A. (2023). Deﬁnition of a practical taxonomy for referencing data quality                      Systems. https://aisel.aisnet.org/icis2019/data_science/data_science/16
+   problems in health care databases. Methods of Information in Medicine, 62(01/02),                   Valencia-Parra, Á., Parody, L., Varela-Vaca, Á. J., Caballero, I., & Gómez-López, M. T.
+   019–030.                                                                                                (2021). DMN4DQ: When data quality meets DMN. Decision Support Systems, 141,
+Redman, T. (2016a). Bad data costs the U.S. $3 trillion per year. Harvard Business Review.                 113450.
+   https://hbr.org/2016/09/bad-data-costs-the-u-s-3-trillion-per-year                                  Varela-Vaca, Á. J., Rosado, D. G., Sánchez, L. E., Gómez-López, M. T., Gasca, R. M., &
+Redman, T. C. (2016b). Getting in front on data: Who does qhat. Technics Publications.                     Fernández-Medina, E. (2021). CARMEN: A framework for the veriﬁcation and diag-
+Rossi, F., van Beek, P., & Walsh, T. (Eds.) (2006a). Handbook of constraint programming                    nosis of the speciﬁcation of security requirements in cyber-physical systems. Computers
+   (vol. 2). Foundations of artiﬁcial intelligence. Elsevier. https://www.sciencedirect.                   in Industry, 132, 103524. https://doi.org/10.1016/J.COMPIND.2021.103524
+   com/science/bookseries/15746526/2                                                                   Wang, J., Liu, Y., Li, P., Lin, Z., Sindakis, S., & Aggarwal, S. (2024). Overview of data
+Rossi, F., van Beek, P., & Walsh, T. (2006b). Handbook of constraint programming. El-                      quality: Examining the dimensions, antecedents, and impacts of data quality. Journal
+   sevier.                                                                                                 of the Knowledge Economy, 15(1), 1159–1178.
+Runeson, P., Höst, M., Rainer, A., & Regnell, B. (2012). Case study research in software               Watts, S., Shankaranarayanan, G., & Even, A. (2009). Data quality assessment in context:
+   engineering - guidelines and examples. Wiley.                                                           A cognitive perspective. Decision Support Systems, 48(1), 202–211.
+Shankaranarayanan, G., & Cai, Y. (2006). Supporting data quality management in                         Wijsen, J. (2005). Database repairing using updates. ACM Transactions on Database Sys-
+   decision-making. Decision Support Systems, 42(1), 302–317.                                              tems, 30(3), 722–768. https://doi.org/10.1145/1093382.1093385
+Song, S., Sun, Y., Zhang, A., Chen, L., & Wang, J. (2020). Enriching data imputation under             Woodall, P., Oberhofer, M. A., & Borek, A. (2014). A classiﬁcation of data quality assess-
+   similarity rule constraints. IEEE Transactions on Knowledge and Data Engineering, 32(2),                ment and improvement methods. International Journal of Information Quality, 3(4),
+   275–287. https://doi.org/10.1109/TKDE.2018.2883103                                                      298–321.
+
+
+
+
+                                                                                                  16
+

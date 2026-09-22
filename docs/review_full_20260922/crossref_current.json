@@ -1,0 +1,3547 @@
+[
+  {
+    "key": "chandola2009anomaly",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.1145/1541880.1541882",
+    "metadata": {
+      "DOI": "10.1145/1541880.1541882",
+      "title": [
+        "Anomaly detection"
+      ],
+      "author": [
+        {
+          "given": "Varun",
+          "family": "Chandola",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "University of Minnesota, Minneapolis, MN"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Arindam",
+          "family": "Banerjee",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "University of Minnesota, Minneapolis, MN"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Vipin",
+          "family": "Kumar",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "University of Minnesota, Minneapolis, MN"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2009,
+            7
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2009,
+            7,
+            30
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2009,
+            7
+          ]
+        ]
+      },
+      "container-title": [
+        "ACM Computing Surveys"
+      ],
+      "type": "journal-article"
+    }
+  },
+  {
+    "key": "liu2008isolation",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.1109/ICDM.2008.17",
+    "metadata": {
+      "DOI": "10.1109/icdm.2008.17",
+      "title": [
+        "Isolation Forest"
+      ],
+      "author": [
+        {
+          "given": "Fei Tony",
+          "family": "Liu",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Kai Ming",
+          "family": "Ting",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Zhi-Hua",
+          "family": "Zhou",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2008,
+            12
+          ]
+        ]
+      },
+      "published-online": null,
+      "published-print": {
+        "date-parts": [
+          [
+            2008,
+            12
+          ]
+        ]
+      },
+      "container-title": [
+        "2008 Eighth IEEE International Conference on Data Mining"
+      ],
+      "type": "proceedings-article"
+    }
+  },
+  {
+    "key": "breunig2000lof",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.1145/342009.335388",
+    "metadata": {
+      "DOI": "10.1145/342009.335388",
+      "title": [
+        "LOF"
+      ],
+      "author": [
+        {
+          "given": "Markus M.",
+          "family": "Breunig",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "Institute for Computer Science, University of Munich, Oettingenstr. 67, D-80538 Munich, Germany"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Hans-Peter",
+          "family": "Kriegel",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Institute for Computer Science, University of Munich, Oettingenstr. 67, D-80538 Munich, Germany"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Raymond T.",
+          "family": "Ng",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Department of Computer Science, University of British Columbia, Vancouver, BC V6T 1Z4 Canada"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Jörg",
+          "family": "Sander",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Institute for Computer Science, University of Munich, Oettingenstr. 67, D-80538 Munich, Germany"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2000,
+            5,
+            16
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2000,
+            5,
+            16
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2000,
+            5,
+            16
+          ]
+        ]
+      },
+      "container-title": [
+        "Proceedings of the 2000 ACM SIGMOD international conference on Management of data"
+      ],
+      "type": "proceedings-article"
+    }
+  },
+  {
+    "key": "sakurada2014anomaly",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.1145/2689746.2689747",
+    "metadata": {
+      "DOI": "10.1145/2689746.2689747",
+      "title": [
+        "Anomaly Detection Using Autoencoders with Nonlinear Dimensionality Reduction"
+      ],
+      "author": [
+        {
+          "given": "Mayu",
+          "family": "Sakurada",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "The University of Tokyo, Department of Aeronautics and Astronautics"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Takehisa",
+          "family": "Yairi",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "The University of Tokyo, Research Center for Advanced, Science and Technology"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2014,
+            12,
+            2
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2014,
+            12,
+            2
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2014,
+            12,
+            2
+          ]
+        ]
+      },
+      "container-title": [
+        "Proceedings of the MLSDA 2014 2nd Workshop on Machine Learning for Sensory Data Analysis"
+      ],
+      "type": "proceedings-article"
+    }
+  },
+  {
+    "key": "kingma2014vae",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "zong2018dagmm",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "su2019omni",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.1145/3292500.3330672",
+    "metadata": {
+      "DOI": "10.1145/3292500.3330672",
+      "title": [
+        "Robust Anomaly Detection for Multivariate Time Series through Stochastic Recurrent Neural Network"
+      ],
+      "author": [
+        {
+          "given": "Ya",
+          "family": "Su",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "Tsinghua University, Beijing, China"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Youjian",
+          "family": "Zhao",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Tsinghua University, Beijing, China"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Chenhao",
+          "family": "Niu",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Tsinghua University, Beijing, China"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Rong",
+          "family": "Liu",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Stevens Institute of Technology, Hoboken, NJ, USA"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Wei",
+          "family": "Sun",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Beijing University of Posts and Telecommunications, Beijing, China"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Dan",
+          "family": "Pei",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Tsinghua University, Beijing, China"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2019,
+            7,
+            25
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2019,
+            7,
+            25
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2019,
+            7,
+            25
+          ]
+        ]
+      },
+      "container-title": [
+        "Proceedings of the 25th ACM SIGKDD International Conference on Knowledge Discovery &amp; Data Mining"
+      ],
+      "type": "proceedings-article"
+    }
+  },
+  {
+    "key": "munir2019deepant",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.1109/ACCESS.2018.2886457",
+    "metadata": {
+      "DOI": "10.1109/access.2018.2886457",
+      "title": [
+        "DeepAnT: A Deep Learning Approach for Unsupervised Anomaly Detection in Time Series"
+      ],
+      "author": [
+        {
+          "ORCID": "https://orcid.org/0000-0001-7818-0361",
+          "authenticated-orcid": false,
+          "given": "Mohsin",
+          "family": "Munir",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0003-4600-7331",
+          "authenticated-orcid": false,
+          "given": "Shoaib Ahmed",
+          "family": "Siddiqui",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Andreas",
+          "family": "Dengel",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0002-4239-6520",
+          "authenticated-orcid": false,
+          "given": "Sheraz",
+          "family": "Ahmed",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2019
+          ]
+        ]
+      },
+      "published-online": null,
+      "published-print": {
+        "date-parts": [
+          [
+            2019
+          ]
+        ]
+      },
+      "container-title": [
+        "IEEE Access"
+      ],
+      "type": "journal-article"
+    }
+  },
+  {
+    "key": "audibert2020usad",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.1145/3394486.3403392",
+    "metadata": {
+      "DOI": "10.1145/3394486.3403392",
+      "title": [
+        "USAD"
+      ],
+      "author": [
+        {
+          "given": "Julien",
+          "family": "Audibert",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "EURECOM &amp; Orange, Sophia Antipolis, France"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Pietro",
+          "family": "Michiardi",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "EURECOM, Biot, France"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Frédéric",
+          "family": "Guyard",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Orange Labs, Sophia Antipolis, France"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Sébastien",
+          "family": "Marti",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Orange, Sophia Antipolis, France"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Maria A.",
+          "family": "Zuluaga",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "EURECOM, Biot, France"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2020,
+            8,
+            20
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2020,
+            8,
+            20
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2020,
+            8,
+            23
+          ]
+        ]
+      },
+      "container-title": [
+        "Proceedings of the 26th ACM SIGKDD International Conference on Knowledge Discovery &amp; Data Mining"
+      ],
+      "type": "proceedings-article"
+    }
+  },
+  {
+    "key": "schlegl2019anogan",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.1016/j.media.2019.01.010",
+    "metadata": {
+      "DOI": "10.1016/j.media.2019.01.010",
+      "title": [
+        "f-AnoGAN: Fast unsupervised anomaly detection with generative adversarial networks"
+      ],
+      "author": [
+        {
+          "ORCID": "https://orcid.org/0000-0003-0706-7876",
+          "authenticated-orcid": false,
+          "given": "Thomas",
+          "family": "Schlegl",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Philipp",
+          "family": "Seeböck",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0003-2899-6279",
+          "authenticated-orcid": false,
+          "given": "Sebastian M.",
+          "family": "Waldstein",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0002-5536-6873",
+          "authenticated-orcid": false,
+          "given": "Georg",
+          "family": "Langs",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Ursula",
+          "family": "Schmidt-Erfurth",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2019,
+            5
+          ]
+        ]
+      },
+      "published-online": null,
+      "published-print": {
+        "date-parts": [
+          [
+            2019,
+            5
+          ]
+        ]
+      },
+      "container-title": [
+        "Medical Image Analysis"
+      ],
+      "type": "journal-article"
+    }
+  },
+  {
+    "key": "tuli2022tranad",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.14778/3514061.3514067",
+    "metadata": {
+      "DOI": "10.14778/3514061.3514067",
+      "title": [
+        "TranAD"
+      ],
+      "author": [
+        {
+          "given": "Shreshth",
+          "family": "Tuli",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "Imperial College London, London, UK"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Giuliano",
+          "family": "Casale",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Imperial College London, London, UK"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Nicholas R.",
+          "family": "Jennings",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Loughborough University, London, UK"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2022,
+            2
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2022,
+            6,
+            22
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2022,
+            2
+          ]
+        ]
+      },
+      "container-title": [
+        "Proceedings of the VLDB Endowment"
+      ],
+      "type": "journal-article"
+    }
+  },
+  {
+    "key": "dai2022ganf",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "chen2016xgboost",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.1145/2939672.2939785",
+    "metadata": {
+      "DOI": "10.1145/2939672.2939785",
+      "title": [
+        "XGBoost"
+      ],
+      "author": [
+        {
+          "given": "Tianqi",
+          "family": "Chen",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "University of Washington, Seattle, WA, USA"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Carlos",
+          "family": "Guestrin",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "University of Washington, Seattle, WA, USA"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2016,
+            8,
+            13
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2016,
+            8,
+            13
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2016,
+            8,
+            13
+          ]
+        ]
+      },
+      "container-title": [
+        "Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining"
+      ],
+      "type": "proceedings-article"
+    }
+  },
+  {
+    "key": "vaswani2017attention",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "graves2005bilstm",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.1016/j.neunet.2005.06.042",
+    "metadata": {
+      "DOI": "10.1016/j.neunet.2005.06.042",
+      "title": [
+        "Framewise phoneme classification with bidirectional LSTM and other neural network architectures"
+      ],
+      "author": [
+        {
+          "given": "Alex",
+          "family": "Graves",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Jürgen",
+          "family": "Schmidhuber",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2005,
+            7
+          ]
+        ]
+      },
+      "published-online": null,
+      "published-print": {
+        "date-parts": [
+          [
+            2005,
+            7
+          ]
+        ]
+      },
+      "container-title": [
+        "Neural Networks"
+      ],
+      "type": "journal-article"
+    }
+  },
+  {
+    "key": "vincent2010stacked",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "bishop2006pattern",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "qwen2024report",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "gemma2024",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "grattafiori2024llama3",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "nguyen2023phogpt",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "hu2022lora",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "xu2023peft",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "lewis2020rag",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "xie2023finma",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "wu2023bloomberggpt",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "wei2022chain",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "papineni2002bleu",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.3115/1073083.1073135",
+    "metadata": {
+      "DOI": "10.3115/1073083.1073135",
+      "title": [
+        "BLEU"
+      ],
+      "author": [
+        {
+          "given": "Kishore",
+          "family": "Papineni",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Salim",
+          "family": "Roukos",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Todd",
+          "family": "Ward",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Wei-Jing",
+          "family": "Zhu",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2001
+          ]
+        ]
+      },
+      "published-online": null,
+      "published-print": {
+        "date-parts": [
+          [
+            2001
+          ]
+        ]
+      },
+      "container-title": [
+        "Proceedings of the 40th Annual Meeting on Association for Computational Linguistics  - ACL '02"
+      ],
+      "type": "proceedings-article"
+    }
+  },
+  {
+    "key": "lin2004rouge",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "zhang2020bertscore",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "lebret2016neural",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.18653/v1/D16-1128",
+    "metadata": {
+      "DOI": "10.18653/v1/d16-1128",
+      "title": [
+        "Neural Text Generation from Structured Data with Application to the\n            Biography Domain"
+      ],
+      "author": [
+        {
+          "given": "Rémi",
+          "family": "Lebret",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "David",
+          "family": "Grangier",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Michael",
+          "family": "Auli",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2016
+          ]
+        ]
+      },
+      "published-online": null,
+      "published-print": {
+        "date-parts": [
+          [
+            2016
+          ]
+        ]
+      },
+      "container-title": [
+        "Proceedings of the 2016 Conference on Empirical Methods in Natural\n          Language Processing"
+      ],
+      "type": "proceedings-article"
+    }
+  },
+  {
+    "key": "li2020copod",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.1109/ICDM50108.2020.00135",
+    "metadata": {
+      "DOI": "10.1109/icdm50108.2020.00135",
+      "title": [
+        "COPOD: Copula-Based Outlier Detection"
+      ],
+      "author": [
+        {
+          "given": "Zheng",
+          "family": "Li",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "Arima Inc., Canada"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Yue",
+          "family": "Zhao",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Carnegie Mellon University, USA"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Nicola",
+          "family": "Botta",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "PIK Potsdam, Germany"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Cezar",
+          "family": "Ionescu",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "THD, Germany"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Xiyang",
+          "family": "Hu",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Carnegie Mellon University"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2020,
+            11
+          ]
+        ]
+      },
+      "published-online": null,
+      "published-print": {
+        "date-parts": [
+          [
+            2020,
+            11
+          ]
+        ]
+      },
+      "container-title": [
+        "2020 IEEE International Conference on Data Mining (ICDM)"
+      ],
+      "type": "proceedings-article"
+    }
+  },
+  {
+    "key": "hilal2022financial",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.1016/j.eswa.2021.116429",
+    "metadata": {
+      "DOI": "10.1016/j.eswa.2021.116429",
+      "title": [
+        "Financial Fraud: A Review of Anomaly Detection Techniques and Recent Advances"
+      ],
+      "author": [
+        {
+          "ORCID": "https://orcid.org/0000-0002-9164-165X",
+          "authenticated-orcid": false,
+          "given": "Waleed",
+          "family": "Hilal",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "S. Andrew",
+          "family": "Gadsden",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "John",
+          "family": "Yawney",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2022,
+            5
+          ]
+        ]
+      },
+      "published-online": null,
+      "published-print": {
+        "date-parts": [
+          [
+            2022,
+            5
+          ]
+        ]
+      },
+      "container-title": [
+        "Expert Systems with Applications"
+      ],
+      "type": "journal-article"
+    }
+  },
+  {
+    "key": "vanderlee2019best",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "howcroft2020twenty",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "kirtani2025reviewevaluation",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "gebru2022humanmachine",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.1109/THMS.2022.3144956",
+    "metadata": {
+      "DOI": "10.1109/thms.2022.3144956",
+      "title": [
+        "A Review on Human–Machine Trust Evaluation: Human-Centric and Machine-Centric Perspectives"
+      ],
+      "author": [
+        {
+          "ORCID": "https://orcid.org/0000-0002-7039-774X",
+          "authenticated-orcid": false,
+          "given": "Biniam",
+          "family": "Gebru",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "North Carolina A&amp;T State University, Greensboro, NC, USA"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0003-3352-1091",
+          "authenticated-orcid": false,
+          "given": "Lydia",
+          "family": "Zeleke",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "North Carolina A&amp;T State University, Greensboro, NC, USA"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0002-6986-2456",
+          "authenticated-orcid": false,
+          "given": "Daniel",
+          "family": "Blankson",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "North Carolina A&amp;T State University, Greensboro, NC, USA"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0003-3059-7912",
+          "authenticated-orcid": false,
+          "given": "Mahmoud",
+          "family": "Nabil",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "North Carolina A&amp;T State University, Greensboro, NC, USA"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Shamila",
+          "family": "Nateghi",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "North Carolina A&amp;T State University, Greensboro, NC, USA"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0003-1179-3221",
+          "authenticated-orcid": false,
+          "given": "Abdollah",
+          "family": "Homaifar",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "North Carolina A&amp;T State University, Greensboro, NC, USA"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Edward",
+          "family": "Tunstel",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Motiv Space Systems, Inc., Pasadena, CA, USA"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2022,
+            10
+          ]
+        ]
+      },
+      "published-online": null,
+      "published-print": {
+        "date-parts": [
+          [
+            2022,
+            10
+          ]
+        ]
+      },
+      "container-title": [
+        "IEEE Transactions on Human-Machine Systems"
+      ],
+      "type": "journal-article"
+    }
+  },
+  {
+    "key": "tsai2025anollm",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "li2024llm_tabad",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "ofa_tad2026",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "auto_monitoring_report_llm_kg2024",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.1016/j.rineng.2025.104795",
+    "metadata": {
+      "DOI": "10.1016/j.rineng.2025.104795",
+      "title": [
+        "Automatic generation of monitoring report based on large language model and knowledge graph inference"
+      ],
+      "author": [
+        {
+          "given": "Zengxiong",
+          "family": "Chen",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Yanfeng",
+          "family": "Qiu",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Longlong",
+          "family": "Yang",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Baijian",
+          "family": "Liao",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Defa",
+          "family": "Cao",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2025,
+            6
+          ]
+        ]
+      },
+      "published-online": null,
+      "published-print": {
+        "date-parts": [
+          [
+            2025,
+            6
+          ]
+        ]
+      },
+      "container-title": [
+        "Results in Engineering"
+      ],
+      "type": "journal-article"
+    }
+  },
+  {
+    "key": "contextual_ad_tabular2025",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "han2022adbench",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "schreyer2017accounting_dae",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "zhao2025tadgp",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.1038/s41598-025-88050-z",
+    "metadata": {
+      "DOI": "10.1038/s41598-025-88050-z",
+      "title": [
+        "Efficient anomaly detection in tabular cybersecurity data using large language models"
+      ],
+      "author": [
+        {
+          "given": "Xiaoyong",
+          "family": "Zhao",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Xingxin",
+          "family": "Leng",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Lei",
+          "family": "Wang",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Ningning",
+          "family": "Wang",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Yanqiong",
+          "family": "Liu",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2025,
+            1,
+            27
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2025,
+            1,
+            27
+          ]
+        ]
+      },
+      "published-print": null,
+      "container-title": [
+        "Scientific Reports"
+      ],
+      "type": "journal-article"
+    }
+  },
+  {
+    "key": "fang2024llm_tabular_survey",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "cea_eaa2010",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "cea_public_register",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "cea_cobroking",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "acra_uen2024",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "acra_companies_act1967",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "ica_nric2024",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "singpost2024",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "sla_onemap2024",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "ura_realis2024",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "iras2024",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "mas2024macroprudential",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "mas_notice645",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "hdb2024",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "phang2016housing",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "agarwal2020tax",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.1016/j.jpubeco.2020.104222",
+    "metadata": {
+      "DOI": "10.1016/j.jpubeco.2020.104222",
+      "title": [
+        "Tax evasion, capital gains taxes, and the housing market"
+      ],
+      "author": [
+        {
+          "given": "Sumit",
+          "family": "Agarwal",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Keyang",
+          "family": "Li",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Yu",
+          "family": "Qin",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Jing",
+          "family": "Wu",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Jubo",
+          "family": "Yan",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2020,
+            8
+          ]
+        ]
+      },
+      "published-online": null,
+      "published-print": {
+        "date-parts": [
+          [
+            2020,
+            8
+          ]
+        ]
+      },
+      "container-title": [
+        "Journal of Public Economics"
+      ],
+      "type": "journal-article"
+    }
+  },
+  {
+    "key": "imf_singapore",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.5089/9798400285974.002",
+    "metadata": {
+      "DOI": "10.5089/9798400285974.002",
+      "title": [
+        "Singapore"
+      ],
+      "author": [
+        {
+          "name": "International Monetary Fund. Asia and Pacific Dept",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2024,
+            7
+          ]
+        ]
+      },
+      "published-online": null,
+      "published-print": {
+        "date-parts": [
+          [
+            2024,
+            7
+          ]
+        ]
+      },
+      "container-title": [
+        "IMF Staff Country Reports"
+      ],
+      "type": "journal-article"
+    }
+  },
+  {
+    "key": "ilyas2019datacleaning",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.1145/3310205",
+    "metadata": {
+      "DOI": "10.1145/3310205",
+      "title": [
+        "Data Cleaning"
+      ],
+      "author": [
+        {
+          "given": "Ihab F.",
+          "family": "Ilyas",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "University of Waterloo"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Xu",
+          "family": "Chu",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Georgia Institute of Technology"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2019,
+            7,
+            9
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2019,
+            7,
+            9
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2019,
+            7,
+            9
+          ]
+        ]
+      },
+      "container-title": [],
+      "type": "monograph"
+    }
+  },
+  {
+    "key": "abedjan2015profiling",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.1007/s00778-015-0389-y",
+    "metadata": {
+      "DOI": "10.1007/s00778-015-0389-y",
+      "title": [
+        "Profiling relational data: a survey"
+      ],
+      "author": [
+        {
+          "given": "Ziawasch",
+          "family": "Abedjan",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Lukasz",
+          "family": "Golab",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Felix",
+          "family": "Naumann",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2015,
+            6,
+            2
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2015,
+            6,
+            2
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2015,
+            8
+          ]
+        ]
+      },
+      "container-title": [
+        "The VLDB Journal"
+      ],
+      "type": "journal-article"
+    }
+  },
+  {
+    "key": "fan2008cfd",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.1145/1366102.1366103",
+    "metadata": {
+      "DOI": "10.1145/1366102.1366103",
+      "title": [
+        "Conditional functional dependencies for capturing data inconsistencies"
+      ],
+      "author": [
+        {
+          "given": "Wenfei",
+          "family": "Fan",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "University of Edinburgh, Scotland and Bell Laboratories"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Floris",
+          "family": "Geerts",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "University of Edinburgh, Scotland"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Xibei",
+          "family": "Jia",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "University of Edinburgh, Scotland"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Anastasios",
+          "family": "Kementsietsidis",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "IBM T. J. Watson Research Center, Hawthorne, NY"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2008,
+            6
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2008,
+            6,
+            24
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2008,
+            6
+          ]
+        ]
+      },
+      "container-title": [
+        "ACM Transactions on Database Systems"
+      ],
+      "type": "journal-article"
+    }
+  },
+  {
+    "key": "chu2013dc",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.14778/2536258.2536262",
+    "metadata": {
+      "DOI": "10.14778/2536258.2536262",
+      "title": [
+        "Discovering denial constraints"
+      ],
+      "author": [
+        {
+          "given": "Xu",
+          "family": "Chu",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "University of Waterloo"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Ihab F.",
+          "family": "Ilyas",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "QCRI"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Paolo",
+          "family": "Papotti",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "QCRI"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2013,
+            8
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2013,
+            8
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2013,
+            8,
+            29
+          ]
+        ]
+      },
+      "container-title": [
+        "Proceedings of the VLDB Endowment"
+      ],
+      "type": "journal-article"
+    }
+  },
+  {
+    "key": "chu2013holistic",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.1109/ICDE.2013.6544847",
+    "metadata": {
+      "DOI": "10.1109/icde.2013.6544847",
+      "title": [
+        "Holistic data cleaning: Putting violations into context"
+      ],
+      "author": [
+        {
+          "family": "Xu Chu",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "I. F.",
+          "family": "Ilyas",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "P.",
+          "family": "Papotti",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2013,
+            4
+          ]
+        ]
+      },
+      "published-online": null,
+      "published-print": {
+        "date-parts": [
+          [
+            2013,
+            4
+          ]
+        ]
+      },
+      "container-title": [
+        "2013 IEEE 29th International Conference on Data Engineering (ICDE)"
+      ],
+      "type": "proceedings-article"
+    }
+  },
+  {
+    "key": "pena2019approximate",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.14778/3368289.3368293",
+    "metadata": {
+      "DOI": "10.14778/3368289.3368293",
+      "title": [
+        "Discovery of approximate (and exact) denial constraints"
+      ],
+      "author": [
+        {
+          "given": "Eduardo H. M.",
+          "family": "Pena",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "Federal University of Technology - Paraná, Brazil"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Eduardo C.",
+          "family": "de Almeida",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Federal University of Paraná, Curitiba, Brazil"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Felix",
+          "family": "Naumann",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "University of Potsdam, Germany"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2019,
+            11
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2019,
+            11
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2019,
+            11
+          ]
+        ]
+      },
+      "container-title": [
+        "Proceedings of the VLDB Endowment"
+      ],
+      "type": "journal-article"
+    }
+  },
+  {
+    "key": "dallachiesa2013nadeef",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.1145/2463676.2465327",
+    "metadata": {
+      "DOI": "10.1145/2463676.2465327",
+      "title": [
+        "NADEEF"
+      ],
+      "author": [
+        {
+          "given": "Michele",
+          "family": "Dallachiesa",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "University of Trento, Trento, Italy"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Amr",
+          "family": "Ebaid",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Purdue University, Lafayette, USA"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Ahmed",
+          "family": "Eldawy",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "University of Minnesota, Minneapolis, USA"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Ahmed",
+          "family": "Elmagarmid",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "QCRI, Doha, Qatar"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Ihab F.",
+          "family": "Ilyas",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "QCRI, Doha, Qatar"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Mourad",
+          "family": "Ouzzani",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "QCRI, Doha, Qatar"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Nan",
+          "family": "Tang",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "QCRI, Doha, Qatar"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2013,
+            6,
+            22
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2013,
+            6,
+            22
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2013,
+            6,
+            22
+          ]
+        ]
+      },
+      "container-title": [
+        "Proceedings of the 2013 ACM SIGMOD International Conference on Management of Data"
+      ],
+      "type": "proceedings-article"
+    }
+  },
+  {
+    "key": "rekatsinas2017holoclean",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.14778/3137628.3137631",
+    "metadata": {
+      "DOI": "10.14778/3137628.3137631",
+      "title": [
+        "HoloClean"
+      ],
+      "author": [
+        {
+          "given": "Theodoros",
+          "family": "Rekatsinas",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "Stanford University"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Xu",
+          "family": "Chu",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "University of Waterloo"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Ihab F.",
+          "family": "Ilyas",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "University of Waterloo"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Christopher",
+          "family": "Ré",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Stanford University"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2017,
+            8
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2017,
+            8
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2017,
+            8
+          ]
+        ]
+      },
+      "container-title": [
+        "Proceedings of the VLDB Endowment"
+      ],
+      "type": "journal-article"
+    }
+  },
+  {
+    "key": "christen2012datamatching",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.1007/978-3-642-31164-2",
+    "metadata": {
+      "DOI": "10.1007/978-3-642-31164-2",
+      "title": [
+        "Data Matching"
+      ],
+      "author": [
+        {
+          "given": "Peter",
+          "family": "Christen",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2012
+          ]
+        ]
+      },
+      "published-online": null,
+      "published-print": {
+        "date-parts": [
+          [
+            2012
+          ]
+        ]
+      },
+      "container-title": [],
+      "type": "book"
+    }
+  },
+  {
+    "key": "papadakis2021er",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.2200/S01067ED1V01Y202012DTM064",
+    "metadata": {
+      "DOI": "10.1007/978-3-031-01878-7",
+      "title": [
+        "The Four Generations of Entity Resolution"
+      ],
+      "author": [
+        {
+          "given": "George",
+          "family": "Papadakis",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Ekaterini",
+          "family": "Ioannou",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Emanouil",
+          "family": "Thanos",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Themis",
+          "family": "Palpanas",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2021
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2022,
+            2,
+            25
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2021
+          ]
+        ]
+      },
+      "container-title": [
+        "Synthesis Lectures on Data Management"
+      ],
+      "type": "book"
+    }
+  },
+  {
+    "key": "senaratne2023rulead",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "akella2025quality",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "akella2025tabshapley",
+    "status": "NOT_FETCHED",
+    "reason": "no CrossRef DOI; provider-specific verification required"
+  },
+  {
+    "key": "wang1996beyond",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.1080/07421222.1996.11518099",
+    "metadata": {
+      "DOI": "10.1080/07421222.1996.11518099",
+      "title": [
+        "Beyond Accuracy: What Data Quality Means to Data Consumers"
+      ],
+      "author": [
+        {
+          "given": "Richard Y.",
+          "family": "Wang",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Diane M.",
+          "family": "Strong",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            1996,
+            3
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2015,
+            12,
+            11
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            1996,
+            3
+          ]
+        ]
+      },
+      "container-title": [
+        "Journal of Management Information Systems"
+      ],
+      "type": "journal-article"
+    }
+  },
+  {
+    "key": "ehrlinger2022survey",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.3389/fdata.2022.850611",
+    "metadata": {
+      "DOI": "10.3389/fdata.2022.850611",
+      "title": [
+        "A Survey of Data Quality Measurement and Monitoring Tools"
+      ],
+      "author": [
+        {
+          "given": "Lisa",
+          "family": "Ehrlinger",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Wolfram",
+          "family": "Wöß",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2022,
+            3,
+            31
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2022,
+            3,
+            31
+          ]
+        ]
+      },
+      "published-print": null,
+      "container-title": [
+        "Frontiers in Big Data"
+      ],
+      "type": "journal-article"
+    }
+  },
+  {
+    "key": "schelter2018automating",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.14778/3229863.3229867",
+    "metadata": {
+      "DOI": "10.14778/3229863.3229867",
+      "title": [
+        "Automating large-scale data quality verification"
+      ],
+      "author": [
+        {
+          "given": "Sebastian",
+          "family": "Schelter",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "Amazon Research"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Dustin",
+          "family": "Lange",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Amazon Research"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Philipp",
+          "family": "Schmidt",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Amazon Research"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Meltem",
+          "family": "Celikel",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Amazon Research"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Felix",
+          "family": "Biessmann",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Amazon Research"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Andreas",
+          "family": "Grafberger",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "University of Augsburg and Amazon Research"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2018,
+            8
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2018,
+            8
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2018,
+            8
+          ]
+        ]
+      },
+      "container-title": [
+        "Proceedings of the VLDB Endowment"
+      ],
+      "type": "journal-article"
+    }
+  },
+  {
+    "key": "shankar2023automatic",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.1145/3583780.3614786",
+    "metadata": {
+      "DOI": "10.1145/3583780.3614786",
+      "title": [
+        "Automatic and Precise Data Validation for Machine Learning"
+      ],
+      "author": [
+        {
+          "ORCID": "https://orcid.org/0000-0002-0919-9672",
+          "authenticated-orcid": false,
+          "given": "Shreya",
+          "family": "Shankar",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "University of California, Berkeley, Berkeley, CA, USA"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0009-0002-6543-112X",
+          "authenticated-orcid": false,
+          "given": "Labib",
+          "family": "Fawaz",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Meta, Menlo Park, CA, USA"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0009-0003-6594-3552",
+          "authenticated-orcid": false,
+          "given": "Karl",
+          "family": "Gyllstrom",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Meta, Menlo Park, CA, USA"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0002-4538-4752",
+          "authenticated-orcid": false,
+          "given": "Aditya",
+          "family": "Parameswaran",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "University of California, Berkeley, Berkeley, CA, USA"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2023,
+            10,
+            21
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2023,
+            10,
+            21
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2023,
+            10,
+            21
+          ]
+        ]
+      },
+      "container-title": [
+        "Proceedings of the 32nd ACM International Conference on Information and Knowledge Management"
+      ],
+      "type": "proceedings-article"
+    }
+  },
+  {
+    "key": "thalheim2013migration",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.1016/j.datak.2012.12.003",
+    "metadata": {
+      "DOI": "10.1016/j.datak.2012.12.003",
+      "title": [
+        "Data migration: A theoretical perspective"
+      ],
+      "author": [
+        {
+          "given": "Bernhard",
+          "family": "Thalheim",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Qing",
+          "family": "Wang",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2013,
+            9
+          ]
+        ]
+      },
+      "published-online": null,
+      "published-print": {
+        "date-parts": [
+          [
+            2013,
+            9
+          ]
+        ]
+      },
+      "container-title": [
+        "Data &amp; Knowledge Engineering"
+      ],
+      "type": "journal-article"
+    }
+  },
+  {
+    "key": "mohammed2025effects",
+    "status": "FETCHED_METADATA_ONLY",
+    "query": "https://api.crossref.org/works/10.1016/j.is.2025.102549",
+    "metadata": {
+      "DOI": "10.1016/j.is.2025.102549",
+      "title": [
+        "The effects of data quality on machine learning performance on tabular data"
+      ],
+      "author": [
+        {
+          "ORCID": "https://orcid.org/0000-0002-2163-0437",
+          "authenticated-orcid": false,
+          "given": "Sedir",
+          "family": "Mohammed",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Lukas",
+          "family": "Budach",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Moritz",
+          "family": "Feuerpfeil",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Nina",
+          "family": "Ihde",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Andrea",
+          "family": "Nathansen",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Nele",
+          "family": "Noack",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Hendrik",
+          "family": "Patzlaff",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0002-4483-1389",
+          "authenticated-orcid": false,
+          "given": "Felix",
+          "family": "Naumann",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0001-9967-5347",
+          "authenticated-orcid": false,
+          "given": "Hazar",
+          "family": "Harmouch",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2025,
+            7
+          ]
+        ]
+      },
+      "published-online": null,
+      "published-print": {
+        "date-parts": [
+          [
+            2025,
+            7
+          ]
+        ]
+      },
+      "container-title": [
+        "Information Systems"
+      ],
+      "type": "journal-article"
+    }
+  }
+]

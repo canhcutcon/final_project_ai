@@ -1,0 +1,764 @@
+[
+  {
+    "key": "chandola2009anomaly",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 7,
+    "context": "Phát hiện bất thường (Anomaly Detection -- AD) là bài toán xác định các quan sát, điểm dữ liệu hoặc chuỗi sự kiện không tuân theo phân phối hoặc mẫu hành vi thông thường của dữ liệu \\cite{chandola2009anomaly}. Đây là một trong những bài toán nền tảng của học máy với ứng dụng rộng rãi trong phát hiện gian lận tài chính, giám sát IoT, chẩn đoán y tế, và kiểm tra chất lượng trong công nghiệp."
+  },
+  {
+    "key": "chandola2009anomaly",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 11,
+    "context": "Theo phân loại của Chandola và cộng sự \\cite{chandola2009anomaly}, bất thường được chia thành ba nhóm:"
+  },
+  {
+    "key": "cea_eaa2010",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 34,
+    "context": "\\cite{cea_eaa2010, cea_public_register}; ACRA quản lý UEN và quy ước đặt tên công ty theo"
+  },
+  {
+    "key": "cea_public_register",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 34,
+    "context": "\\cite{cea_eaa2010, cea_public_register}; ACRA quản lý UEN và quy ước đặt tên công ty theo"
+  },
+  {
+    "key": "acra_uen2024",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 35,
+    "context": "Companies Act 1967 \\cite{acra_uen2024, acra_companies_act1967}; ICA quản lý NRIC theo"
+  },
+  {
+    "key": "acra_companies_act1967",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 35,
+    "context": "Companies Act 1967 \\cite{acra_uen2024, acra_companies_act1967}; ICA quản lý NRIC theo"
+  },
+  {
+    "key": "ica_nric2024",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 36,
+    "context": "National Registration Act \\cite{ica_nric2024}; SingPost và SLA định nghĩa mã bưu chính"
+  },
+  {
+    "key": "singpost2024",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 37,
+    "context": "6 chữ số \\cite{singpost2024, sla_onemap2024}; URA cung cấp phân loại loại tài sản qua"
+  },
+  {
+    "key": "sla_onemap2024",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 37,
+    "context": "6 chữ số \\cite{singpost2024, sla_onemap2024}; URA cung cấp phân loại loại tài sản qua"
+  },
+  {
+    "key": "ura_realis2024",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 38,
+    "context": "REALIS \\cite{ura_realis2024}."
+  },
+  {
+    "key": "iras2024",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 40,
+    "context": "Đối với quy định \\textit{tài chính-thuế} (BSD, ABSD, SSD do IRAS \\cite{iras2024}; TDSR, MSR, LTV, thời hạn vay,"
+  },
+  {
+    "key": "mas2024macroprudential",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 41,
+    "context": "ngưỡng lãi suất kiểm tra sức chịu đựng do MAS \\cite{mas2024macroprudential, mas_notice645}; MOP, EIP, SPR quota do HDB \\cite{hdb2024}) -- các quy định này được đề"
+  },
+  {
+    "key": "mas_notice645",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 41,
+    "context": "ngưỡng lãi suất kiểm tra sức chịu đựng do MAS \\cite{mas2024macroprudential, mas_notice645}; MOP, EIP, SPR quota do HDB \\cite{hdb2024}) -- các quy định này được đề"
+  },
+  {
+    "key": "hdb2024",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 41,
+    "context": "ngưỡng lãi suất kiểm tra sức chịu đựng do MAS \\cite{mas2024macroprudential, mas_notice645}; MOP, EIP, SPR quota do HDB \\cite{hdb2024}) -- các quy định này được đề"
+  },
+  {
+    "key": "phang2016housing",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 46,
+    "context": "phân tích bởi Phang \\& Helble \\cite{phang2016housing}, Agarwal et al.\\ \\cite{agarwal2020tax} và"
+  },
+  {
+    "key": "agarwal2020tax",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 46,
+    "context": "phân tích bởi Phang \\& Helble \\cite{phang2016housing}, Agarwal et al.\\ \\cite{agarwal2020tax} và"
+  },
+  {
+    "key": "imf_singapore",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 47,
+    "context": "báo cáo tham vấn Điều IV năm 2024 của IMF \\cite{imf_singapore}."
+  },
+  {
+    "key": "liu2008isolation",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 68,
+    "context": "ML cổ điển & Isolation Forest \\cite{liu2008isolation}, LOF \\cite{breunig2000lof}, OC-SVM & Tốt với dữ liệu dạng bảng, khó với chuỗi thời gian dài, nhạy cảm với siêu tham số \\\\"
+  },
+  {
+    "key": "breunig2000lof",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 68,
+    "context": "ML cổ điển & Isolation Forest \\cite{liu2008isolation}, LOF \\cite{breunig2000lof}, OC-SVM & Tốt với dữ liệu dạng bảng, khó với chuỗi thời gian dài, nhạy cảm với siêu tham số \\\\"
+  },
+  {
+    "key": "sakurada2014anomaly",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 70,
+    "context": "Học sâu & Autoencoder \\cite{sakurada2014anomaly}, VAE \\cite{kingma2014vae}, BiLSTM, Transformer (TranAD \\cite{tuli2022tranad}), AnoGAN & Dẫn đầu trên nhiều tập chuẩn, cần nhiều dữ liệu, khó giải thích cho người nghiệp vụ \\\\"
+  },
+  {
+    "key": "kingma2014vae",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 70,
+    "context": "Học sâu & Autoencoder \\cite{sakurada2014anomaly}, VAE \\cite{kingma2014vae}, BiLSTM, Transformer (TranAD \\cite{tuli2022tranad}), AnoGAN & Dẫn đầu trên nhiều tập chuẩn, cần nhiều dữ liệu, khó giải thích cho người nghiệp vụ \\\\"
+  },
+  {
+    "key": "tuli2022tranad",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 70,
+    "context": "Học sâu & Autoencoder \\cite{sakurada2014anomaly}, VAE \\cite{kingma2014vae}, BiLSTM, Transformer (TranAD \\cite{tuli2022tranad}), AnoGAN & Dẫn đầu trên nhiều tập chuẩn, cần nhiều dữ liệu, khó giải thích cho người nghiệp vụ \\\\"
+  },
+  {
+    "key": "lebret2016neural",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 80,
+    "context": "Sinh báo cáo tự động từ dữ liệu cấu trúc (Structured Data-to-Text Generation) là bài toán tạo văn bản ngôn ngữ tự nhiên từ đầu vào là bảng, JSON, hoặc kết quả phân tích \\cite{lebret2016neural}. Trong ngữ cảnh AD, đầu ra là báo cáo mô tả các bất thường phát hiện được, nguyên nhân dự đoán và đề xuất hành động."
+  },
+  {
+    "key": "wei2022chain",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 86,
+    "context": "  \\item \\textbf{Kỹ thuật lập lời nhắc (Prompt engineering):} Sử dụng LLM (GPT, Qwen2) với kỹ thuật nhắc vài ví dụ mẫu (few-shot prompting) và Chuỗi suy luận (Chain-of-Thought) \\cite{wei2022chain}; linh hoạt nhưng không nhất quán, chi phí API cao."
+  },
+  {
+    "key": "hu2022lora",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 87,
+    "context": "  \\item \\textbf{Tinh chỉnh LoRA (Fine-tune LoRA):} Điều chỉnh LLM nhẹ với Low-Rank Adaptation \\cite{hu2022lora}; cân bằng giữa hiệu quả và chi phí; cho phép thích nghi theo lĩnh vực với tài nguyên hạn chế."
+  },
+  {
+    "key": "lewis2020rag",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 88,
+    "context": "  \\item \\textbf{RAG:} Retrieval-Augmented Generation \\cite{lewis2020rag}; tăng tính trung thực bằng cách truy xuất ngữ cảnh nghiệp vụ liên quan."
+  },
+  {
+    "key": "qwen2024report",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 95,
+    "context": "  \\item \\textbf{Qwen2-1.5B} \\cite{qwen2024report}: 1,5 tỷ tham số, hỗ trợ đa ngôn ngữ, context window 32K token."
+  },
+  {
+    "key": "gemma2024",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 96,
+    "context": "  \\item \\textbf{Gemma-2B} \\cite{gemma2024}: Google DeepMind, hiệu năng tốt ở kích thước nhỏ, giấy phép Apache 2.0."
+  },
+  {
+    "key": "nguyen2023phogpt",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 97,
+    "context": "  \\item \\textbf{PhoGPT} \\cite{nguyen2023phogpt}: Mô hình tiếng Việt từ VinAI, chuyên sâu văn bản tiếng Việt."
+  },
+  {
+    "key": "grattafiori2024llama3",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 98,
+    "context": "  \\item \\textbf{Llama 3-8B} \\cite{grattafiori2024llama3}: Meta AI, benchmark mạnh, cần GPU $\\geq$ 16GB để tinh chỉnh."
+  },
+  {
+    "key": "zong2018dagmm",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 130,
+    "context": "1 & Zong et al.\\ (2018)\\textsuperscript{\\dag} \\cite{zong2018dagmm} & DAGMM & F1 0,937 trên KDD99 (bài báo công bố P/R/F1, không công bố AUC); chưa áp dụng dữ liệu dạng chuỗi thời gian dài \\\\"
+  },
+  {
+    "key": "su2019omni",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 132,
+    "context": "2 & Su et al.\\ (2019)\\textsuperscript{\\dag} \\cite{su2019omni} & OmniAnomaly (VAE + Normalizing Flow) & F1 cao trên các tập chuỗi thời gian đa biến (SMD, SMAP, MSL); không hỗ trợ dữ liệu dạng bảng \\\\"
+  },
+  {
+    "key": "munir2019deepant",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 134,
+    "context": "3 & Munir et al.\\ (2019)\\textsuperscript{\\dag} \\cite{munir2019deepant} & DeepAnT (CNN) & Phát hiện bất thường điểm trong dạng chuỗi thời gian; không tổ hợp \\\\"
+  },
+  {
+    "key": "schlegl2019anogan",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 136,
+    "context": "4 & Schlegl et al.\\ (2019)\\textsuperscript{\\dag} \\cite{schlegl2019anogan} & f-AnoGAN & Bộ mã hoá ánh xạ nhanh thay tìm kiếm lặp của AnoGAN $\\to$ suy luận nhanh hơn nhiều bậc; đánh giá trên ảnh y tế (OCT võng mạc), chưa cho dữ liệu dạng bảng \\\\"
+  },
+  {
+    "key": "audibert2020usad",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 138,
+    "context": "5 & Audibert et al.\\ (2020)\\textsuperscript{\\dag} \\cite{audibert2020usad} & USAD (Encoder-Decoder AD) & Tự mã hoá huấn luyện đối kháng, huấn luyện nhanh và ổn định trên 5 tập công khai; chỉ cho chuỗi thời gian đa biến, không hỗ trợ dữ liệu dạng bảng \\\\"
+  },
+  {
+    "key": "tuli2022tranad",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 140,
+    "context": "6 & Tuli et al.\\ (2022) \\cite{tuli2022tranad} & TranAD (Transformer AD) & Dẫn đầu trên phần lớn tập chuẩn chuỗi thời gian tại thời điểm công bố; bài báo nhấn mạnh chi phí huấn luyện \\emph{thấp}; chỉ cho chuỗi thời gian đa biến \\\\"
+  },
+  {
+    "key": "dai2022ganf",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 142,
+    "context": "7 & Dai \\& Chen (2022) \\cite{dai2022ganf} & GANF (Graph-Augmented NF) & AUC-ROC $79{,}6 \\pm 0{,}9$\\% trên SWaT (Bảng~1 của bài gốc); phức tạp với dữ liệu dạng bảng thưa \\\\"
+  },
+  {
+    "key": "chen2016xgboost",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 144,
+    "context": "8 & Chen \\& Guestrin (2016)\\textsuperscript{\\dag} \\cite{chen2016xgboost} & XGBoost & Bài báo hệ thống về tăng cường gradient khả mở (đánh giá trên Higgs, xếp hạng, Allstate, Criteo) --- \\emph{không} chứa thí nghiệm phát hiện gian lận; cần nhãn đầy đủ \\\\"
+  },
+  {
+    "key": "hu2022lora",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 146,
+    "context": "9 & Hu et al.\\ (2022) \\cite{hu2022lora} & LoRA (Low-Rank Adaptation) & Giảm 10.000× tham số tinh chỉnh; bộ đánh giá chuẩn NLU/NLG \\\\"
+  },
+  {
+    "key": "lewis2020rag",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 148,
+    "context": "10 & Lewis et al.\\ (2020)\\textsuperscript{\\dag} \\cite{lewis2020rag} & RAG (Retrieval-Augmented Gen.) & Dẫn đầu hỏi-đáp miền mở \\emph{tại thời điểm công bố (2020)}; cần cơ sở dữ liệu vector riêng \\\\"
+  },
+  {
+    "key": "xie2023finma",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 150,
+    "context": "11 & Xie et al.\\ (2023) \\cite{xie2023finma} & FinMA (Financial LLM) & Vượt GPT-4 ở một số tác vụ phân loại tài chính nhưng \\emph{kém hơn} ở hỏi-đáp và suy luận; không hỗ trợ tiếng Việt \\\\"
+  },
+  {
+    "key": "wu2023bloomberggpt",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 152,
+    "context": "12 & Wu et al.\\ (2023) \\cite{wu2023bloomberggpt} & BloombergGPT & 50 tỷ tham số tài chính; không mã nguồn mở hoàn toàn \\\\"
+  },
+  {
+    "key": "wei2022chain",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 154,
+    "context": "13 & Wei et al.\\ (2022) \\cite{wei2022chain} & Chain-of-Thought Prompting & Cải thiện khả năng suy luận; định dạng đầu ra không ổn định \\\\"
+  },
+  {
+    "key": "zhang2020bertscore",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 156,
+    "context": "14 & Zhang et al.\\ (2020)\\textsuperscript{\\dag} \\cite{zhang2020bertscore} & BERTScore & Đánh giá sinh văn bản tốt hơn BLEU; cần GPU để tính \\\\"
+  },
+  {
+    "key": "kingma2014vae",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 158,
+    "context": "15 & Kingma \\& Welling (2014)\\textsuperscript{\\dag} \\cite{kingma2014vae} & VAE & Không gian ẩn học được; hình tái tạo mờ \\\\"
+  },
+  {
+    "key": "vaswani2017attention",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 160,
+    "context": "16 & Vaswani et al.\\ (2017)\\textsuperscript{\\dag} \\cite{vaswani2017attention} & Transformer (self-attention) & Công trình nền tảng, là kiến trúc gốc của các LLM hiện nay \\\\"
+  },
+  {
+    "key": "han2022adbench",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 162,
+    "context": "17 & Han et al.\\ (2022) \\cite{han2022adbench} & ADBench (30 thuật toán $\\times$ 57 tập dữ liệu) & Bộ đánh giá chuẩn phát hiện bất thường dạng bảng; chưa đánh giá phương pháp dựa trên LLM \\\\"
+  },
+  {
+    "key": "schreyer2017accounting_dae",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 164,
+    "context": "18 & Schreyer et al.\\ (2017)\\textsuperscript{\\dag} \\cite{schreyer2017accounting_dae} & Deep Autoencoder cho dữ liệu kế toán & F1 32,93\\% (tập A); từng dòng, chưa xử lý theo lô \\\\"
+  },
+  {
+    "key": "tsai2025anollm",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 166,
+    "context": "19 & Tsai et al.\\ (2025) \\cite{tsai2025anollm} & AnoLLM (serialize + NLL) & Tiên tiến nhất trên 6 tập dữ liệu kiểu hỗn hợp; chi phí suy luận cao, chỉ xuất điểm số \\\\"
+  },
+  {
+    "key": "li2024llm_tabad",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 168,
+    "context": "20 & Li et al.\\ (2024) \\cite{li2024llm_tabad} & GPT-4 không tinh chỉnh, phát hiện bất thường theo lô & Ngang tiên tiến nhất trên ODDS; xử lý theo lô, không theo thời gian thực từng hàng \\\\"
+  },
+  {
+    "key": "zhao2025tadgp",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 170,
+    "context": "21 & Zhao et al.\\ (2025) \\cite{zhao2025tadgp} & TAD-GP (prompt-guided LLM 7B) & Cải thiện F1 $+79{,}31$\\% trên CICIDS2017 ($+97{,}96$\\% KDD Cup 1999, $+59{,}09$\\% UNSW-NB15); chỉ kiểm thử trên 3 tập an ninh mạng \\\\"
+  },
+  {
+    "key": "ofa_tad2026",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 172,
+    "context": "22 & OFA-TAD (2026) \\cite{ofa_tad2026} & Đa lĩnh vực, dữ liệu dạng bảng, phát hiện bất thường & Tổng quát hoá đa lĩnh vực; không tích hợp LLM sinh báo cáo \\\\"
+  },
+  {
+    "key": "auto_monitoring_report_llm_kg2024",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 174,
+    "context": "23 & Chen et al.\\ (2025) \\cite{auto_monitoring_report_llm_kg2024} & LLM + suy luận trên đồ thị tri thức để sinh báo cáo & Sinh được báo cáo giám sát có cấu trúc; phụ thuộc đồ thị tri thức xây sẵn nên không áp dụng được cho CSV thuần \\\\"
+  },
+  {
+    "key": "contextual_ad_tabular2025",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 176,
+    "context": "24 & King et al.\\ (2026) \\cite{contextual_ad_tabular2025} & Contextual AD dạng bảng (TMLR) & Học theo ngữ cảnh vượt hướng tiếp cận toàn cục trên \\emph{8 tập chuẩn}; không tích hợp LLM sinh báo cáo \\\\"
+  },
+  {
+    "key": "fang2024llm_tabular_survey",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 178,
+    "context": "25 & Fang et al.\\ (2024) \\cite{fang2024llm_tabular_survey} & Survey LLM-on-Tabular (TMLR) & Phân loại đầy đủ tới 2024; phần phát hiện bất thường ngắn, chưa sâu \\\\"
+  },
+  {
+    "key": "tsai2025anollm",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 225,
+    "context": "AnoLLM \\cite{tsai2025anollm} & Dạng bảng hỗn hợp & EN & Không (cần GPU lớn) & Không (LLM = bộ tính điểm, không sinh báo cáo) \\\\"
+  },
+  {
+    "key": "zhao2025tadgp",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 227,
+    "context": "TAD-GP \\cite{zhao2025tadgp} & An ninh mạng dạng bảng & EN & Khó (LLM 7B) & Không (chỉ phát hiện bất thường, không sinh báo cáo) \\\\"
+  },
+  {
+    "key": "auto_monitoring_report_llm_kg2024",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 229,
+    "context": "Auto Monitor Report \\cite{auto_monitoring_report_llm_kg2024} & Dữ liệu giám sát + đồ thị tri thức & EN/CN & Không (cần bộ đồ thị tri thức) & Có nhưng cần đồ thị tri thức, không dùng được cho CSV thuần \\\\"
+  },
+  {
+    "key": "tsai2025anollm",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 236,
+    "context": "\\textit{Phân tích:} AnoLLM \\cite{tsai2025anollm} dùng LLM làm \\textit{bộ tính điểm} bất thường thay cho mô hình truyền thống, còn TAD-GP \\cite{zhao2025tadgp} chỉ kiểm thử trên dữ liệu an ninh mạng -- cả hai đều không sinh báo cáo ngôn ngữ tự nhiên. Hệ thống Auto-Monitoring Report \\cite{auto_monitoring_report_llm_kg2024} sinh được báo cáo có cấu trúc nhưng phụ thuộc đồ thị tri thức xây sẵn, không khả thi cho CSV nghiệp vụ tổng quát. Đề tài kết hợp ensemble phát hiện truyền thống với LLM nhỏ tinh chỉnh LoRA (Qwen2-1.5B) qua tầng \\textit{Gói Bằng chứng}, sinh báo cáo song ngữ Việt--Anh và triển khai được tại chỗ trên một GPU phổ thông (so sánh chi tiết: Phụ lục H)."
+  },
+  {
+    "key": "zhao2025tadgp",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 236,
+    "context": "\\textit{Phân tích:} AnoLLM \\cite{tsai2025anollm} dùng LLM làm \\textit{bộ tính điểm} bất thường thay cho mô hình truyền thống, còn TAD-GP \\cite{zhao2025tadgp} chỉ kiểm thử trên dữ liệu an ninh mạng -- cả hai đều không sinh báo cáo ngôn ngữ tự nhiên. Hệ thống Auto-Monitoring Report \\cite{auto_monitoring_report_llm_kg2024} sinh được báo cáo có cấu trúc nhưng phụ thuộc đồ thị tri thức xây sẵn, không khả thi cho CSV nghiệp vụ tổng quát. Đề tài kết hợp ensemble phát hiện truyền thống với LLM nhỏ tinh chỉnh LoRA (Qwen2-1.5B) qua tầng \\textit{Gói Bằng chứng}, sinh báo cáo song ngữ Việt--Anh và triển khai được tại chỗ trên một GPU phổ thông (so sánh chi tiết: Phụ lục H)."
+  },
+  {
+    "key": "auto_monitoring_report_llm_kg2024",
+    "file": "iuh_master_thesis/chapters/chuong1.tex",
+    "line": 236,
+    "context": "\\textit{Phân tích:} AnoLLM \\cite{tsai2025anollm} dùng LLM làm \\textit{bộ tính điểm} bất thường thay cho mô hình truyền thống, còn TAD-GP \\cite{zhao2025tadgp} chỉ kiểm thử trên dữ liệu an ninh mạng -- cả hai đều không sinh báo cáo ngôn ngữ tự nhiên. Hệ thống Auto-Monitoring Report \\cite{auto_monitoring_report_llm_kg2024} sinh được báo cáo có cấu trúc nhưng phụ thuộc đồ thị tri thức xây sẵn, không khả thi cho CSV nghiệp vụ tổng quát. Đề tài kết hợp ensemble phát hiện truyền thống với LLM nhỏ tinh chỉnh LoRA (Qwen2-1.5B) qua tầng \\textit{Gói Bằng chứng}, sinh báo cáo song ngữ Việt--Anh và triển khai được tại chỗ trên một GPU phổ thông (so sánh chi tiết: Phụ lục H)."
+  },
+  {
+    "key": "bishop2006pattern",
+    "file": "iuh_master_thesis/chapters/chuong2.tex",
+    "line": 9,
+    "context": "Học có giám sát (Supervised Learning) huấn luyện mô hình $f: \\mathcal{X} \\to \\mathcal{Y}$ với tập dữ liệu có nhãn $\\{(\\mathbf{x}_i, y_i)\\}_{i=1}^{N}$. Trong bài toán phân loại nhị phân bất thường, $y_i \\in \\{0, 1\\}$ biểu thị bình thường/bất thường \\cite{bishop2006pattern}."
+  },
+  {
+    "key": "chen2016xgboost",
+    "file": "iuh_master_thesis/chapters/chuong2.tex",
+    "line": 49,
+    "context": "XGBoost (eXtreme Gradient Boosting) \\cite{chen2016xgboost} là thuật toán ensemble học có giám sát dựa trên tăng cường gradient, xây dựng tuần tự các cây quyết định $T_k$ để giảm thiểu sai số dư:"
+  },
+  {
+    "key": "vincent2010stacked",
+    "file": "iuh_master_thesis/chapters/chuong2.tex",
+    "line": 60,
+    "context": "DAE \\cite{vincent2010stacked} học biểu diễn nén (biểu diễn không gian ẩn) bằng cách tái tạo dữ liệu gốc $\\mathbf{x}$ từ phiên bản nhiễu $\\tilde{\\mathbf{x}} = \\mathbf{x} + \\boldsymbol{\\epsilon}$, $\\boldsymbol{\\epsilon} \\sim \\mathcal{N}(0, \\sigma^2 I)$:"
+  },
+  {
+    "key": "graves2005bilstm",
+    "file": "iuh_master_thesis/chapters/chuong2.tex",
+    "line": 71,
+    "context": "BiLSTM (Bidirectional Long Short-Term Memory) \\cite{graves2005bilstm} xử lý chuỗi theo cả hai chiều thuận và nghịch, học phụ thuộc dài hạn:"
+  },
+  {
+    "key": "tuli2022tranad",
+    "file": "iuh_master_thesis/chapters/chuong2.tex",
+    "line": 82,
+    "context": "TranAD \\cite{tuli2022tranad} là mô hình Transformer với hai bộ giải mã: bộ giải mã thứ nhất ($D_1$) tái tạo chuỗi bình thường, bộ giải mã thứ hai ($D_2$) phân biệt bình thường và bất thường. Hàm mất mát kết hợp tái tạo và phân biệt:"
+  },
+  {
+    "key": "schlegl2019anogan",
+    "file": "iuh_master_thesis/chapters/chuong2.tex",
+    "line": 93,
+    "context": "f-AnoGAN \\cite{schlegl2019anogan} là mô hình GAN với bộ mã hoá ánh xạ nhanh $E$: tìm mã không gian ẩn $\\mathbf{z}^*$ cho quan sát $\\mathbf{x}$ bằng cách tối thiểu hoá:"
+  },
+  {
+    "key": "vaswani2017attention",
+    "file": "iuh_master_thesis/chapters/chuong2.tex",
+    "line": 118,
+    "context": "Transformer \\cite{vaswani2017attention} là kiến trúc nền tảng của mọi LLM hiện đại, dựa trên cơ chế tự chú ý (self-attention):"
+  },
+  {
+    "key": "qwen2024report",
+    "file": "iuh_master_thesis/chapters/chuong2.tex",
+    "line": 130,
+    "context": "  \\item \\textbf{Qwen2-1.5B} \\cite{qwen2024report}: Mô hình đa ngôn ngữ của Alibaba, 1,5 tỷ tham số, cửa sổ ngữ cảnh 32K token, hỗ trợ tốt tiếng Việt và tiếng Anh."
+  },
+  {
+    "key": "gemma2024",
+    "file": "iuh_master_thesis/chapters/chuong2.tex",
+    "line": 131,
+    "context": "  \\item \\textbf{Gemma-2B} \\cite{gemma2024}: Google DeepMind, kiến trúc chỉ bộ giải mã (decoder-only), sử dụng mã hoá vị trí RoPE, Chú ý đa truy vấn (Multi-Query Attention); hiệu năng tốt ở kích thước nhỏ."
+  },
+  {
+    "key": "xu2023peft",
+    "file": "iuh_master_thesis/chapters/chuong2.tex",
+    "line": 136,
+    "context": "Tinh chỉnh hiệu quả tham số (Parameter-Efficient Fine-Tuning -- PEFT) \\cite{xu2023peft} giảm số tham số cần cập nhật bằng cách chèn các bộ thích nghi nhỏ. LoRA (Low-Rank Adaptation) \\cite{hu2022lora} xấp xỉ ma trận cập nhật trọng số $\\Delta W$ bằng tích hai ma trận hạng thấp:"
+  },
+  {
+    "key": "hu2022lora",
+    "file": "iuh_master_thesis/chapters/chuong2.tex",
+    "line": 136,
+    "context": "Tinh chỉnh hiệu quả tham số (Parameter-Efficient Fine-Tuning -- PEFT) \\cite{xu2023peft} giảm số tham số cần cập nhật bằng cách chèn các bộ thích nghi nhỏ. LoRA (Low-Rank Adaptation) \\cite{hu2022lora} xấp xỉ ma trận cập nhật trọng số $\\Delta W$ bằng tích hai ma trận hạng thấp:"
+  },
+  {
+    "key": "wei2022chain",
+    "file": "iuh_master_thesis/chapters/chuong2.tex",
+    "line": 150,
+    "context": "  \\item \\textbf{Chuỗi suy luận (Chain-of-Thought -- CoT)} \\cite{wei2022chain}: Yêu cầu mô hình giải thích từng bước trước khi đưa ra kết luận, tăng chất lượng suy luận."
+  },
+  {
+    "key": "papineni2002bleu",
+    "file": "iuh_master_thesis/chapters/chuong2.tex",
+    "line": 157,
+    "context": "  \\item \\textbf{BLEU-4} \\cite{papineni2002bleu}: Đo mức độ trùng khớp n-gram giữa báo cáo sinh và reference; phổ biến nhưng nhạy cảm với từ ngữ."
+  },
+  {
+    "key": "lin2004rouge",
+    "file": "iuh_master_thesis/chapters/chuong2.tex",
+    "line": 158,
+    "context": "  \\item \\textbf{ROUGE-L} \\cite{lin2004rouge}: Tỷ lệ chuỗi con chung dài nhất (Longest Common Subsequence ratio); tốt hơn BLEU cho văn bản dài."
+  },
+  {
+    "key": "zhang2020bertscore",
+    "file": "iuh_master_thesis/chapters/chuong2.tex",
+    "line": 159,
+    "context": "  \\item \\textbf{BERTScore} \\cite{zhang2020bertscore}: Tính độ tương đồng ngữ nghĩa dựa trên embedding BERT; không phụ thuộc khớp chính xác (exact match)."
+  },
+  {
+    "key": "ica_nric2024",
+    "file": "iuh_master_thesis/chapters/chuong3.tex",
+    "line": 61,
+    "context": "                acra_companies_act1967}, NRIC theo ICA \\cite{ica_nric2024}, mã bưu chính theo"
+  },
+  {
+    "key": "singpost2024",
+    "file": "iuh_master_thesis/chapters/chuong3.tex",
+    "line": 62,
+    "context": "                SingPost/SLA OneMap \\cite{singpost2024, sla_onemap2024}, phân loại loại tài sản"
+  },
+  {
+    "key": "sla_onemap2024",
+    "file": "iuh_master_thesis/chapters/chuong3.tex",
+    "line": 62,
+    "context": "                SingPost/SLA OneMap \\cite{singpost2024, sla_onemap2024}, phân loại loại tài sản"
+  },
+  {
+    "key": "ura_realis2024",
+    "file": "iuh_master_thesis/chapters/chuong3.tex",
+    "line": 63,
+    "context": "                theo URA REALIS \\cite{ura_realis2024}."
+  },
+  {
+    "key": "cea_eaa2010",
+    "file": "iuh_master_thesis/chapters/chuong3.tex",
+    "line": 65,
+    "context": "                Estate Agents Act 2010 \\cite{cea_eaa2010, cea_public_register}; phân biệt"
+  },
+  {
+    "key": "cea_public_register",
+    "file": "iuh_master_thesis/chapters/chuong3.tex",
+    "line": 65,
+    "context": "                Estate Agents Act 2010 \\cite{cea_eaa2010, cea_public_register}; phân biệt"
+  },
+  {
+    "key": "cea_cobroking",
+    "file": "iuh_master_thesis/chapters/chuong3.tex",
+    "line": 66,
+    "context": "                ICB/ECB theo CEA Co-broking Guidelines \\cite{cea_cobroking}."
+  },
+  {
+    "key": "fan2008cfd",
+    "file": "iuh_master_thesis/chapters/chuong3.tex",
+    "line": 69,
+    "context": "                (Conditional Functional Dependencies) \\cite{fan2008cfd} và Ràng buộc phủ định"
+  },
+  {
+    "key": "chu2013dc",
+    "file": "iuh_master_thesis/chapters/chuong3.tex",
+    "line": 70,
+    "context": "                (Denial Constraints) \\cite{chu2013dc, chu2013holistic, pena2019approximate}."
+  },
+  {
+    "key": "chu2013holistic",
+    "file": "iuh_master_thesis/chapters/chuong3.tex",
+    "line": 70,
+    "context": "                (Denial Constraints) \\cite{chu2013dc, chu2013holistic, pena2019approximate}."
+  },
+  {
+    "key": "pena2019approximate",
+    "file": "iuh_master_thesis/chapters/chuong3.tex",
+    "line": 70,
+    "context": "                (Denial Constraints) \\cite{chu2013dc, chu2013holistic, pena2019approximate}."
+  },
+  {
+    "key": "christen2012datamatching",
+    "file": "iuh_master_thesis/chapters/chuong3.tex",
+    "line": 72,
+    "context": "                \\cite{christen2012datamatching} và Papadakis et al.\\ \\cite{papadakis2021er}."
+  },
+  {
+    "key": "papadakis2021er",
+    "file": "iuh_master_thesis/chapters/chuong3.tex",
+    "line": 72,
+    "context": "                \\cite{christen2012datamatching} và Papadakis et al.\\ \\cite{papadakis2021er}."
+  },
+  {
+    "key": "ilyas2019datacleaning",
+    "file": "iuh_master_thesis/chapters/chuong3.tex",
+    "line": 75,
+    "context": "        (Data Cleaning)} \\cite{ilyas2019datacleaning, abedjan2015profiling}, các hệ thống tham chiếu"
+  },
+  {
+    "key": "abedjan2015profiling",
+    "file": "iuh_master_thesis/chapters/chuong3.tex",
+    "line": 75,
+    "context": "        (Data Cleaning)} \\cite{ilyas2019datacleaning, abedjan2015profiling}, các hệ thống tham chiếu"
+  },
+  {
+    "key": "dallachiesa2013nadeef",
+    "file": "iuh_master_thesis/chapters/chuong3.tex",
+    "line": 76,
+    "context": "        (NADEEF \\cite{dallachiesa2013nadeef}, HoloClean \\cite{rekatsinas2017holoclean}), và các công"
+  },
+  {
+    "key": "rekatsinas2017holoclean",
+    "file": "iuh_master_thesis/chapters/chuong3.tex",
+    "line": 76,
+    "context": "        (NADEEF \\cite{dallachiesa2013nadeef}, HoloClean \\cite{rekatsinas2017holoclean}), và các công"
+  },
+  {
+    "key": "senaratne2023rulead",
+    "file": "iuh_master_thesis/chapters/chuong3.tex",
+    "line": 78,
+    "context": "        (RULEAD \\cite{senaratne2023rulead}, Akella \\& Narayanam \\cite{akella2025quality},"
+  },
+  {
+    "key": "akella2025quality",
+    "file": "iuh_master_thesis/chapters/chuong3.tex",
+    "line": 78,
+    "context": "        (RULEAD \\cite{senaratne2023rulead}, Akella \\& Narayanam \\cite{akella2025quality},"
+  },
+  {
+    "key": "akella2025tabshapley",
+    "file": "iuh_master_thesis/chapters/chuong3.tex",
+    "line": 79,
+    "context": "        Tab-Shapley \\cite{akella2025tabshapley})."
+  },
+  {
+    "key": "liu2008isolation",
+    "file": "iuh_master_thesis/chapters/chuong3.tex",
+    "line": 111,
+    "context": "Để kiểm chứng khả năng \\textit{tổng quát hoá của phương pháp (đặc trưng V11 toàn năng + XGBoost) trên nhiều lĩnh vực khác nhau} và tránh rủi ro đánh giá vòng khép kín (\textit{circular evaluation}) từ nhãn dựa trên luật, luận văn bổ sung đánh giá trên \\textbf{8 bộ dữ liệu benchmark công khai} có nhãn chuẩn độc lập, thuộc nhiều lĩnh vực khác nhau (an ninh mạng, môi trường, tài chính, BĐS). Mỗi tập dữ liệu được huấn luyện và kiểm tra độc lập theo phân chia chuẩn của benchmark (đây là quy ước thông dụng trong các công trình về phát hiện bất thường, ví dụ Liu~\\cite{liu2008isolation}, Breunig~\\cite{breunig2000lof}). Bảng~\\ref{tab:public_datasets} mô tả chi tiết các bộ dữ liệu."
+  },
+  {
+    "key": "breunig2000lof",
+    "file": "iuh_master_thesis/chapters/chuong3.tex",
+    "line": 111,
+    "context": "Để kiểm chứng khả năng \\textit{tổng quát hoá của phương pháp (đặc trưng V11 toàn năng + XGBoost) trên nhiều lĩnh vực khác nhau} và tránh rủi ro đánh giá vòng khép kín (\textit{circular evaluation}) từ nhãn dựa trên luật, luận văn bổ sung đánh giá trên \\textbf{8 bộ dữ liệu benchmark công khai} có nhãn chuẩn độc lập, thuộc nhiều lĩnh vực khác nhau (an ninh mạng, môi trường, tài chính, BĐS). Mỗi tập dữ liệu được huấn luyện và kiểm tra độc lập theo phân chia chuẩn của benchmark (đây là quy ước thông dụng trong các công trình về phát hiện bất thường, ví dụ Liu~\\cite{liu2008isolation}, Breunig~\\cite{breunig2000lof}). Bảng~\\ref{tab:public_datasets} mô tả chi tiết các bộ dữ liệu."
+  },
+  {
+    "key": "hilal2022financial",
+    "file": "iuh_master_thesis/chapters/chuong3.tex",
+    "line": 346,
+    "context": "\\textbf{Định vị đóng góp.} Luận văn không tranh tính mới với hướng \\textit{ensemble phát hiện bất thường thuần} -- cách kết hợp nhiều mô hình bằng hợp nhất điểm số / xếp chồng đã được tổng kết trong các khảo sát chuyên ngành gần đây (Hilal và cộng sự \\cite{hilal2022financial}, Han và cộng sự \\cite{han2022adbench}). Điểm mới của luận văn nằm ở \\textbf{kiến trúc đầu cuối ghép Model Router--Ensemble--LLM} cho dữ liệu CSV nghiệp vụ, cụ thể:"
+  },
+  {
+    "key": "han2022adbench",
+    "file": "iuh_master_thesis/chapters/chuong3.tex",
+    "line": 346,
+    "context": "\\textbf{Định vị đóng góp.} Luận văn không tranh tính mới với hướng \\textit{ensemble phát hiện bất thường thuần} -- cách kết hợp nhiều mô hình bằng hợp nhất điểm số / xếp chồng đã được tổng kết trong các khảo sát chuyên ngành gần đây (Hilal và cộng sự \\cite{hilal2022financial}, Han và cộng sự \\cite{han2022adbench}). Điểm mới của luận văn nằm ở \\textbf{kiến trúc đầu cuối ghép Model Router--Ensemble--LLM} cho dữ liệu CSV nghiệp vụ, cụ thể:"
+  },
+  {
+    "key": "liu2008isolation",
+    "file": "iuh_master_thesis/chapters/chuong4.tex",
+    "line": 143,
+    "context": "Để giảm thiểu rủi ro đánh giá vòng khép kín (\\textit{circular evaluation}) từ nhãn dựa trên luật (xem §3.1.4 và §\\ref{sec:discussion}) và đo khả năng tổng quát hoá của phương pháp đề xuất sang nhiều lĩnh vực khác nhau, luận văn đánh giá \\textbf{V11-XGBoost (Universal)} -- biến thể của A7\\_XGBoost-CLEAN sử dụng tăng cường lược đồ (\\textit{schema augmentation}, §\\ref{sec:schema_aug}) và bộ xây dựng đặc trưng phổ quát (\\textit{universal feature builder}, 132 chiều) -- trên 5 tập dữ liệu chuẩn công khai có nhãn thực tế độc lập. \\textbf{Mỗi tập dữ liệu được huấn luyện và kiểm tra độc lập theo phân chia chuẩn}: V11-XGBoost được huấn luyện lại trên tập huấn luyện của từng bộ dữ liệu (đặc trưng phổ quát được khớp trên tập huấn luyện, XGBoost huấn luyện kết hợp tăng cường lược đồ), sau đó đánh giá trên tập kiểm tra tương ứng. Đây là quy ước chuẩn khi so sánh phương pháp phát hiện bất thường trên bộ tập dữ liệu chuẩn. So sánh với 3 phương pháp nền tảng kinh điển: Isolation Forest~\\cite{liu2008isolation}, LOF~\\cite{breunig2000lof}, và COPOD (Phát hiện ngoại lệ dựa trên Copula -- \\textit{Copula-Based Outlier Detection})~\\cite{li2020copod}, cùng với XGBoost-Raw (XGBoost không qua tăng cường lược đồ và bộ xây dựng đặc trưng phổ quát). \\textit{Ghi chú về số cột:} số cột ghi cạnh tên tập trong các bảng của mục này có thể khác với số cột của cùng tập đó ở các bảng kiểm định loại bỏ (\\S\\ref{sec:ablation_no_hash}) --- ví dụ Credit Card 30 so với 29, SG Condo 11 so với 17, SG HDB 28 so với 11 --- vì mỗi thí nghiệm dùng biến thể tiền xử lý riêng của bộ nạp dữ liệu (giữ/bỏ cột thời gian, cột dẫn xuất, cách mã hoá); số cột trong từng bảng khớp với artifact của chính thí nghiệm đó."
+  },
+  {
+    "key": "breunig2000lof",
+    "file": "iuh_master_thesis/chapters/chuong4.tex",
+    "line": 143,
+    "context": "Để giảm thiểu rủi ro đánh giá vòng khép kín (\\textit{circular evaluation}) từ nhãn dựa trên luật (xem §3.1.4 và §\\ref{sec:discussion}) và đo khả năng tổng quát hoá của phương pháp đề xuất sang nhiều lĩnh vực khác nhau, luận văn đánh giá \\textbf{V11-XGBoost (Universal)} -- biến thể của A7\\_XGBoost-CLEAN sử dụng tăng cường lược đồ (\\textit{schema augmentation}, §\\ref{sec:schema_aug}) và bộ xây dựng đặc trưng phổ quát (\\textit{universal feature builder}, 132 chiều) -- trên 5 tập dữ liệu chuẩn công khai có nhãn thực tế độc lập. \\textbf{Mỗi tập dữ liệu được huấn luyện và kiểm tra độc lập theo phân chia chuẩn}: V11-XGBoost được huấn luyện lại trên tập huấn luyện của từng bộ dữ liệu (đặc trưng phổ quát được khớp trên tập huấn luyện, XGBoost huấn luyện kết hợp tăng cường lược đồ), sau đó đánh giá trên tập kiểm tra tương ứng. Đây là quy ước chuẩn khi so sánh phương pháp phát hiện bất thường trên bộ tập dữ liệu chuẩn. So sánh với 3 phương pháp nền tảng kinh điển: Isolation Forest~\\cite{liu2008isolation}, LOF~\\cite{breunig2000lof}, và COPOD (Phát hiện ngoại lệ dựa trên Copula -- \\textit{Copula-Based Outlier Detection})~\\cite{li2020copod}, cùng với XGBoost-Raw (XGBoost không qua tăng cường lược đồ và bộ xây dựng đặc trưng phổ quát). \\textit{Ghi chú về số cột:} số cột ghi cạnh tên tập trong các bảng của mục này có thể khác với số cột của cùng tập đó ở các bảng kiểm định loại bỏ (\\S\\ref{sec:ablation_no_hash}) --- ví dụ Credit Card 30 so với 29, SG Condo 11 so với 17, SG HDB 28 so với 11 --- vì mỗi thí nghiệm dùng biến thể tiền xử lý riêng của bộ nạp dữ liệu (giữ/bỏ cột thời gian, cột dẫn xuất, cách mã hoá); số cột trong từng bảng khớp với artifact của chính thí nghiệm đó."
+  },
+  {
+    "key": "li2020copod",
+    "file": "iuh_master_thesis/chapters/chuong4.tex",
+    "line": 143,
+    "context": "Để giảm thiểu rủi ro đánh giá vòng khép kín (\\textit{circular evaluation}) từ nhãn dựa trên luật (xem §3.1.4 và §\\ref{sec:discussion}) và đo khả năng tổng quát hoá của phương pháp đề xuất sang nhiều lĩnh vực khác nhau, luận văn đánh giá \\textbf{V11-XGBoost (Universal)} -- biến thể của A7\\_XGBoost-CLEAN sử dụng tăng cường lược đồ (\\textit{schema augmentation}, §\\ref{sec:schema_aug}) và bộ xây dựng đặc trưng phổ quát (\\textit{universal feature builder}, 132 chiều) -- trên 5 tập dữ liệu chuẩn công khai có nhãn thực tế độc lập. \\textbf{Mỗi tập dữ liệu được huấn luyện và kiểm tra độc lập theo phân chia chuẩn}: V11-XGBoost được huấn luyện lại trên tập huấn luyện của từng bộ dữ liệu (đặc trưng phổ quát được khớp trên tập huấn luyện, XGBoost huấn luyện kết hợp tăng cường lược đồ), sau đó đánh giá trên tập kiểm tra tương ứng. Đây là quy ước chuẩn khi so sánh phương pháp phát hiện bất thường trên bộ tập dữ liệu chuẩn. So sánh với 3 phương pháp nền tảng kinh điển: Isolation Forest~\\cite{liu2008isolation}, LOF~\\cite{breunig2000lof}, và COPOD (Phát hiện ngoại lệ dựa trên Copula -- \\textit{Copula-Based Outlier Detection})~\\cite{li2020copod}, cùng với XGBoost-Raw (XGBoost không qua tăng cường lược đồ và bộ xây dựng đặc trưng phổ quát). \\textit{Ghi chú về số cột:} số cột ghi cạnh tên tập trong các bảng của mục này có thể khác với số cột của cùng tập đó ở các bảng kiểm định loại bỏ (\\S\\ref{sec:ablation_no_hash}) --- ví dụ Credit Card 30 so với 29, SG Condo 11 so với 17, SG HDB 28 so với 11 --- vì mỗi thí nghiệm dùng biến thể tiền xử lý riêng của bộ nạp dữ liệu (giữ/bỏ cột thời gian, cột dẫn xuất, cách mã hoá); số cột trong từng bảng khớp với artifact của chính thí nghiệm đó."
+  },
+  {
+    "key": "gebru2022humanmachine",
+    "file": "iuh_master_thesis/chapters/chuong4.tex",
+    "line": 660,
+    "context": "Ba chỉ số fidelity tự động (§\\ref{sec:fidelity_metrics}) đo \\textit{nội dung} (số, rule, coverage) nhưng không bắt được trải nghiệm đọc, độ chuyên nghiệp ngôn ngữ, hay tính khả hành của kiến nghị. Năm chiều bổ sung này (Trung thực, Trôi chảy, Bao phủ, Khả hành, Định dạng) là \\textit{cấu trúc tiềm ẩn đa chiều} (\\textit{latent multidimensional construct}) theo Gebru et al.~\\cite{gebru2022humanmachine}: không đo trực tiếp được, phải dựa vào triangulation của nhiều proxy đo lường. Luận văn không dùng self-report Likert truyền thống (3 reviewer $\\times$ 30 báo cáo) vì hai lý do thống kê và phương pháp luận:"
+  },
+  {
+    "key": "vanderlee2019best",
+    "file": "iuh_master_thesis/chapters/chuong4.tex",
+    "line": 663,
+    "context": "  \\item \\textbf{Underpowered}: Phân tích công suất (paired $t$-test, $\\alpha=0{,}05$, SD Likert $\\approx 0{,}8$) cho thấy $n=30$ chỉ đạt power $\\approx 0{,}50$ để phát hiện hiệu số 0,3 Likert giữa hai cấu hình sinh báo cáo (zero-shot vs +LoRA); cần $n \\geq 70$ mới đạt power 0,80 \\cite{vanderlee2019best}."
+  },
+  {
+    "key": "howcroft2020twenty",
+    "file": "iuh_master_thesis/chapters/chuong4.tex",
+    "line": 664,
+    "context": "  \\item \\textbf{Tái lặp kém}: Reviewer khác $\\to$ điểm khác; người sau khó tái hiện kết quả luận văn, vi phạm nguyên tắc tái lặp khoa học \\cite{howcroft2020twenty}."
+  },
+  {
+    "key": "kirtani2025reviewevaluation",
+    "file": "iuh_master_thesis/chapters/chuong4.tex",
+    "line": 667,
+    "context": "Thay vào đó, luận văn áp dụng \\textbf{LLM-as-Judge với multi-model ensemble}, adapt từ khung ReviewEval của Garg et al.~\\cite{kirtani2025reviewevaluation} cho domain báo cáo phát hiện bất thường BĐS Việt--Anh, kèm \\textbf{calibration subset} do tác giả và GVHD chấm độc lập để xác nhận hiệu lực (\\textit{validity}) của LLM judge so với chuyên gia."
+  },
+  {
+    "key": "kirtani2025reviewevaluation",
+    "file": "iuh_master_thesis/chapters/chuong4.tex",
+    "line": 677,
+    "context": "\\caption{Mapping 5 tiêu chí đánh giá báo cáo NLP với framework ReviewEval~\\cite{kirtani2025reviewevaluation}}"
+  },
+  {
+    "key": "gebru2022humanmachine",
+    "file": "iuh_master_thesis/chapters/chuong4.tex",
+    "line": 710,
+    "context": "Tính \\textbf{Spearman $\\rho$} giữa điểm calibration của human (trung bình 2 người) và điểm LLM judge trên 15 báo cáo $\\times$ 5 tiêu chí $=$ 75 cặp điểm. Ngưỡng chấp nhận: $\\rho \\geq 0{,}70$ trên ít nhất 4/5 tiêu chí, theo lý thuyết tâm trắc trong Gebru et al.~\\cite{gebru2022humanmachine}: thang đo trust có $\\rho \\geq 0{,}7$ với gold standard đủ valid cho ứng dụng vận hành."
+  },
+  {
+    "key": "kirtani2025reviewevaluation",
+    "file": "iuh_master_thesis/chapters/chuong4.tex",
+    "line": 738,
+    "context": "  \\item \\textbf{Domain expertise của judge}: LLM general-purpose không được huấn luyện chuyên biệt BĐS Singapore $\\to$ có thể bỏ lỡ lỗi nghiệp vụ tinh vi; mitigate bằng RAG-based factual correctness gắn vào Evidence Packet như ground truth \\cite{kirtani2025reviewevaluation}."
+  },
+  {
+    "key": "kirtani2025reviewevaluation",
+    "file": "iuh_master_thesis/chapters/chuong4.tex",
+    "line": 741,
+    "context": "Khung LLM-as-Judge này đã được community AI/NLP chấp nhận tại NeurIPS, ACL, EMNLP 2024--2025 thông qua MT-Bench, AlpacaEval, G-Eval, và đặc biệt ReviewEval~\\cite{kirtani2025reviewevaluation} -- cho bài toán đánh giá output ngôn ngữ tự nhiên có cấu trúc tương tự báo cáo phát hiện bất thường của luận văn."
+  },
+  {
+    "key": "hdb2024",
+    "file": "iuh_master_thesis/chapters/chuong4.tex",
+    "line": 826,
+    "context": "    \\item \\texttt{mop\\_violation}: Giao dịch diễn ra trong thời hạn Minimum Occupation Period (MOP = 5 năm theo HDB~\\cite{hdb2024})."
+  },
+  {
+    "key": "wang1996beyond",
+    "file": "iuh_master_thesis/chapters/chuong5.tex",
+    "line": 196,
+    "context": "\\textbf{Từ phát hiện bất thường sang đánh giá mức sẵn sàng dữ liệu.} Khi vận hành thử hệ thống trên tệp SNRE năm 2020 gồm 287 giao dịch, ensemble không đánh dấu dòng nào vượt ngưỡng, trong khi bộ kiểm tra ràng buộc theo mô hình dữ liệu đích ghi nhận vi phạm ở cả 287 dòng; riêng ba cột tiền tệ sai kiểu ở mọi dòng, và các ô được kiểm tra đều lưu giá trị kèm ký hiệu tiền tệ cùng dấu phân cách hàng nghìn. Hai phép kiểm này trả lời hai câu hỏi khác nhau --- giao dịch có đáng ngờ hay không, và dữ liệu có thoả hợp đồng của hệ thống đích hay không --- nên kết quả ``không bất thường'' không đồng nghĩa với ``dữ liệu đã sẵn sàng để sử dụng hoặc chuyển đổi''. Hướng phát triển tương ứng là đặt một tầng đánh giá mức sẵn sàng dữ liệu trước tầng phát hiện, xây trên quan niệm chất lượng dữ liệu đa chiều \\cite{wang1996beyond, ehrlinger2022survey} và trên cách biểu diễn kiểm thử dữ liệu thành ràng buộc khai báo có thể kiểm chứng tự động \\cite{schelter2018automating, shankar2023automatic}, phục vụ bài toán chuyển dữ liệu giữa các hệ thống \\cite{thalheim2013migration}. Kết quả gần đây về ảnh hưởng của lỗi dữ liệu tới hiệu năng học máy trên dữ liệu bảng \\cite{mohammed2025effects} cho thấy tầng này cũng có lợi cho chính các mô hình phát hiện. Phụ lục~I mô tả thiết kế đề xuất; thiết kế chưa được hiện thực đầy đủ và chưa được đánh giá định lượng trong luận văn."
+  },
+  {
+    "key": "ehrlinger2022survey",
+    "file": "iuh_master_thesis/chapters/chuong5.tex",
+    "line": 196,
+    "context": "\\textbf{Từ phát hiện bất thường sang đánh giá mức sẵn sàng dữ liệu.} Khi vận hành thử hệ thống trên tệp SNRE năm 2020 gồm 287 giao dịch, ensemble không đánh dấu dòng nào vượt ngưỡng, trong khi bộ kiểm tra ràng buộc theo mô hình dữ liệu đích ghi nhận vi phạm ở cả 287 dòng; riêng ba cột tiền tệ sai kiểu ở mọi dòng, và các ô được kiểm tra đều lưu giá trị kèm ký hiệu tiền tệ cùng dấu phân cách hàng nghìn. Hai phép kiểm này trả lời hai câu hỏi khác nhau --- giao dịch có đáng ngờ hay không, và dữ liệu có thoả hợp đồng của hệ thống đích hay không --- nên kết quả ``không bất thường'' không đồng nghĩa với ``dữ liệu đã sẵn sàng để sử dụng hoặc chuyển đổi''. Hướng phát triển tương ứng là đặt một tầng đánh giá mức sẵn sàng dữ liệu trước tầng phát hiện, xây trên quan niệm chất lượng dữ liệu đa chiều \\cite{wang1996beyond, ehrlinger2022survey} và trên cách biểu diễn kiểm thử dữ liệu thành ràng buộc khai báo có thể kiểm chứng tự động \\cite{schelter2018automating, shankar2023automatic}, phục vụ bài toán chuyển dữ liệu giữa các hệ thống \\cite{thalheim2013migration}. Kết quả gần đây về ảnh hưởng của lỗi dữ liệu tới hiệu năng học máy trên dữ liệu bảng \\cite{mohammed2025effects} cho thấy tầng này cũng có lợi cho chính các mô hình phát hiện. Phụ lục~I mô tả thiết kế đề xuất; thiết kế chưa được hiện thực đầy đủ và chưa được đánh giá định lượng trong luận văn."
+  },
+  {
+    "key": "schelter2018automating",
+    "file": "iuh_master_thesis/chapters/chuong5.tex",
+    "line": 196,
+    "context": "\\textbf{Từ phát hiện bất thường sang đánh giá mức sẵn sàng dữ liệu.} Khi vận hành thử hệ thống trên tệp SNRE năm 2020 gồm 287 giao dịch, ensemble không đánh dấu dòng nào vượt ngưỡng, trong khi bộ kiểm tra ràng buộc theo mô hình dữ liệu đích ghi nhận vi phạm ở cả 287 dòng; riêng ba cột tiền tệ sai kiểu ở mọi dòng, và các ô được kiểm tra đều lưu giá trị kèm ký hiệu tiền tệ cùng dấu phân cách hàng nghìn. Hai phép kiểm này trả lời hai câu hỏi khác nhau --- giao dịch có đáng ngờ hay không, và dữ liệu có thoả hợp đồng của hệ thống đích hay không --- nên kết quả ``không bất thường'' không đồng nghĩa với ``dữ liệu đã sẵn sàng để sử dụng hoặc chuyển đổi''. Hướng phát triển tương ứng là đặt một tầng đánh giá mức sẵn sàng dữ liệu trước tầng phát hiện, xây trên quan niệm chất lượng dữ liệu đa chiều \\cite{wang1996beyond, ehrlinger2022survey} và trên cách biểu diễn kiểm thử dữ liệu thành ràng buộc khai báo có thể kiểm chứng tự động \\cite{schelter2018automating, shankar2023automatic}, phục vụ bài toán chuyển dữ liệu giữa các hệ thống \\cite{thalheim2013migration}. Kết quả gần đây về ảnh hưởng của lỗi dữ liệu tới hiệu năng học máy trên dữ liệu bảng \\cite{mohammed2025effects} cho thấy tầng này cũng có lợi cho chính các mô hình phát hiện. Phụ lục~I mô tả thiết kế đề xuất; thiết kế chưa được hiện thực đầy đủ và chưa được đánh giá định lượng trong luận văn."
+  },
+  {
+    "key": "shankar2023automatic",
+    "file": "iuh_master_thesis/chapters/chuong5.tex",
+    "line": 196,
+    "context": "\\textbf{Từ phát hiện bất thường sang đánh giá mức sẵn sàng dữ liệu.} Khi vận hành thử hệ thống trên tệp SNRE năm 2020 gồm 287 giao dịch, ensemble không đánh dấu dòng nào vượt ngưỡng, trong khi bộ kiểm tra ràng buộc theo mô hình dữ liệu đích ghi nhận vi phạm ở cả 287 dòng; riêng ba cột tiền tệ sai kiểu ở mọi dòng, và các ô được kiểm tra đều lưu giá trị kèm ký hiệu tiền tệ cùng dấu phân cách hàng nghìn. Hai phép kiểm này trả lời hai câu hỏi khác nhau --- giao dịch có đáng ngờ hay không, và dữ liệu có thoả hợp đồng của hệ thống đích hay không --- nên kết quả ``không bất thường'' không đồng nghĩa với ``dữ liệu đã sẵn sàng để sử dụng hoặc chuyển đổi''. Hướng phát triển tương ứng là đặt một tầng đánh giá mức sẵn sàng dữ liệu trước tầng phát hiện, xây trên quan niệm chất lượng dữ liệu đa chiều \\cite{wang1996beyond, ehrlinger2022survey} và trên cách biểu diễn kiểm thử dữ liệu thành ràng buộc khai báo có thể kiểm chứng tự động \\cite{schelter2018automating, shankar2023automatic}, phục vụ bài toán chuyển dữ liệu giữa các hệ thống \\cite{thalheim2013migration}. Kết quả gần đây về ảnh hưởng của lỗi dữ liệu tới hiệu năng học máy trên dữ liệu bảng \\cite{mohammed2025effects} cho thấy tầng này cũng có lợi cho chính các mô hình phát hiện. Phụ lục~I mô tả thiết kế đề xuất; thiết kế chưa được hiện thực đầy đủ và chưa được đánh giá định lượng trong luận văn."
+  },
+  {
+    "key": "thalheim2013migration",
+    "file": "iuh_master_thesis/chapters/chuong5.tex",
+    "line": 196,
+    "context": "\\textbf{Từ phát hiện bất thường sang đánh giá mức sẵn sàng dữ liệu.} Khi vận hành thử hệ thống trên tệp SNRE năm 2020 gồm 287 giao dịch, ensemble không đánh dấu dòng nào vượt ngưỡng, trong khi bộ kiểm tra ràng buộc theo mô hình dữ liệu đích ghi nhận vi phạm ở cả 287 dòng; riêng ba cột tiền tệ sai kiểu ở mọi dòng, và các ô được kiểm tra đều lưu giá trị kèm ký hiệu tiền tệ cùng dấu phân cách hàng nghìn. Hai phép kiểm này trả lời hai câu hỏi khác nhau --- giao dịch có đáng ngờ hay không, và dữ liệu có thoả hợp đồng của hệ thống đích hay không --- nên kết quả ``không bất thường'' không đồng nghĩa với ``dữ liệu đã sẵn sàng để sử dụng hoặc chuyển đổi''. Hướng phát triển tương ứng là đặt một tầng đánh giá mức sẵn sàng dữ liệu trước tầng phát hiện, xây trên quan niệm chất lượng dữ liệu đa chiều \\cite{wang1996beyond, ehrlinger2022survey} và trên cách biểu diễn kiểm thử dữ liệu thành ràng buộc khai báo có thể kiểm chứng tự động \\cite{schelter2018automating, shankar2023automatic}, phục vụ bài toán chuyển dữ liệu giữa các hệ thống \\cite{thalheim2013migration}. Kết quả gần đây về ảnh hưởng của lỗi dữ liệu tới hiệu năng học máy trên dữ liệu bảng \\cite{mohammed2025effects} cho thấy tầng này cũng có lợi cho chính các mô hình phát hiện. Phụ lục~I mô tả thiết kế đề xuất; thiết kế chưa được hiện thực đầy đủ và chưa được đánh giá định lượng trong luận văn."
+  },
+  {
+    "key": "mohammed2025effects",
+    "file": "iuh_master_thesis/chapters/chuong5.tex",
+    "line": 196,
+    "context": "\\textbf{Từ phát hiện bất thường sang đánh giá mức sẵn sàng dữ liệu.} Khi vận hành thử hệ thống trên tệp SNRE năm 2020 gồm 287 giao dịch, ensemble không đánh dấu dòng nào vượt ngưỡng, trong khi bộ kiểm tra ràng buộc theo mô hình dữ liệu đích ghi nhận vi phạm ở cả 287 dòng; riêng ba cột tiền tệ sai kiểu ở mọi dòng, và các ô được kiểm tra đều lưu giá trị kèm ký hiệu tiền tệ cùng dấu phân cách hàng nghìn. Hai phép kiểm này trả lời hai câu hỏi khác nhau --- giao dịch có đáng ngờ hay không, và dữ liệu có thoả hợp đồng của hệ thống đích hay không --- nên kết quả ``không bất thường'' không đồng nghĩa với ``dữ liệu đã sẵn sàng để sử dụng hoặc chuyển đổi''. Hướng phát triển tương ứng là đặt một tầng đánh giá mức sẵn sàng dữ liệu trước tầng phát hiện, xây trên quan niệm chất lượng dữ liệu đa chiều \\cite{wang1996beyond, ehrlinger2022survey} và trên cách biểu diễn kiểm thử dữ liệu thành ràng buộc khai báo có thể kiểm chứng tự động \\cite{schelter2018automating, shankar2023automatic}, phục vụ bài toán chuyển dữ liệu giữa các hệ thống \\cite{thalheim2013migration}. Kết quả gần đây về ảnh hưởng của lỗi dữ liệu tới hiệu năng học máy trên dữ liệu bảng \\cite{mohammed2025effects} cho thấy tầng này cũng có lợi cho chính các mô hình phát hiện. Phụ lục~I mô tả thiết kế đề xuất; thiết kế chưa được hiện thực đầy đủ và chưa được đánh giá định lượng trong luận văn."
+  },
+  {
+    "key": "zhao2025tadgp",
+    "file": "iuh_master_thesis/chapters/phu_luc.tex",
+    "line": 297,
+    "context": "Bảng~\\ref{tab:evidence_vs_tadgp} đối chiếu chi tiết tầng Gói Bằng chứng của đề tài với hướng tiếp cận dùng LLM làm bộ phát hiện (TAD-GP \\cite{zhao2025tadgp}, AnoLLM \\cite{tsai2025anollm}), bổ sung cho Bảng so sánh trực diện ở Chương 1."
+  },
+  {
+    "key": "tsai2025anollm",
+    "file": "iuh_master_thesis/chapters/phu_luc.tex",
+    "line": 297,
+    "context": "Bảng~\\ref{tab:evidence_vs_tadgp} đối chiếu chi tiết tầng Gói Bằng chứng của đề tài với hướng tiếp cận dùng LLM làm bộ phát hiện (TAD-GP \\cite{zhao2025tadgp}, AnoLLM \\cite{tsai2025anollm}), bổ sung cho Bảng so sánh trực diện ở Chương 1."
+  },
+  {
+    "key": "abedjan2015profiling",
+    "file": "iuh_master_thesis/chapters/phu_luc.tex",
+    "line": 338,
+    "context": "Một rủi ro khác nằm ở bước đọc tệp. Khi để thư viện tự suy luận kiểu dữ liệu, các thử nghiệm với dữ liệu tổng hợp cho thấy mã định danh \\texttt{000123} bị đọc thành \\texttt{123}, số điện thoại mất số 0 đầu, và chuỗi \\texttt{NA} (mã quốc gia hợp lệ) bị đọc thành giá trị rỗng. Những biến đổi này xảy ra trước mọi bước kiểm tra, nên tầng đánh giá phải bắt đầu từ việc bảo toàn giá trị nguồn và tách ba khái niệm: kiểu vật lý quan sát được, kiểu ngữ nghĩa được đề xuất, và kiểu đích theo hợp đồng. Cách tiếp cận này thống nhất với nhóm tác vụ profiling một cột trong khảo sát của Abedjan và cộng sự \\cite{abedjan2015profiling}."
+  },
+  {
+    "key": "thalheim2013migration",
+    "file": "iuh_master_thesis/chapters/phu_luc.tex",
+    "line": 342,
+    "context": "Bảng~\\ref{tab:readiness_objects} tách phần cấu hình được phê duyệt khỏi kết quả đo trên từng bản chụp dữ liệu. Một mẫu đánh giá ở trạng thái đã duyệt là bất biến; mọi chỉnh sửa tạo phiên bản mới. Mỗi lượt đánh giá gắn với dấu vân tay của tệp nguồn và phiên bản mẫu; khi dữ liệu, ánh xạ cột, phiên bản mẫu hoặc một phép biến đổi đã áp dụng thay đổi, các lượt đánh giá trước đó chuyển sang trạng thái \\textit{lỗi thời}. Cách tổ chức này bám theo quan điểm coi chuyển dữ liệu là một quá trình được mô hình hoá và kiểm chứng giữa hai lược đồ, thay vì một thao tác sao chép \\cite{thalheim2013migration}."
+  },
+  {
+    "key": "wang1996beyond",
+    "file": "iuh_master_thesis/chapters/phu_luc.tex",
+    "line": 364,
+    "context": "Chất lượng dữ liệu được đánh giá theo nhiều chiều, và ý nghĩa của mỗi chiều phụ thuộc vào mục đích sử dụng \\cite{wang1996beyond}; các công cụ đo lường hiện nay cũng chưa thống nhất về tập chiều cốt lõi \\cite{ehrlinger2022survey}. Thiết kế chỉ tính những chiều có thể kiểm chứng từ chính dữ liệu và hợp đồng đích. Với mỗi chiều $d$, gọi $\\mathcal{S}_d$ là tập ô hoặc bản ghi thuộc phạm vi kiểm tra và $\\mathcal{V}_d \\subseteq \\mathcal{S}_d$ là tập vi phạm; điểm của chiều được định nghĩa"
+  },
+  {
+    "key": "ehrlinger2022survey",
+    "file": "iuh_master_thesis/chapters/phu_luc.tex",
+    "line": 364,
+    "context": "Chất lượng dữ liệu được đánh giá theo nhiều chiều, và ý nghĩa của mỗi chiều phụ thuộc vào mục đích sử dụng \\cite{wang1996beyond}; các công cụ đo lường hiện nay cũng chưa thống nhất về tập chiều cốt lõi \\cite{ehrlinger2022survey}. Thiết kế chỉ tính những chiều có thể kiểm chứng từ chính dữ liệu và hợp đồng đích. Với mỗi chiều $d$, gọi $\\mathcal{S}_d$ là tập ô hoặc bản ghi thuộc phạm vi kiểm tra và $\\mathcal{V}_d \\subseteq \\mathcal{S}_d$ là tập vi phạm; điểm của chiều được định nghĩa"
+  },
+  {
+    "key": "schelter2018automating",
+    "file": "iuh_master_thesis/chapters/phu_luc.tex",
+    "line": 393,
+    "context": "Thiết kế không tổng hợp các $q_d$ thành một điểm chung, vì điểm trung bình cao có thể che khuất một vi phạm chặn. Số vấn đề, số phép kiểm thất bại và số bản ghi bị ảnh hưởng được báo cáo như ba đơn vị riêng; số bản ghi bị ảnh hưởng lấy hợp các định danh dòng để không đếm trùng khi một dòng vi phạm nhiều ràng buộc. Việc biểu diễn mỗi ràng buộc dưới dạng khai báo, có mã và phiên bản, kế thừa hướng kiểm thử dữ liệu tự động của Schelter và cộng sự \\cite{schelter2018automating}; các hệ thống kiểm tra dữ liệu gần đây trong pipeline học máy cũng nhấn mạnh yêu cầu cảnh báo chính xác và diễn giải được \\cite{shankar2023automatic}."
+  },
+  {
+    "key": "shankar2023automatic",
+    "file": "iuh_master_thesis/chapters/phu_luc.tex",
+    "line": 393,
+    "context": "Thiết kế không tổng hợp các $q_d$ thành một điểm chung, vì điểm trung bình cao có thể che khuất một vi phạm chặn. Số vấn đề, số phép kiểm thất bại và số bản ghi bị ảnh hưởng được báo cáo như ba đơn vị riêng; số bản ghi bị ảnh hưởng lấy hợp các định danh dòng để không đếm trùng khi một dòng vi phạm nhiều ràng buộc. Việc biểu diễn mỗi ràng buộc dưới dạng khai báo, có mã và phiên bản, kế thừa hướng kiểm thử dữ liệu tự động của Schelter và cộng sự \\cite{schelter2018automating}; các hệ thống kiểm tra dữ liệu gần đây trong pipeline học máy cũng nhấn mạnh yêu cầu cảnh báo chính xác và diễn giải được \\cite{shankar2023automatic}."
+  },
+  {
+    "key": "ehrlinger2022survey",
+    "file": "iuh_master_thesis/chapters/phu_luc.tex",
+    "line": 408,
+    "context": "Thiết kế trên mới được hiện thực một phần trong hệ thống (bộ kiểm tra ràng buộc, profiling và bước chuẩn hoá số theo quy ước địa phương đã có, nhưng chưa được nối thành một luồng đánh giá thống nhất). Luận văn chưa đo độ chính xác của các chiều chất lượng, chưa đánh giá với người dùng và chưa kiểm chứng việc ghi dữ liệu vào một hệ thống đích thật. Quan sát trên tệp SNRE năm 2020 là một ví dụ minh hoạ từ lần vận hành thử, không phải kết quả thực nghiệm đã đóng băng. Việc đánh giá bằng nhiều tập dữ liệu và so sánh với các công cụ đo lường chất lượng dữ liệu hiện có \\cite{ehrlinger2022survey}, cùng khảo sát có hệ thống các công trình gần đây về đánh giá mức sẵn sàng cho chuyển dữ liệu, được để lại cho nghiên cứu tiếp theo."
+  }
+]

@@ -1,0 +1,228 @@
+[
+  {
+    "DOI": "10.1016/j.eswa.2025.129170",
+    "title": [
+      "DMN4DQ+: Optimising data repair to enhance data usability"
+    ],
+    "author": [
+      {
+        "ORCID": "https://orcid.org/0000-0002-0645-1000",
+        "authenticated-orcid": false,
+        "given": "Álvaro",
+        "family": "Valencia-Parra",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "role": "author",
+            "vocabulary": "crossref"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0001-9953-6005",
+        "authenticated-orcid": false,
+        "given": "Ángel Jesús",
+        "family": "Varela-Vaca",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "role": "author",
+            "vocabulary": "crossref"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0001-6096-8564",
+        "authenticated-orcid": false,
+        "given": "Luisa",
+        "family": "Parody",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "role": "author",
+            "vocabulary": "crossref"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-5189-1427",
+        "authenticated-orcid": false,
+        "given": "Ismael",
+        "family": "Caballero",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "role": "author",
+            "vocabulary": "crossref"
+          }
+        ]
+      },
+      {
+        "given": "María Teresa",
+        "family": "Gómez-López",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "role": "author",
+            "vocabulary": "crossref"
+          }
+        ]
+      }
+    ],
+    "published": {
+      "date-parts": [
+        [
+          2026,
+          1
+        ]
+      ]
+    },
+    "published-online": null,
+    "container-title": [
+      "Expert Systems with Applications"
+    ],
+    "type": "journal-article",
+    "URL": "https://doi.org/10.1016/j.eswa.2025.129170",
+    "link": [
+      {
+        "URL": "https://api.elsevier.com/content/article/PII:S0957417425027873?httpAccept=text/xml",
+        "content-type": "text/xml",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      },
+      {
+        "URL": "https://api.elsevier.com/content/article/PII:S0957417425027873?httpAccept=text/plain",
+        "content-type": "text/plain",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      }
+    ]
+  },
+  {
+    "DOI": "10.14778/3742728.3742757",
+    "title": [
+      "Magneto: Combining Small and Large Language Models for Schema Matching"
+    ],
+    "author": [
+      {
+        "given": "Yurong",
+        "family": "Liu",
+        "sequence": "first",
+        "affiliation": [
+          {
+            "name": "New York University"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Eduardo H. M.",
+        "family": "Pena",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Federal University of Technology Paraná"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Aécio",
+        "family": "Santos",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "New York University"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Eden",
+        "family": "Wu",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "New York University"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Juliana",
+        "family": "Freire",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "New York University"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "published": {
+      "date-parts": [
+        [
+          2025,
+          4
+        ]
+      ]
+    },
+    "published-online": {
+      "date-parts": [
+        [
+          2025,
+          9,
+          3
+        ]
+      ]
+    },
+    "container-title": [
+      "Proceedings of the VLDB Endowment"
+    ],
+    "type": "journal-article",
+    "URL": "https://doi.org/10.14778/3742728.3742757",
+    "link": [
+      {
+        "URL": "https://dl.acm.org/doi/pdf/10.14778/3742728.3742757",
+        "content-type": "unspecified",
+        "content-version": "vor",
+        "intended-application": "similarity-checking"
+      }
+    ]
+  },
+  {
+    "DOI": "10.1145/3583780.3614786",
+    "error": "HTTP Error 429: Too Many Requests"
+  }
+]
