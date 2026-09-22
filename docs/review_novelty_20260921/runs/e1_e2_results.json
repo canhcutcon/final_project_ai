@@ -1,0 +1,302 @@
+[
+  {
+    "dataset": "SG Condo Rental",
+    "n_rows": 36027,
+    "n_cols": 17,
+    "anomaly_rate": 0.0895,
+    "label_source_cols": [
+      "price"
+    ],
+    "variants": {
+      "as_is": {
+        "mean": {
+          "f1_thr_val": 0.9993,
+          "f1_thr_test": 0.9997,
+          "roc_auc": 1.0,
+          "pr_auc": 1.0
+        },
+        "sd": {
+          "f1_thr_val_sd": 0.0005,
+          "f1_thr_test_sd": 0.0005,
+          "roc_auc_sd": 0.0,
+          "pr_auc_sd": 0.0
+        },
+        "per_seed": [
+          {
+            "f1_thr_val": 0.999,
+            "f1_thr_test": 0.999,
+            "roc_auc": 1.0,
+            "pr_auc": 1.0
+          },
+          {
+            "f1_thr_val": 0.999,
+            "f1_thr_test": 1.0,
+            "roc_auc": 1.0,
+            "pr_auc": 1.0
+          },
+          {
+            "f1_thr_val": 1.0,
+            "f1_thr_test": 1.0,
+            "roc_auc": 1.0,
+            "pr_auc": 1.0
+          }
+        ],
+        "n_cols": 17
+      },
+      "drop_label_source": {
+        "mean": {
+          "f1_thr_val": 0.9644,
+          "f1_thr_test": 0.9693,
+          "roc_auc": 0.9984,
+          "pr_auc": 0.9917
+        },
+        "sd": {
+          "f1_thr_val_sd": 0.0054,
+          "f1_thr_test_sd": 0.003,
+          "roc_auc_sd": 0.0006,
+          "pr_auc_sd": 0.0015
+        },
+        "per_seed": [
+          {
+            "f1_thr_val": 0.9603,
+            "f1_thr_test": 0.9652,
+            "roc_auc": 0.9981,
+            "pr_auc": 0.9906
+          },
+          {
+            "f1_thr_val": 0.972,
+            "f1_thr_test": 0.9721,
+            "roc_auc": 0.9992,
+            "pr_auc": 0.9938
+          },
+          {
+            "f1_thr_val": 0.9608,
+            "f1_thr_test": 0.9706,
+            "roc_auc": 0.9979,
+            "pr_auc": 0.9907
+          }
+        ],
+        "n_cols": 16
+      }
+    },
+    "dropped": [
+      "price"
+    ]
+  },
+  {
+    "dataset": "SG HDB Resale",
+    "n_rows": 47064,
+    "n_cols": 11,
+    "anomaly_rate": 0.1926,
+    "label_source_cols": [
+      "resale_price"
+    ],
+    "variants": {
+      "as_is": {
+        "mean": {
+          "f1_thr_val": 0.9995,
+          "f1_thr_test": 0.9999,
+          "roc_auc": 1.0,
+          "pr_auc": 1.0
+        },
+        "sd": {
+          "f1_thr_val_sd": 0.0001,
+          "f1_thr_test_sd": 0.0002,
+          "roc_auc_sd": 0.0,
+          "pr_auc_sd": 0.0
+        },
+        "per_seed": [
+          {
+            "f1_thr_val": 0.9996,
+            "f1_thr_test": 0.9996,
+            "roc_auc": 1.0,
+            "pr_auc": 1.0
+          },
+          {
+            "f1_thr_val": 0.9993,
+            "f1_thr_test": 1.0,
+            "roc_auc": 1.0,
+            "pr_auc": 1.0
+          },
+          {
+            "f1_thr_val": 0.9996,
+            "f1_thr_test": 1.0,
+            "roc_auc": 1.0,
+            "pr_auc": 1.0
+          }
+        ],
+        "n_cols": 11
+      },
+      "drop_label_source": {
+        "mean": {
+          "f1_thr_val": 0.9191,
+          "f1_thr_test": 0.9208,
+          "roc_auc": 0.9938,
+          "pr_auc": 0.9732
+        },
+        "sd": {
+          "f1_thr_val_sd": 0.0067,
+          "f1_thr_test_sd": 0.0068,
+          "roc_auc_sd": 0.0006,
+          "pr_auc_sd": 0.0026
+        },
+        "per_seed": [
+          {
+            "f1_thr_val": 0.9211,
+            "f1_thr_test": 0.9236,
+            "roc_auc": 0.9944,
+            "pr_auc": 0.9756
+          },
+          {
+            "f1_thr_val": 0.9101,
+            "f1_thr_test": 0.9115,
+            "roc_auc": 0.993,
+            "pr_auc": 0.9696
+          },
+          {
+            "f1_thr_val": 0.9262,
+            "f1_thr_test": 0.9274,
+            "roc_auc": 0.9941,
+            "pr_auc": 0.9744
+          }
+        ],
+        "n_cols": 10
+      }
+    },
+    "dropped": [
+      "resale_price"
+    ]
+  },
+  {
+    "dataset": "House Prices (Kaggle)",
+    "n_rows": 1460,
+    "n_cols": 79,
+    "anomaly_rate": 0.05,
+    "label_source_cols": [],
+    "variants": {
+      "as_is": {
+        "mean": {
+          "f1_thr_val": 0.5318,
+          "f1_thr_test": 0.7162,
+          "roc_auc": 0.9706,
+          "pr_auc": 0.7512
+        },
+        "sd": {
+          "f1_thr_val_sd": 0.0998,
+          "f1_thr_test_sd": 0.039,
+          "roc_auc_sd": 0.0173,
+          "pr_auc_sd": 0.0337
+        },
+        "per_seed": [
+          {
+            "f1_thr_val": 0.6667,
+            "f1_thr_test": 0.72,
+            "roc_auc": 0.9812,
+            "pr_auc": 0.7633
+          },
+          {
+            "f1_thr_val": 0.5,
+            "f1_thr_test": 0.7619,
+            "roc_auc": 0.9843,
+            "pr_auc": 0.785
+          },
+          {
+            "f1_thr_val": 0.4286,
+            "f1_thr_test": 0.6667,
+            "roc_auc": 0.9462,
+            "pr_auc": 0.7052
+          }
+        ],
+        "n_cols": 79
+      }
+    }
+  },
+  {
+    "dataset": "Arrhythmia (UCI)",
+    "n_rows": 452,
+    "n_cols": 279,
+    "anomaly_rate": 0.458,
+    "label_source_cols": [],
+    "variants": {
+      "as_is": {
+        "mean": {
+          "f1_thr_val": 0.7269,
+          "f1_thr_test": 0.7652,
+          "roc_auc": 0.823,
+          "pr_auc": 0.8062
+        },
+        "sd": {
+          "f1_thr_val_sd": 0.0365,
+          "f1_thr_test_sd": 0.0251,
+          "roc_auc_sd": 0.0325,
+          "pr_auc_sd": 0.0582
+        },
+        "per_seed": [
+          {
+            "f1_thr_val": 0.7586,
+            "f1_thr_test": 0.8,
+            "roc_auc": 0.8675,
+            "pr_auc": 0.8848
+          },
+          {
+            "f1_thr_val": 0.6757,
+            "f1_thr_test": 0.7419,
+            "roc_auc": 0.8108,
+            "pr_auc": 0.7881
+          },
+          {
+            "f1_thr_val": 0.7463,
+            "f1_thr_test": 0.7536,
+            "roc_auc": 0.7908,
+            "pr_auc": 0.7457
+          }
+        ],
+        "n_cols": 279
+      }
+    }
+  },
+  {
+    "dataset": "Madelon (UCI)",
+    "n_rows": 2600,
+    "n_cols": 500,
+    "anomaly_rate": 0.5,
+    "label_source_cols": [],
+    "variants": {
+      "as_is": {
+        "mean": {
+          "f1_thr_val": 0.6638,
+          "f1_thr_test": 0.6716,
+          "roc_auc": 0.5743,
+          "pr_auc": 0.5644
+        },
+        "sd": {
+          "f1_thr_val_sd": 0.0058,
+          "f1_thr_test_sd": 0.0055,
+          "roc_auc_sd": 0.032,
+          "pr_auc_sd": 0.0231
+        },
+        "per_seed": [
+          {
+            "f1_thr_val": 0.6713,
+            "f1_thr_test": 0.6726,
+            "roc_auc": 0.5684,
+            "pr_auc": 0.5491
+          },
+          {
+            "f1_thr_val": 0.6629,
+            "f1_thr_test": 0.6777,
+            "roc_auc": 0.6162,
+            "pr_auc": 0.5971
+          },
+          {
+            "f1_thr_val": 0.6572,
+            "f1_thr_test": 0.6644,
+            "roc_auc": 0.5384,
+            "pr_auc": 0.547
+          }
+        ],
+        "n_cols": 500
+      }
+    }
+  }
+]

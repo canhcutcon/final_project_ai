@@ -1,0 +1,155 @@
+[
+  {
+    "doi": "10.14778/3685800.3685890",
+    "title": "RetClean: Retrieval-Based Data Cleaning Using LLMs and Data Lakes",
+    "venue": "Proceedings of the VLDB Endowment",
+    "year": 2024,
+    "vol": "17",
+    "issue": "12",
+    "page": "4421-4424",
+    "type": "journal-article",
+    "authors": [
+      "Naeem, Z.",
+      "Ahmad, M.",
+      "Eltabakh, M.",
+      "Ouzzani, M.",
+      "Tang, N."
+    ]
+  },
+  {
+    "doi": "10.14778/3749646.3749681",
+    "title": "UniClean: A Scalable Data Cleaning Solution for Mixed Errors Based on Unified Cleaners and Optimized Cleaning Workflow",
+    "venue": "Proceedings of the VLDB Endowment",
+    "year": 2025,
+    "vol": "18",
+    "issue": "11",
+    "page": "4117-4130",
+    "type": "journal-article",
+    "authors": [
+      "Ding, X.",
+      "Qian, Z.",
+      "Wang, H.",
+      "Chen, S.",
+      "Tang, Y.",
+      "Su, H.",
+      "Hu, H.",
+      "Wang, C."
+    ]
+  },
+  {
+    "doi": "10.14778/3704965.3704983",
+    "title": "Generalizable Data Cleaning of Tabular Data in Latent Space",
+    "venue": "Proceedings of the VLDB Endowment",
+    "year": 2024,
+    "vol": "17",
+    "issue": "13",
+    "page": "4786-4798",
+    "type": "journal-article",
+    "authors": [
+      "Reis, E.",
+      "Abdelaal, M.",
+      "Binnig, C."
+    ]
+  },
+  {
+    "doi": "10.1109/icde55515.2023.00123",
+    "title": "Schema Matching using Pre-Trained Language Models",
+    "venue": "2023 IEEE 39th International Conference on Data Engineering (ICDE)",
+    "year": 2023,
+    "vol": null,
+    "issue": null,
+    "page": "1558-1571",
+    "type": "proceedings-article",
+    "authors": [
+      "Zhang, Y.",
+      "Floratou, A.",
+      "Cahoon, J.",
+      "Krishnan, S.",
+      "Müller, A.",
+      "Banda, D.",
+      "Psallidas, F.",
+      "Patel, J."
+    ]
+  },
+  {
+    "doi": "10.14778/3574245.3574258",
+    "title": "Can Foundation Models Wrangle Your Data?",
+    "venue": "Proceedings of the VLDB Endowment",
+    "year": 2022,
+    "vol": "16",
+    "issue": "4",
+    "page": "738-746",
+    "type": "journal-article",
+    "authors": [
+      "Narayan, A.",
+      "Chami, I.",
+      "Orr, L.",
+      "Ré, C."
+    ]
+  },
+  {
+    "doi": "10.1007/s41019-024-00266-7",
+    "title": "Relational Data Cleaning Meets Artificial Intelligence: A Survey",
+    "venue": "Data Science and Engineering",
+    "year": 2024,
+    "vol": "10",
+    "issue": "2",
+    "page": "147-174",
+    "type": "journal-article",
+    "authors": [
+      "Zhu, J.",
+      "Zhao, X.",
+      "Sun, Y.",
+      "Song, S.",
+      "Yuan, X."
+    ]
+  },
+  {
+    "doi": "10.14778/3785297.3785308",
+    "title": "Fault Lines: Benchmarking the Impact of Label Data Quality on ML Robustness and Fairness",
+    "venue": "Proceedings of the VLDB Endowment",
+    "year": 2025,
+    "vol": "19",
+    "issue": "4",
+    "page": "670-683",
+    "type": "journal-article",
+    "authors": [
+      "Jackson, D.",
+      "Groth, P.",
+      "Harmouch, H."
+    ]
+  },
+  {
+    "doi": "10.14778/3611479.3611527",
+    "title": "How Large Language Models Will Disrupt Data Management",
+    "venue": "Proceedings of the VLDB Endowment",
+    "year": 2023,
+    "vol": "16",
+    "issue": "11",
+    "page": "3302-3309",
+    "type": "journal-article",
+    "authors": [
+      "Fernandez, R.",
+      "Elmore, A.",
+      "Franklin, M.",
+      "Krishnan, S.",
+      "Tan, C."
+    ]
+  },
+  {
+    "doi": "10.1145/3648476",
+    "title": "Cleenex: Support for User Involvement during an Iterative Data Cleaning Process",
+    "venue": "Journal of Data and Information Quality",
+    "year": 2024,
+    "vol": "16",
+    "issue": "1",
+    "page": "1-26",
+    "type": "journal-article",
+    "authors": [
+      "Pereira, J.",
+      "Fonseca, M.",
+      "Lopes, A.",
+      "Galhardas, H."
+    ]
+  }
+]
