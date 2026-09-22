@@ -281,6 +281,82 @@ Vậy **A5 vẫn là đóng góp khả thi nhất và ít bị tranh chấp nh�
 
 Trong lượt này Perplexity **sai 2/2 ở các mục quan trọng nhất** (ACSOS 2026 và KDD 2023 đều bị gọi là không bình duyệt), **bỏ sót** bài MDPI nằm đúng trọng tâm câu hỏi của chính nó, và đưa **2 DOI không dùng được**. Kết luận "your claim stands unrefuted" của nó không đáng tin khi chưa xác minh. Quy trình đúng: Perplexity để **mở rộng vùng tìm**, CrossRef/arXiv API để **phán xử**. Không bao giờ để Perplexity phán xử.
 
+---
+
+## Phần F — Đọc toàn văn ACSOS 2026: cái gì chuyển miền được, cái gì phải làm mới
+
+Đã tải và đọc toàn văn arXiv:2608.26306v1 (7 trang, ~5.800 từ). Văn bản trích lưu tại `runs/acsos2026_verdict_staleness.txt`.
+
+### F1. Tính mới mà chính họ tuyên bố — và nó neo vào đâu
+
+Nguyên văn §II: *"We are not aware of prior work that estimates such a plant-dependent horizon for an already-issued Execute-stage semantic approval under **endogenous closed-loop plant evolution**."*
+
+Đây là điểm quyết định. Tính mới của họ neo vào **biến đổi nội sinh do chính vòng điều khiển gây ra**. Trong miền dữ liệu, biến đổi là **ngoại sinh**: người sửa dữ liệu nguồn, ai đó đổi ràng buộc hệ đích, cấu hình parser thay đổi. Không có "plant dynamics" để ước lượng. Hai chế độ khác nhau về bản chất, nên tuyên bố tính mới của họ **không phủ lên** trường hợp dữ liệu.
+
+Dòng dõi TOCTOU trong Related Work của họ, đã kiểm:
+
+| Ref | Nguồn | Loại | Ghi chú theo chính sách workspace |
+|---|---|---|---|
+| [1] | Bishop & Dilger (1996). Checking for race conditions in file accesses. *Computing Systems* 9(2), 131–152 | journal | **1996 — chỉ dùng cho ĐỊNH NGHĨA TOCTOU**, đánh dấu `[SEMINAL]`, không dùng làm bằng chứng hiện trạng |
+| [2] | Lilienthal & Hong (2025). Mind the Gap: TOCTOU in LLM-enabled agents. arXiv:2508.17155 | **preprint** | Không được gán hạng; `[CẦN XÁC MINH]` |
+| [17] | Jiang, Liu, Luo & Lin (2026). Atomicity for agents: TOCTOU in browser-use agents. arXiv:2603.00476 | **preprint** | Không được gán hạng; `[CẦN XÁC MINH]` |
+
+**Kết luận F1:** toàn bộ dòng TOCTOU hiện đại nằm ở preprint hoặc miền tác tử; miền **cổng xuất bản dữ liệu** chưa có ai. Khe chuyển miền là thật, nhưng nó là khe *chuyển miền*, không phải khe *khung khái niệm*.
+
+### F2. Những thứ BẮT BUỘC trích, không được nhận là mới
+
+Sáu thứ sau đã có chủ. Dùng được, nhưng phải dẫn nguồn:
+
+1. **Khung phát biểu.** *"An Execute-stage approval is not a timeless Boolean"* và **freshness contract**: phê duyệt phải đúng lúc kiểm tra **và** còn hiệu lực lúc dùng, kèm fallback có lý do khi hết hạn.
+2. **Giao thức replay** — *fixed-action relabeling audit*: giữ nguyên ứng viên, lấy ngữ cảnh ghi lại ở thời điểm sau, chạy **cùng một bộ kiểm tra tất định** (oracle) và so hai verdict. Đây đúng là thứ cần cho dữ liệu: giữ nguyên gói xuất, lấy phiên bản dữ liệu/ràng buộc sau đó, chạy lại cùng validator, so verdict.
+3. **Phân rã ba chỉ số theo tập điều kiện khác nhau** — đây là phần giá trị nhất và luận văn nên bê nguyên cấu trúc:
+   - *all-candidate verdict-change rate*: đổi nhãn trên **mọi** ứng viên, trước khi lọc theo tập mà phương pháp cho qua.
+   - *directional oracle-labeled approval-expiry rate*: chỉ tính trên ứng viên **phương pháp đó cho qua** VÀ **hợp lệ theo oracle tại thời điểm kiểm tra**.
+   - *judge-conditioned use-time invalidity*: tính trong tập phê duyệt của chính bộ phán xử; **lẫn** lỗi tại thời điểm kiểm tra với hết hạn theo thời gian.
+4. **Tuổi tính từ lúc lấy quan sát, không phải lúc phát verdict** — tức bao gồm mọi độ trễ giữa đọc dữ liệu và thi hành.
+5. **Mô hình tuổi rời rạc** $K_{live} = \lceil \Delta / T_{ctrl} \rceil$. Ý tưởng "cửa sổ lệch đo bằng số bước" mà thiết kế ở Phần C đề xuất chính là cái này — **nay phải trích, không được trình bày như của mình**.
+6. **Mô hình đe doạ**: loại trừ thao túng đối kháng; hiểm hoạ là biến đổi thông thường. Miền dữ liệu giống hệt.
+
+### F3. Những thứ KHÔNG chuyển được — đây là chỗ còn trống thật
+
+1. **Bộ ước lượng của FBS không có tương ứng.** FBS ước lượng validity horizon từ *safe-side margin* và *feature volatility* của đại lượng liên tục. Verdict validation dữ liệu là tổ hợp vi phạm rời rạc; không có biên liên tục tương đương. Muốn có phải tự định nghĩa (ví dụ theo số/độ nặng vi phạm còn cách ngưỡng bao xa) — **và đó là việc mới**.
+2. **Họ không có khái niệm chấm lại bản sửa ứng viên.** Toàn văn không có chỗ nào đánh giá một bản sửa được đề xuất trước khi phê duyệt. Đây vẫn là trống.
+3. **Họ không ràng buộc verdict vào bytes xuất ra.** Không có manifest/checksum. Vẫn trống.
+4. **Oracle của họ tự nhận không đầy đủ:** *"The reference checker supplies deterministic labels for selected operational predicates but is not a complete safety oracle"*. Miền dữ liệu **có** oracle mạnh hơn hẳn: hệ đích thật sự nhận hay từ chối, cộng đối soát nguồn↔đích. Đây là lợi thế cấu trúc của luận văn, không phải điểm yếu.
+5. **Ranh giới episode** làm cohort co lại khi K tăng — miền dữ liệu không có episode, nên bẫy này không tồn tại.
+
+### F4. Ba điểm yếu họ TỰ KHAI — luận văn khai thác được
+
+Trích §VI Limitations:
+
+1. *"Replay is a fixed-action relabeling audit, **not an intervention-consistent causal simulation**: it evaluates $a_t$ on later recorded contexts rather than reconstructing the trajectory induced by delaying, rejecting, or replacing it."*
+   → Trong miền dữ liệu, ta **thật sự áp được bản sửa rồi chạy lại**. Luận văn làm được đúng phiên bản can thiệp mà họ không làm được. **Đây là điểm phân biệt mạnh nhất.**
+2. *"Judge-conditioned rates may mix check-time error with temporal expiry"* — họ **không tách được** lỗi tại thời điểm kiểm tra khỏi hết hạn theo thời gian.
+   → Với oracle tất định của hệ đích, luận văn **tách được**. Điểm phân biệt mạnh thứ hai.
+3. *"FBS remains a proof-of-concept heuristic, not a certified safety guarantee"*; trade-off tiện ích chỉ thử trên **một** môi trường tại **một** giá trị K.
+
+### F5. Số liệu của họ dùng làm động cơ cho luận văn
+
+Trích §VII: verdict-change rate **5,3–48,4%** tại K=8 qua năm môi trường; chênh khoảng **chín lần**. Họ kết luận: *"age alone does not determine the observed rate; plant dynamics, predicate structure, and the logged candidate distribution also matter."*
+
+Dùng được hai cách: (a) chứng minh hiện tượng verdict hết hạn là **thật và lớn**, không phải lo hão — phần Mở đầu cần đúng câu này; (b) cảnh báo phương pháp: **đừng kỳ vọng một con số duy nhất**, tỉ lệ phụ thuộc mạnh vào cấu trúc ràng buộc và phân bố ứng viên. Thiết kế của luận văn phải báo cáo theo từng tập dữ liệu/hệ đích, không gộp một số.
+
+### F6. Phát biểu đóng góp sau khi đã trừ hết phần đã có chủ
+
+> Luận văn chuyển **hợp đồng hiệu lực** (freshness contract, Shraga et al., ACSOS 2026) từ miền guardrail LLM cho hệ tự thích nghi sang miền **cổng xuất bản dữ liệu**, nơi biến đổi là **ngoại sinh** chứ không nội sinh theo vòng điều khiển. Ba đóng góp cụ thể vượt ra ngoài khung đã có:
+> 1. **Benchmark đầu tiên** gán nhãn quyết định xuất bản ở mức file/job với **oracle độc lập ba tầng** (hệ đích thật nhận/từ chối, đối soát nguồn↔đích, nhãn chuyên gia) — mục A5, vẫn chưa ai làm.
+> 2. **Đánh giá nhất quán can thiệp**, không chỉ replay gán nhãn lại: thật sự áp bản sửa ứng viên và chạy lại — đúng thứ §VI của họ tự nhận không làm được.
+> 3. **Tách được** lỗi tại thời điểm đánh giá khỏi hết hiệu lực theo thời gian, nhờ oracle tất định — thứ họ tự nhận không tách được.
+
+Ba nhãn vẫn cấm dùng đặt tên: *verdict freshness*, *freshness contract*, *validity horizon*. Nhãn an toàn có thể dùng: **publication-gate TOCTOU**, **exogenous verdict expiry**, **decision-event benchmark**.
+
+### F7. Điều chỉnh bắt buộc cho thiết kế ở Phần C
+
+- Thang B0–B4 giữ nguyên, nhưng **B2 phải đổi tên và đổi cách trích**: không còn là "kiểm soát freshness" tự nghĩ ra, mà là *áp dụng freshness contract theo Shraga et al. 2026 cho miền dữ liệu*.
+- "Độ dài cửa sổ lệch (0, 1, 5, 20 sự kiện)" phải trích $K_{live}$ của họ và giải thích vì sao đơn vị là **sự kiện thay đổi** chứ không phải bước mô phỏng.
+- **Bổ sung chỉ số thứ ba** mà thiết kế cũ thiếu: ngoài unsafe-acceptance và false-block, phải có *all-candidate verdict-change rate* — đo trên mọi gói xuất trước khi lọc theo tập được cho qua. Thiếu nó thì không so được với con số 5,3–48,4% của họ.
+- **B2′ (revalidation tất định lúc export) vẫn là baseline sống còn** và nay còn quan trọng hơn: nếu chạy lại validation lúc export rẻ và an toàn ngang cơ chế hợp đồng hiệu lực, thì phần chuyển miền mất giá trị, chỉ còn benchmark (A5) đứng được.
+
 ## Giới hạn của chính báo cáo này
 
 Tìm có mục tiêu, không PRISMA. DBLP không truy cập được (chặn bot) nên có thể sót công trình ở SIGMOD/EDBT/ICDT. Semantic Scholar trả 429, không dùng được để kiểm chéo. Xếp hạng Q của PVLDB, Data Science and Engineering và ACM JDIQ để `[CẦN XÁC MINH]`, không tự gán. Kết luận "khe còn lại" ở A3 **đã được xác minh bằng toàn văn** (xem Phần D), không còn dựa trên abstract. Kết luận "trống" ở A4 và A5 là kết quả truy vấn, không phải chứng minh phủ định.
