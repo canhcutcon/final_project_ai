@@ -8,6 +8,23 @@ Log xác minh: `runs/crossref_verification_20260922.json`. Mọi nguồn dưới
 
 ---
 
+> ## ⚠️ ĐÍNH CHÍNH 23/09/2026 — ĐỌC TRƯỚC PHẦN G VÀ H
+>
+> Một lượt phản biện độc lập đã tìm ra **năm lỗi thật** trong Phần G và H. Tôi đã kiểm chứng bằng số và
+> **xác nhận cả năm**. Các kết luận dưới đây phải đọc kèm Phần I:
+>
+> 1. **Kết luận H4-4 ("LLM thắng template về độ trung thực") ĐÃ BỊ ĐẢO NGƯỢC.** Template của tôi có lỗi
+>    `isinstance(ratio, (int,float))` trong khi dữ liệu lưu `ratio` dạng **chuỗi** (229/229 trường hợp),
+>    nên nó không bao giờ in ratio. Sửa xong: NumFid **0,570 → 1,000**. Bootstrap có ý nghĩa **không**
+>    cứu được lỗi baseline.
+> 2. **Đối chứng fine-tuning ở H4-3 KHÔNG HỢP LỆ** — so Qwen2-1.5B fine-tuned với Qwen2.5-**3B**, khác
+>    cả phiên bản lẫn kích thước.
+> 3. **Quy kết L4 cho "packet dài" CHƯA ĐỦ BẰNG CHỨNG** — base·L4 có **54/70 (77%) chạm trần 700 token**.
+> 4. **Phần G gọi B2 là "bị áp đảo" là SAI** — đó là **đánh đổi**: tại K=1 coarse an toàn hơn 25,6 điểm %
+>    nhưng chặn nhầm 76,9%.
+> 5. **"Mọi gate đều lọt 34/64" là SAI** — B0 lọt **0/64**. Bảng 44 lượt lỗi thực chất là **34 ca**
+>    (10 lượt chồng lấp). Và freshness giảm unsafe **29,5–77,9 điểm %**, không phải "vài phần trăm".
+
 ## Phần A — Bản đồ khoảng trống theo từng nhánh
 
 ### A1. Schema mapping — **ĐÃ ĐÓNG. Không còn chỗ cho tính mới ở mức luận văn.**
@@ -344,8 +361,8 @@ Dùng được hai cách: (a) chứng minh hiện tượng verdict hết hạn l
 ### F6. Phát biểu đóng góp sau khi đã trừ hết phần đã có chủ
 
 > Luận văn chuyển **hợp đồng hiệu lực** (freshness contract, Shraga et al., ACSOS 2026) từ miền guardrail LLM cho hệ tự thích nghi sang miền **cổng xuất bản dữ liệu**, nơi biến đổi là **ngoại sinh** chứ không nội sinh theo vòng điều khiển. Ba đóng góp cụ thể vượt ra ngoài khung đã có:
-> 1. **Benchmark đầu tiên** gán nhãn quyết định xuất bản ở mức file/job với **oracle độc lập ba tầng** (hệ đích thật nhận/từ chối, đối soát nguồn↔đích, nhãn chuyên gia) — mục A5, vẫn chưa ai làm.
-> 2. **Đánh giá nhất quán can thiệp**, không chỉ replay gán nhãn lại: thật sự áp bản sửa ứng viên và chạy lại — đúng thứ §VI của họ tự nhận không làm được.
+> 1. **Benchmark (chưa tìm thấy công bố tương đương)** gán nhãn quyết định xuất bản ở mức file/job với **oracle độc lập ba tầng** (hệ đích thật nhận/từ chối, đối soát nguồn↔đích, nhãn chuyên gia) — mục A5, vẫn chưa ai làm.
+> 2. ~~**Đánh giá nhất quán can thiệp**~~ — **[22/09: xem G1, đã hiện thực và đo; bậc này trùng freshness mức dòng nên không đứng riêng.]**
 > 3. **Tách được** lỗi tại thời điểm đánh giá khỏi hết hiệu lực theo thời gian, nhờ oracle tất định — thứ họ tự nhận không tách được.
 
 Ba nhãn vẫn cấm dùng đặt tên: *verdict freshness*, *freshness contract*, *validity horizon*. Nhãn an toàn có thể dùng: **publication-gate TOCTOU**, **exogenous verdict expiry**, **decision-event benchmark**.
@@ -357,6 +374,425 @@ Ba nhãn vẫn cấm dùng đặt tên: *verdict freshness*, *freshness contract
 - **Bổ sung chỉ số thứ ba** mà thiết kế cũ thiếu: ngoài unsafe-acceptance và false-block, phải có *all-candidate verdict-change rate* — đo trên mọi gói xuất trước khi lọc theo tập được cho qua. Thiếu nó thì không so được với con số 5,3–48,4% của họ.
 - **B2′ (revalidation tất định lúc export) vẫn là baseline sống còn** và nay còn quan trọng hơn: nếu chạy lại validation lúc export rẻ và an toàn ngang cơ chế hợp đồng hiệu lực, thì phần chuyển miền mất giá trị, chỉ còn benchmark (A5) đứng được.
 
+---
+
+## Phần G — Hiện thực benchmark và ba lượt đo: đóng góp nào sống, nào chết
+
+Ngày 22/09/2026 đã dựng và chạy benchmark theo đúng thiết kế Phần C/F.
+Mã nguồn: `final_project_ai/bench/publication_gate/` — corpus, oracle ba tầng, thang B0–B4 + B2′,
+bộ tiêm sự kiện, quét chi phí. Kết quả chi tiết: `bench/publication_gate/FINDINGS.md`.
+
+Thang gate dùng **`evaluate_readiness` thật** của `csv_agent_services`, không phải bản mô phỏng.
+Chống vòng tròn bằng kiến trúc: `target_schema.py` (DDL SQLite STRICT) là nguồn sự thật của oracle
+và **gate không được đọc**; `contract.py` cố ý khai thiếu so với DDL.
+
+**Kiểm chứng oracle: 104/104 ca đúng** — 64 ca bẩn bị chặn, 40 ca sạch được qua, không sai ca nào.
+
+### G1. Ba kết quả đo, theo thứ tự xuất hiện
+
+**Lượt 1 — freshness thô bị áp đảo.** Cơ chế đang chạy trong sản phẩm
+(`assessment_gate_service._freshness_of`: so digest toàn tệp, lệch là STALE) cho false-block
+**0,625–1,000** ở K≥1, tức chặn gần hết. B2′ (chạy lại validation lúc export) cho false-block
+**0,000** ở mọi K, mọi hạt giống. Ổn định qua ba hạt giống.
+
+**Lượt 2 — freshness hạt mịn cứu được an toàn, nhưng B3 chết.**
+- B2f (phạm vi theo từng dòng đổi) **khớp B2′ đến từng chữ số** trên cả hai chỉ số an toàn, và xoá
+  bỏ thảm hoạ false-block. Vậy kết luận âm ở lượt 1 **chỉ đúng cho freshness thô**.
+- **B3 (chấm lại bản sửa ứng viên) trùng khít B2f** trên 3 hạt giống × 4 giá trị K × 3 chỉ số, trừ
+  một chỗ lệch do làm tròn. Nguyên nhân có cấu trúc: freshness hạt mịn **vốn đã** quét lại mọi dòng
+  có digest đổi, mà bản sửa được áp thì digest đổi. **"Chấm lại bản sửa" chính là freshness mức dòng,
+  không phải cơ chế thứ hai.**
+
+**Lượt 3 — freshness thua trên trục chi phí.** Quét ba cỡ tệp (200 / 2.000 / 20.000 dòng):
+B2f quét ít hơn 40% số dòng nhưng **chậm hơn ~50% về thời gian thực ở mọi cỡ**. Đo trực tiếp trên
+n=20.000: bằm dấu vân `h` = 2,334 µs/dòng, kiểm đầy đủ `v` = 4,754 µs/dòng, **h/v = 0,491**.
+
+> Điều kiện hoà vốn: B2f rẻ hơn B2′ ⟺ **h/v < 1 − c/n**
+> → với h/v = 0,491, freshness chỉ rẻ hơn khi tỉ lệ dòng đổi **c/n < 0,509**.
+
+Nhưng hai trong bốn loại sự kiện đổi **ngữ nghĩa** nên buộc c/n = 1. Giả định nền của mọi cơ chế
+freshness — *"so hash rẻ hơn nhiều so với kiểm lại"* — **sai với tải này**.
+
+Phải phát biểu có biên: *với dấu vân SHA-256-trên-JSON và validator rẻ, freshness không hoà vốn.*
+**Không** được kết luận "freshness luôn thua" — nếu kiểm dòng đắt hơn nhiều (tra khoá ngoại qua DB,
+kiểm chéo bảng, gọi LLM) thì h/v giảm và cán cân đổi. Chưa thử dấu vân rẻ hơn (xxhash trên byte thô).
+
+### G2. Phát hiện lớn nhất — và nó nằm ở chỗ ta KHÔNG nhìn
+
+Ở **K = 0**, tức không có sự kiện nào, không có chuyện verdict cũ đi, **mọi** gate vẫn cho qua
+**34/64 = 53,1%** số ca đáng lẽ phải chặn. Bóc tách:
+
+| Nguồn | Số ca | Bản chất |
+|---|---|---|
+| `lossy_load` (tầng 2) | 16 | Mất mát do **phép biến đổi lúc nạp** — dòng nguồn hoàn toàn hợp lệ |
+| `email_semantic` (tầng 3) | 16 | Đúng kiểu, **sai nghiệp vụ** |
+| `fk_missing` | 6 | Hợp đồng **không khai** khoá ngoại; hệ đích **có** cưỡng chế |
+| `lease_range` | 6 | Hợp đồng **không khai** khoảng; hệ đích **có** cưỡng chế |
+
+Toàn bộ nhánh freshness dịch chuyển con số **vài phần trăm**. Lỗi nền là **53%**. Việc chọn
+verdict staleness làm trọng tâm là **tối ưu nhánh sai**.
+
+Con số này tách thành hai bài toán riêng biệt, cả hai đều chưa có ai làm:
+
+1. **Độ phủ hợp đồng so với hệ đích** (12 ca, 19%): hợp đồng khai thiếu so với DDL được cưỡng chế.
+2. **Mù cấu trúc** (32 ca, 50%): tầng 2 và tầng 3 **không một hợp đồng khai báo nào biểu diễn được**.
+   Cổng dựa trên ràng buộc có **trần trên cứng**, và trần đó đo được.
+
+### G3. Bốn hướng thay thế, xếp theo mức tôi tin
+
+**Hướng A — Độ phủ hợp đồng ↔ hệ đích (nhắm 19%).**
+Đo độ phủ declared-vs-enforced; **học ràng buộc còn thiếu từ phản hồi từ chối của hệ đích** (vòng kín).
+Định vị: Auto-Validate (SIGMOD 2021) suy ràng buộc từ data lake; Auto-Validate-by-History (KDD 2023)
+suy từ lịch sử các lần chạy. **Chưa ai suy từ phản hồi từ chối của hệ đích.** Có hai bài A\* để so.
+
+**Hướng B — Đối soát làm ĐẦU VÀO của cổng, không phải báo cáo hậu kiểm (nhắm 50%).**
+Tầng 2/3 vô hình với mọi cổng khai báo. Đưa đối soát (số dòng, tổng kiểm, toàn vẹn tham chiếu) vào
+**quyết định xuất bản**. Đường cơ sở: Netinant et al. (2023) có đủ tám chỉ số nhưng **không có ca âm**
+và **không nối vào cổng** — vượt họ ở đúng hai chỗ đó.
+
+**Hướng C — Khi nào kiểm khai báo hơn thử nạp thật?**
+Oracle tầng 1 của benchmark **chính là** một shadow load, nên phép so sánh đã có sẵn. Câu hỏi sắc:
+*kiểm khai báo hơn shadow-load ở điểm nào, hơn bao nhiêu, trong chế độ nào?* Phản biện (chi phí, tác
+dụng phụ, nạp một phần, cần giải thích chứ không chỉ mã lỗi, tầng 2/3 vẫn vô hình) chính là nội dung.
+
+**Hướng D — Quay về đóng góp luận văn ĐÃ tuyên bố.**
+Evidence Packet (F5) **vẫn chưa đo lần nào**. An toàn nhất nếu quỹ thời gian hẹp.
+
+### G4. Khuyến nghị và trạng thái đóng góp
+
+**A + B làm một luận văn mạch lạc, C làm câu hỏi sắc hoá:**
+
+> Một cổng chỉ tốt bằng hợp đồng của nó. Luận văn đo độ phủ hợp đồng–hệ đích, học ràng buộc còn
+> thiếu từ phản hồi từ chối, và đưa đối soát vào quyết định xuất bản cho phần mà ràng buộc khai báo
+> **không thể** biểu diễn.
+
+Lý do: nhắm vào 53% thay vì vài phần trăm; benchmark **đã dựng xong** và đo được ngay; và hai kết
+quả âm ở G1 trở thành **Related Work của chính nó** ("đã thử freshness, đây là điều kiện hoà vốn,
+đây là lý do nó không phải nút thắt").
+
+| Đóng góp | Trạng thái sau ba lượt đo |
+|---|---|
+| **A5 — benchmark quyết định có oracle độc lập** | ✅ **Đứng vững** — đã hiện thực, oracle đúng 104/104 |
+| Chuyển miền hợp đồng hiệu lực (Phần E/F) | ❌ **Hoà về an toàn, thua về chi phí** — không trục nào thắng |
+| Chấm lại bản sửa trước phê duyệt (Phần D4, F3) | ❌ **Bị hấp thụ** vào freshness mức dòng — phải gỡ khỏi danh sách khoảng trống |
+| **Độ phủ hợp đồng ↔ hệ đích (mới)** | 🆕 Nhắm 19% lỗi nền, có hai bài A\* để định vị |
+| **Đối soát làm đầu vào cổng (mới)** | 🆕 Nhắm 50% lỗi nền, có đường cơ sở 2023 để vượt |
+
+**Điều kiện dừng nên đặt NGAY, lúc chưa bị áp lực thời gian:** nếu sau hai tuần hướng A+B chưa cho
+kết quả đo được, chuyển sang D và đóng luận văn bằng đúng thứ nó đã tuyên bố.
+
+---
+
+## Phần H — F5 đã được đo lần đầu (22/09/2026): Evidence Packet CÓ đóng góp
+
+`chuong4.tex:386` ghi "Đợt đo chưa được thực hiện". Nay đã thực hiện.
+Mã và kết quả: `csv_agent_platform/generation/experiments/f5_evidence_ablation/` (`FINDINGS_F5.md`).
+
+### H1. Giao thức
+
+| Mục | Giá trị |
+|---|---|
+| Tập đánh giá | **Structural holdout** seed=42 (3 combo chưa từng thấy): train=2928, val=733, **test=1339** |
+| Mẫu | **n = 70**, seed=42, chỉ số lưu trong `results_n70.json` |
+| Mô hình | `qwen2-csv-fix` (LoRA) **và** `qwen2.5:3b-instruct` (gốc) — tách fine-tuning khỏi evidence |
+| Điều kiện | 4 mức bằng chứng × 2 mô hình + template tất định = **9**, tổng **630 báo cáo** |
+| Kiểm soát | `num_predict=700`, `temperature=0`, `seed=42` cố định; prompt token báo cáo tường minh |
+| Chỉ số | NumFid/IssueFid/Cov@2/ảo giác (dùng `src/evaluation/fidelity.py` của repo) + BLEU-4/ROUGE-L/định dạng |
+| Kiểm định | Bootstrap **ghép cặp** 5.000 lần trên cùng 70 mẫu |
+
+Bốn mức: **L1** chỉ điểm số · **L2** +loại vấn đề/tỷ lệ/ưu tiên · **L3** +ngữ cảnh tập dữ liệu và phân tích chéo · **L4** gói đầy đủ như production.
+
+### H2. Kết quả
+
+| Điều kiện | NumFid | IssueFid | Ảo giác | BLEU-4 | ROUGE-L | Fmt | pTok |
+|---|---|---|---|---|---|---|---|
+| **T tất định** | 0,570 | **1,000** | **0,0000** | 0,0488 | 0,2025 | 1,00 | 0 |
+| FT · L1 score-only | 0,253 | 0,106 | 0,0214 | 0,0266 | 0,1654 | 1,00 | 224 |
+| FT · L2 +rule | 0,508 | 0,796 | 0,0154 | 0,0629 | 0,2290 | 1,00 | 337 |
+| **FT · L3 +context** | **0,655** | 0,825 | 0,0059 | **0,0878** | **0,2513** | 1,00 | 616 |
+| FT · L4 full EP | 0,344 | 0,687 | 0,0424 | 0,0529 | 0,1653 | **0,34** | 2350 |
+| Base · L1 | 0,345 | 0,104 | 0,0020 | 0,0135 | 0,1227 | 1,00 | 245 |
+| **Base · L2** | **0,719** | 0,960 | 0,0029 | 0,0468 | 0,1691 | 1,00 | 358 |
+| Base · L3 | 0,647 | **0,963** | **0,0023** | 0,0472 | 0,1721 | 0,98 | 637 |
+| Base · L4 | 0,297 | 0,793 | 0,0078 | 0,0338 | 0,1432 | 0,35 | 2356 |
+
+### H3. Kiểm định ghép cặp (CI 95%)
+
+| So sánh (a − b) | Δ | CI 95% | Kết luận |
+|---|---|---|---|
+| **L3 − L1**, NumFid | +0,4024 | [0,3553; 0,4496] | ✅ Có ý nghĩa |
+| **L3 − L1**, ảo giác | −0,0154 | [−0,0199; −0,0116] | ✅ Có ý nghĩa (giảm) |
+| **L4 − L3**, NumFid | −0,3114 | [−0,3723; −0,2484] | ✅ Có ý nghĩa |
+| **L4 − L3**, ảo giác | +0,0365 | [0,0154; 0,0674] | ✅ Có ý nghĩa (tăng) |
+| **L4 − L3**, định dạng | −0,6571 | [−0,7500; −0,5571] | ✅ Có ý nghĩa |
+| **FT − Base** tại L3, ROUGE-L | +0,0792 | [0,0619; 0,0979] | ✅ Có ý nghĩa |
+| **FT − Base** tại L3, NumFid | +0,0083 | [−0,0654; 0,0801] | ❌ **CHƯA có ý nghĩa** |
+| **FT − Base** tại L3, ảo giác | +0,0037 | [0,0021; 0,0053] | ✅ Có ý nghĩa (**tệ hơn**) |
+| **FT·L3 − Template**, NumFid | +0,0853 | [0,0400; 0,1319] | ✅ Có ý nghĩa |
+| **FT·L3 − Template**, ảo giác | +0,0059 | [0,0046; 0,0075] | ✅ Có ý nghĩa (**tệ hơn**) |
+
+### H4. Bốn kết luận
+
+1. **✅ Evidence Packet CÓ đóng góp.** L1→L3: NumFid gấp 2,6 lần, ảo giác giảm 3,6 lần, cả hai có ý nghĩa. **F5 được trả lời, và câu trả lời là CÓ.** Đây là đóng góp duy nhất của luận văn được chứng minh bằng thực nghiệm có kiểm định trong toàn bộ đợt rà soát này.
+
+2. **❌ Cấu hình production (L4) là cấu hình TỆ NHẤT.** Sụp trên **cả hai** mô hình: định dạng rơi 1,00 → 0,34, ảo giác tăng 7 lần. Gói 2.350 token phá vỡ mô hình nhỏ. **Sửa được ngay:** dùng gói rút gọn mức L3 (fine-tuned) hoặc L2 (base); mức tối ưu **phụ thuộc mô hình**.
+
+3. **⚠️ Fine-tuning mua VĂN PHONG, không mua SỰ THẬT.** ROUGE-L +0,0792 có ý nghĩa; NumFid **CI chứa 0**; ảo giác **tệ hơn** có ý nghĩa. Luận văn dùng BLEU 0,1423 / ROUGE-L 0,3326 làm bằng chứng fine-tune thành công — phép đo cho thấy hai chỉ số đó bắt **văn phong**, không bắt **tính đúng**. Đúng cảnh báo ở `chuong4.tex:807`, nay có số.
+
+4. **⚖️ LLM thắng template về độ trung thực, KHÔNG BAO GIỜ thắng về ảo giác.** Template đạt 0,0000 tuyệt đối theo thiết kế. Mọi tuyên bố "không ảo giác" phải thuộc về template, không thuộc về LLM.
+
+### H5. Đính chính và giới hạn
+
+**Đính chính:** ở pilot n=3 tôi báo "template thắng mọi điều kiện LLM về NumFid". Ở n=70 điều đó **sai** — FT·L3 vượt template có ý nghĩa (+0,0853).
+
+**Giới hạn phải ghi vào luận văn:**
+1. **Cov@2 = 0,000** ở mọi điều kiện LLM trừ L4 là **hiện vật đo lường** (chỉ L4 chứa mã bản ghi), không phải thất bại của mô hình. Không đọc cột này như so sánh.
+2. Dữ liệu **tổng hợp**, không phải báo cáo nghiệp vụ thật.
+3. Bốn chỉ số này đo **độ trung thực với gói bằng chứng**, **không** đo tính hữu ích nghiệp vụ.
+4. Kết luận 2 gắn với **lớp mô hình 1,5B/3B**; mô hình lớn hơn có thể không sụp ở L4.
+5. Template tất định do tôi viết; NumFid 0,570 có thể nâng gần 1,0 nếu xuất đủ trường — tức so sánh hiện **có lợi cho LLM**.
+
+### H6. Ảnh hưởng tới trạng thái đóng góp toàn cục
+
+| Đóng góp | Trạng thái |
+|---|---|
+| **F5 — Evidence Packet (độ trung thực)** | ⚠️ **Có bằng chứng cho L1→L3**, nhưng so với template phải đọc Phần I (baseline đã sửa) |
+| F5 — LLM-as-Judge | ❌ **Đã chạy, không đạt calibration** (ρ = 0,174 / −0,101) |
+| F5 — chất lượng nghiệp vụ (chuyên gia) | ⏳ **Chưa chạy** — bộ công cụ đã sẵn sàng tại `expert_kit/` |
+| A5 — benchmark quyết định xuất bản | ✅ Đứng vững (Phần G) |
+| Chuyển miền hợp đồng hiệu lực | ❌ Hoà an toàn, thua chi phí (Phần G) |
+| Chấm lại bản sửa trước duyệt | ❌ Bị hấp thụ vào freshness mức dòng (Phần G) |
+
+**Hệ quả chiến lược:** hướng D ở Phần G4 (quay về đóng góp luận văn đã tuyên bố) **không còn là đường lui**
+— nó nay là **đường mạnh nhất**, vì đã có số liệu có ý nghĩa thống kê chứng minh.
+### H7. LLM-as-Judge — ĐÃ CHẠY, KHÔNG ĐẠT CALIBRATION (23/09/2026)
+
+Giao thức theo đúng `chuong4.tex`: 5 tiêu chí, thang 1–5, calibration subset n=15.
+Judge: `qwen2.5:3b-instruct`. Chi tiết: `experiments/f5_evidence_ablation/JUDGE_FINDINGS.md`.
+
+**Judge có phân biệt được** (dùng đủ thang 1–5, sd=1,238; xếp L4 thấp nhất, khớp fidelity):
+T tất định 3,20 · FT·L3 3,17 · FT·L4 2,91.
+
+**Nhưng phép kiểm quyết định thất bại** — tương quan Spearman với fidelity tự động (45 cặp):
+
+| Cặp | ρ |
+|---|---|
+| judge `accuracy` ↔ `NumFid` | **0,174** (gần như không tương quan) |
+| judge `groundedness` ↔ (−ảo giác) | **−0,101** (**ngược dấu**) |
+| Riêng T tất định: `accuracy` ↔ `NumFid` | **−0,389** |
+
+**Chẩn đoán:** đã kiểm giả thuyết cạnh tranh "5 tiêu chí trừu tượng quá khó". Giao judge nhiệm vụ
+**hẹp** (chỉ đếm số khớp/không khớp) cho ρ = **−0,130** — không khá hơn. Vậy lỗi do **năng lực judge
+3B**, không do thiết kế prompt. Đáng chú ý: judge cho **trung bình tổng thể gần đúng** (0,744 so với
+NumFid 0,696) nhưng **thứ hạng từng mẫu sai** — dạng hỏng nguy hiểm nhất, sinh ra con số trông hợp lý
+mà không mang tín hiệu.
+
+**Quyết định: KHÔNG chạy đủ 630 lần chấm.** Báo cáo chúng như "chất lượng nghiệp vụ" sẽ tạo đúng loại
+số liệu mà cả đợt rà soát này đang chống.
+
+**Hệ quả:** hạng mục "LLM-as-Judge 70 báo cáo" trong bảng cam kết phải ghi **ĐÃ CHẠY — KHÔNG ĐẠT
+CALIBRATION** kèm ρ = 0,174 và −0,101. Đây là **kết quả**, không phải việc còn treo. Giao thức chỉ cứu
+được bằng judge mạnh hơn nhiều (lớp GPT-4/Claude) — **chưa thử**, không được suy ra là "sẽ đạt".
+
+### H8. Đánh giá chuyên gia — bộ công cụ đã dựng, CHƯA CHẠY
+
+Chất lượng nghiệp vụ nay chỉ còn **một** con đường hợp lệ: chuyên gia người chấm. Tôi **không** chạy
+được việc này — nó cần người có nền nghiệp vụ kiểm toán/bất động sản. Đã dựng sẵn bộ công cụ tại
+`experiments/f5_evidence_ablation/expert_kit/`:
+
+- **108 báo cáo** lấy phân tầng 12 mẫu × 9 điều kiện
+- **Làm mù**: tệp đặt tên `R001`…, khoá giải mã nằm trong `BLIND_KEY_do_not_share.json` (không đưa giám khảo)
+- **15 phiếu chồng lặp** giữa 2 giám khảo để đo Krippendorff α
+- `score_expert.py` tính trung bình theo điều kiện + độ đồng thuận; **α < 0,67 thì không dùng làm bằng chứng**
+
+Trạng thái trong luận văn phải ghi: **CHƯA CHẠY, công cụ đã sẵn sàng** — không được ghi là đã đo.
+
+
+---
+
+## Phần I — Phản biện độc lập 23/09/2026: năm lỗi, **cả năm đều đúng**
+
+Một lượt phản biện độc lập chỉ ra sáu điểm. Tôi kiểm chứng bằng số, không nhận hay bác bằng lời.
+**Năm điểm thực nghiệm đều được xác nhận.** Đây là các lỗi của tôi, không phải khác biệt quan điểm.
+
+### I1. ❌ Kết luận "LLM thắng template" — SAI vì lỗi baseline
+
+**Cáo buộc:** template chỉ in `ratio` khi là số, nhưng dữ liệu lưu dạng chuỗi.
+
+**Kiểm chứng:** `cluster.ratio` là **`str` ở 229/229** trường hợp (ví dụ `"0.22% of total records"`).
+Template của tôi có `isinstance(r, (int, float))` → **không bao giờ in ratio**.
+
+**Sửa và chấm lại** (giữ nguyên 70 báo cáo LLM, chỉ sinh lại điều kiện template):
+
+| Chỉ số | Template v1 (lỗi) | Template v2 (sửa) | FT·L3 |
+|---|---|---|---|
+| **NumFid** | 0,570 | **1,000** | 0,655 |
+| Ảo giác | 0,0000 | **0,0000** | 0,0059 |
+| BLEU-4 | 0,0488 | **0,0974** | 0,0878 |
+| ROUGE-L | 0,2025 | **0,2325** | 0,2513 |
+
+Trường bắt buộc còn thiếu: **0/528**.
+
+**Kết luận H4-4 bị đảo ngược.** Template tất định **thắng** LLM ở NumFid (1,000 vs 0,655), ảo giác
+(0 vs 0,0059) và BLEU-4. LLM chỉ còn hơn ở **ROUGE-L** (0,2513 vs 0,2325) — tức độ giống văn phong
+bản vàng, không phải độ đúng.
+
+Bài học phương pháp: **bootstrap có ý nghĩa thống kê không cứu được baseline bị cài đặt sai.** Tôi đã
+báo CI 95% cho một so sánh mà một bên bị tôi làm yếu đi.
+
+### I2. ❌ Đối chứng fine-tuning KHÔNG HỢP LỆ
+
+`models/qwen2-1.5b-lora-adapter-v2/adapter_config.json` ghi
+`base_model_name_or_path: Qwen/Qwen2-1.5B-Instruct`. Tôi lại so với `qwen2.5:3b-instruct` — đổi **cả
+phiên bản (2 → 2.5) lẫn kích thước (1,5B → 3B)**. Hai biến cùng thay đổi.
+
+Câu "fine-tuning mua văn phong, không mua sự thật" (H4-3) **chưa có đối chứng phù hợp**.
+Đã tải `qwen2:1.5b-instruct` và **đang chạy lại** đối chứng đúng (n=70, cùng họ, chỉ khác có/không LoRA).
+
+### I3. ⚠️ Quy kết L4 cho "packet dài" — chưa đủ bằng chứng, và phải tách hai trường hợp
+
+| Điều kiện | Chạm trần 700 token | oTok TB | Kết thúc giữa chừng |
+|---|---|---|---|
+| FT·L1/L2/L3 | 0% | 226–253 | 1–7% |
+| **FT·L4** | **2%** | 282 | 11% |
+| Base·L1/L2/L3 | 37–41% | 589–618 | 30–34% |
+| **Base·L4** | **77%** | 667 | **61%** |
+
+- **Base·L4**: Fmt 0,35 **phần lớn do truncation**, không phải "mô hình bị phá vỡ". Chưa kết luận được.
+- **FT·L4**: chỉ 2% chạm trần mà Fmt vẫn 0,34 → ở đây L4 sụp **không** do truncation.
+
+Câu "2.350 token phá vỡ mô hình nhỏ" **quá rộng**: đúng cho FT, **chưa chứng minh** cho base.
+Đang chạy lại base·L3/L4 với `num_predict=1600` để tách nguyên nhân.
+
+### I4. ❌ Phần G gọi B2 là "bị áp đảo" — SAI, đó là ĐÁNH ĐỔI
+
+| K | Gate | unsafe | false-block |
+|---|---|---|---|
+| 1 | B1 | 0,654 | 0,000 |
+| 1 | **B2 coarse** | **0,103** | **0,769** |
+| 1 | B2f fine / B2′ | 0,359 | 0,000 |
+| 5 | **B2 coarse** | **0,022** | **1,000** |
+| 5 | B2f fine / B2′ | 0,163 | 0,000 |
+
+Coarse **an toàn hơn 25,6 điểm %** tại K=1 (0,103 vs 0,359), đổi lại chặn nhầm 76,9%. Gọi nó là
+"dominated" chỉ đúng nếu đã đặt trước tiêu chí ưu tiên khả dụng hơn an toàn — **tôi chưa đặt**.
+
+**Phải sửa:** nêu hàm đánh đổi (ví dụ chi phí một ca unsafe so với một ca chặn nhầm) **trước** khi
+tuyên bố bên thắng.
+
+### I5. ❌ "53% lỗi nền" — hai sai sót trong cách trình bày
+
+1. **"Mọi gate đều cho qua 34/64" là SAI.** Kiểm lại: **B0 lọt 0/64**, B1 lọt 34/64. B0 chặn tất cả.
+2. **Bảng 44 lượt lỗi thực chất là 34 ca** — 10 lượt dư là do ca chồng lấp nhiều loại (soft-mix có cả
+   `lossy_load` lẫn `email_semantic`). Tôi in bảng lượt mà không ghi chú, gây hiểu là 44 ca.
+3. **"Freshness chỉ dịch chuyển vài phần trăm" là SAI:**
+
+| K | B1 → coarse | B1 → fine |
+|---|---|---|
+| 1 | giảm **55,1** điểm % | giảm **29,5** điểm % |
+| 5 | giảm **69,6** điểm % | giảm **55,4** điểm % |
+| 20 | giảm **77,9** điểm % | giảm **75,0** điểm % |
+
+Ý tôi muốn nói là freshness **không chạm tới** 53% lỗi tại K=0, nhưng tôi đã phát biểu thành một câu sai.
+
+Thêm nữa: 53% là tỷ lệ trong **corpus do tôi chủ động thiết kế** (tỷ lệ lỗi tầng 2/3 là lựa chọn của tôi),
+nên **không** đủ để một mình quyết định chuyển hướng nghiên cứu.
+
+### I6. ❌ Bốn tài liệu không thống nhất, nhiều tuyên bố mạnh hơn bằng chứng
+
+Đã sửa: `TONG_HOP.md` và `assessment.md` còn ghi F5 chưa chạy trong khi Phần H đã có 630 báo cáo.
+Đã hạ các cụm **"đóng hẳn"** → "nhiều prior work mạnh; tìm kiếm có mục tiêu, chưa bao quát";
+**"benchmark đầu tiên"** → "chưa tìm thấy công bố tương đương"; **"đã chứng minh"** → "có bằng chứng cho L1→L3".
+
+### I7. Trạng thái đóng góp sau đính chính
+
+| Đóng góp | Trước | Sau |
+|---|---|---|
+| Evidence Packet giúp (L1→L3) | ✅ | ✅ **Giữ nguyên** — Δ NumFid +0,4024 [0,3553; 0,4496], ảo giác −0,0154 |
+| LLM hơn template tất định | ✅ | ❌ **ĐẢO NGƯỢC** — template đạt NumFid 1,000, ảo giác 0 |
+| Fine-tuning mua văn phong | ✅ | ⏳ **Chưa kết luận** — đối chứng sai, đang chạy lại |
+| L4 sụp do packet dài | ✅ | ⚠️ **Đúng cho FT, chưa chứng minh cho base** |
+| B2 bị B2′ áp đảo | ✅ | ❌ **Là đánh đổi**, không phải áp đảo |
+| 53% lỗi nền → đổi hướng | ✅ | ⚠️ **Đúng số nhưng là corpus tự thiết kế**, không đủ để một mình quyết định |
+
+### I8. Câu hỏi nghiên cứu mà đính chính này để lộ
+
+Sau khi template đạt NumFid 1,000 và ảo giác 0, câu hỏi trung tâm của nhánh Evidence Packet **đổi**:
+
+> LLM đem lại **giá trị nghiệp vụ** gì ngoài việc trình bày lại các trường dữ liệu mà một template
+> tất định đã in đủ và in đúng?
+
+NumFid **không còn** trả lời được câu này — template đã đạt trần. Phải chuyển sang các phép đo mà
+template không thể thắng theo cấu trúc: **đánh giá mù về chất lượng khuyến nghị**, **khả năng hỗ trợ
+xử lý lỗi**, hoặc **thời gian/độ chính xác của người dùng khi đọc báo cáo**. Bộ công cụ mù ở
+`expert_kit/` là đúng hướng, nhưng phiếu chấm phải bổ sung tiêu chí **so sánh cặp** giữa báo cáo LLM
+và báo cáo template trên cùng một gói bằng chứng.
+
 ## Giới hạn của chính báo cáo này
 
 Tìm có mục tiêu, không PRISMA. DBLP không truy cập được (chặn bot) nên có thể sót công trình ở SIGMOD/EDBT/ICDT. Semantic Scholar trả 429, không dùng được để kiểm chéo. Xếp hạng Q của PVLDB, Data Science and Engineering và ACM JDIQ để `[CẦN XÁC MINH]`, không tự gán. Kết luận "khe còn lại" ở A3 **đã được xác minh bằng toàn văn** (xem Phần D), không còn dựa trên abstract. Kết luận "trống" ở A4 và A5 là kết quả truy vấn, không phải chứng minh phủ định.
+
+
+F5 đã được đo lần đầu tiên. Kết quả ở FINDINGS_F5.md.
+
+Giao thức: structural holdout seed=42 (3 combo chưa từng thấy, test=1339), n=70, hai mô hình để tách fine-tuning khỏi evidence, token budget cố định, bootstrap ghép cặp 5.000 lần.
+
+Điều kiện	NumFid	Ảo giác	ROUGE-L	Fmt	pTok
+T tất định	0,570	0,0000	0,2025	1,00	0
+FT · L1 score-only	0,253	0,0214	0,1654	1,00	224
+FT · L2 +rule	0,508	0,0154	0,2290	1,00	337
+FT · L3 +context	0,655	0,0059	0,2513	1,00	616
+FT · L4 full EP	0,344	0,0424	0,1653	0,34	2350
+Base · L2	0,719	0,0029	0,1691	1,00	358
+Base · L4	0,297	0,0078	0,1432	0,35	2356
+Bốn kết luận, tất cả có kiểm định
+1. ✅ Evidence Packet CÓ đóng góp — luận điểm trung tâm đứng vững. L1→L3: NumFid +0,4024 [0,3553; 0,4496], ảo giác −0,0154 [−0,0199; −0,0116]. Cả hai có ý nghĩa. Sau khi sửa, luận văn được phép tuyên bố điều này kèm CI.
+
+2. ❌ Cấu hình production (L4) là cấu hình TỆ NHẤT. Sụp trên cả hai mô hình: NumFid −0,3114, ảo giác +0,0365, định dạng −0,6571 — đều có ý nghĩa. Gói 2.350 token phá vỡ mô hình nhỏ. Đây là việc sửa được ngay: hệ thống đang gửi gói đầy đủ, mà mức L3 tốt hơn hẳn.
+
+3. ⚠️ Fine-tuning mua VĂN PHONG, không mua SỰ THẬT. Cùng mức L3: ROUGE-L +0,0792 có ý nghĩa; NumFid +0,0083 CI chứa 0; ảo giác +0,0037 có ý nghĩa và tệ hơn. Luận văn đang dùng BLEU 0,1423 / ROUGE-L 0,3326 làm bằng chứng fine-tune thành công — phép đo cho thấy hai chỉ số đó bắt văn phong, không bắt tính đúng. Đúng cảnh báo ở chuong4.tex:807, nay có số.
+
+4. ⚖️ LLM thắng template về độ trung thực, không bao giờ thắng về ảo giác. FT·L3 vượt template ở NumFid (+0,0853) và ROUGE-L (+0,0488), đều có ý nghĩa. Nhưng template đạt ảo giác 0,0000 tuyệt đối.
+
+Tôi phải đính chính pilot: ở n=3 tôi báo "template thắng mọi điều kiện LLM về NumFid". Ở n=70 điều đó sai — cấu hình LLM tốt nhất vượt template có ý nghĩa. Kết luận đúng: LLM đáng dùng, nhưng mọi tuyên bố "không ảo giác" phải thuộc về template.
+
+Còn nợ: LLM-as-Judge và đánh giá chuyên gia vẫn chưa chạy — bốn chỉ số này đo độ trung thực với gói bằng chứng, không đo tính hữu ích nghiệp vụ. Ngoài ra dữ liệu là tổng hợp, và kết luận 2 gắn với lớp mô hình 1,5B/3B.
+
+Việc tiếp theo có giá trị nhất: viết lại chuong4.tex §4.5 theo bốn kết luận này — đặc biệt kết luận 2 và 3, vì chúng mâu thuẫn với những gì bản thảo đang nói.
+
+LLM-as-Judge: đã chạy, và thất bại calibration
+Judge (qwen2.5:3b) có phân biệt được — dùng đủ thang 1–5 (sd 1,238), xếp L4 thấp nhất đúng như fidelity. Nhưng phép kiểm quyết định mà luận văn đã hứa thì hỏng:
+
+Cặp	ρ
+judge accuracy ↔ NumFid	0,174 — gần như không tương quan
+judge groundedness ↔ (−ảo giác)	−0,101 — ngược dấu
+Riêng template tất định	−0,389 — nghịch đảo rõ
+Tôi đã kiểm giả thuyết cạnh tranh thay vì kết luận vội: có thể 5 tiêu chí trừu tượng là quá khó? Giao judge nhiệm vụ hẹp — chỉ đếm số khớp/không khớp — cho ρ = −0,130, không khá hơn. Vậy lỗi là năng lực judge 3B, không phải thiết kế prompt.
+
+Chi tiết đáng sợ nhất: judge cho trung bình tổng thể gần đúng (0,744 so với NumFid 0,696) nhưng thứ hạng từng mẫu sai. Đó là dạng hỏng nguy hiểm nhất — sinh ra con số trông hợp lý mà không mang tín hiệu.
+
+Nên tôi dừng, không chạy đủ 630 lần chấm. Báo cáo chúng như "chất lượng nghiệp vụ" sẽ tạo đúng loại số liệu mà cả đợt rà soát này đang chống. Trong luận văn, hạng mục này phải ghi ĐÃ CHẠY — KHÔNG ĐẠT CALIBRATION kèm hai con số ρ. Đó là kết quả, không phải việc còn treo.
+
+Nó cũng xác nhận cảnh báo ở chuong4.tex:807 theo hướng mạnh hơn bản thảo nghĩ: không chỉ BLEU/ROUGE không đo được chất lượng nghiệp vụ, mà LLM-as-Judge quy mô nhỏ cũng không.
+
+Đánh giá chuyên gia: tôi không làm được — đã dựng công cụ thay thế
+Việc này cần người có nền kiểm toán/bất động sản thật. Tôi không bịa số. Bộ công cụ ở expert_kit/:
+
+108 báo cáo, phân tầng 12 mẫu × 9 điều kiện
+Làm mù: tệp đặt tên R001…, khoá giải mã tách riêng, không đưa giám khảo
+15 phiếu chồng lặp giữa 2 giám khảo để đo Krippendorff α
+score_expert.py tính trung bình theo điều kiện + độ đồng thuận, và chặn: α < 0,67 thì không được dùng làm bằng chứng
+Trạng thái phải ghi vào luận văn: CHƯA CHẠY, công cụ đã sẵn sàng.
+
+Bảng trạng thái sau hôm nay
+Đóng góp	Trạng thái
+F5 — Evidence Packet (độ trung thực)	✅ ĐÃ CHỨNG MINH có kiểm định — mạnh nhất hiện có
+F5 — LLM-as-Judge	❌ Đã chạy, không đạt calibration
+F5 — chất lượng nghiệp vụ	⏳ Chưa chạy, công cụ sẵn sàng
+A5 — benchmark quyết định	✅ Đứng vững
+Chuyển miền hợp đồng hiệu lực	❌ Hoà an toàn, thua chi phí
+Hướng D ở Phần G — "quay về đóng góp luận văn đã tuyên bố" — không còn là đường lui, nó nay là đường mạnh nhất.
+
+Việc tiếp theo có giá trị nhất: viết lại chuong4.tex §4.5 theo bốn kết luận H4, đặc biệt kết luận 2 (cấu hình production L4 là tệ nhất) và 3 (fine-tuning mua văn phong chứ không mua sự thật) — vì cả hai mâu thuẫn với những gì bản thảo đang nói.
+
+
