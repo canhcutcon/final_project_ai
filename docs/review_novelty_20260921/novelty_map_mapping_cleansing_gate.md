@@ -19,7 +19,9 @@ Log xác minh: `runs/crossref_verification_20260922.json`. Mọi nguồn dưới
 >    cứu được lỗi baseline.
 > 2. **Đối chứng fine-tuning ở H4-3 KHÔNG HỢP LỆ** — so Qwen2-1.5B fine-tuned với Qwen2.5-**3B**, khác
 >    cả phiên bản lẫn kích thước.
-> 3. **Quy kết L4 cho "packet dài" CHƯA ĐỦ BẰNG CHỨNG** — base·L4 có **54/70 (77%) chạm trần 700 token**.
+> 3. **Quy kết L4 cho "packet dài" LÀ SAI HOÀN TOÀN** — nguyên nhân thật là harness của tôi không đặt
+>    `num_ctx`, Ollama cắt mất khối `### Instruction`. Đặt `num_ctx=8192` thì Fmt hồi phục **0,343 → 1,000**.
+>    Xem I11.
 > 4. **Phần G gọi B2 là "bị áp đảo" là SAI** — đó là **đánh đổi**: tại K=1 coarse an toàn hơn 25,6 điểm %
 >    nhưng chặn nhầm 76,9%.
 > 5. **"Mọi gate đều lọt 34/64" là SAI** — B0 lọt **0/64**. Bảng 44 lượt lỗi thực chất là **34 ca**
@@ -634,8 +636,8 @@ Template của tôi có `isinstance(r, (int, float))` → **không bao giờ in 
 Trường bắt buộc còn thiếu: **0/528**.
 
 **Kết luận H4-4 bị đảo ngược.** Template tất định **thắng** LLM ở NumFid (1,000 vs 0,655), ảo giác
-(0 vs 0,0059) và BLEU-4. LLM chỉ còn hơn ở **ROUGE-L** (0,2513 vs 0,2325) — tức độ giống văn phong
-bản vàng, không phải độ đúng.
+(0 vs 0,0059) và BLEU-4. LLM chỉ còn hơn ở **ROUGE-L** (0,2513 vs 0,2325) — tức **gần văn bản tham chiếu hơn**.
+Điều đó **không** chứng minh văn phong hay hơn (xem I9).
 
 Bài học phương pháp: **bootstrap có ý nghĩa thống kê không cứu được baseline bị cài đặt sai.** Tôi đã
 báo CI 95% cho một so sánh mà một bên bị tôi làm yếu đi.
@@ -646,8 +648,43 @@ báo CI 95% cho một so sánh mà một bên bị tôi làm yếu đi.
 `base_model_name_or_path: Qwen/Qwen2-1.5B-Instruct`. Tôi lại so với `qwen2.5:3b-instruct` — đổi **cả
 phiên bản (2 → 2.5) lẫn kích thước (1,5B → 3B)**. Hai biến cùng thay đổi.
 
-Câu "fine-tuning mua văn phong, không mua sự thật" (H4-3) **chưa có đối chứng phù hợp**.
-Đã tải `qwen2:1.5b-instruct` và **đang chạy lại** đối chứng đúng (n=70, cùng họ, chỉ khác có/không LoRA).
+**ĐÃ CHẠY LẠI** với `qwen2:1.5b-instruct` (n=70, cùng họ, cùng kích thước, chỉ khác có/không LoRA).
+Bootstrap ghép cặp 5.000 lần:
+
+| Mức | NumFid FT | NumFid base | Δ | CI 95% | |
+|---|---|---|---|---|---|
+| L1 | 0,253 | 0,069 | **+0,1835** | [+0,1458; +0,2190] | ✅ |
+| L2 | 0,509 | 0,366 | **+0,1422** | [+0,0637; +0,2235] | ✅ |
+| L3 | 0,655 | 0,491 | **+0,1640** | [+0,0850; +0,2417] | ✅ |
+| L4 | 0,344 | 0,234 | **+0,1100** | [+0,0584; +0,1645] | ✅ |
+
+| Mức | Ảo giác FT | base | Δ | CI 95% | |
+|---|---|---|---|---|---|
+| L1 | 0,0214 | 0,0004 | **+0,0209** | [+0,0169; +0,0257] | ✅ tệ hơn |
+| L2 | 0,0154 | 0,0024 | **+0,0130** | [+0,0098; +0,0164] | ✅ tệ hơn |
+| L3 | 0,0059 | 0,0007 | **+0,0052** | [+0,0039; +0,0067] | ✅ tệ hơn |
+| L4 | 0,0424 | 0,0017 | **+0,0407** | [+0,0205; +0,0712] | ✅ tệ hơn |
+
+**Kết luận H4-3 phải RÚT LẠI HOÀN TOÀN.** Câu "fine-tuning mua văn phong, không mua sự thật" là
+**hiện vật của đối chứng sai** — khi so với một mô hình lớn hơn và mới hơn (Qwen2.5-3B), lợi thế của
+fine-tuning bị che lấp.
+
+**⚠️ NHƯNG đối chứng này VẪN CHƯA "chỉ khác LoRA".** Kiểm metadata serving 23/09:
+
+| Cấu hình | Lượng tử hoá | Context length |
+|---|---|---|
+| FT Qwen2-1.5B (`qwen2-csv-fix`) | **Q4_K_M** | 32768 |
+| Base Qwen2-1.5B (`qwen2:1.5b-instruct`) | **Q4_0** | 32768 |
+
+Serving template giống nhau, nhưng **lượng tử hoá khác** — Q4_K_M chất lượng cao hơn Q4_0. Vẫn còn
+**hai biến** cùng thay đổi.
+
+**Phát biểu được bằng chứng hỗ trợ (và chỉ đến đó):** *cấu hình FT đạt NumFid cao hơn và tỷ lệ ảo
+giác proxy cao hơn so với cấu hình base.* **KHÔNG** được quy toàn bộ chênh lệch cho LoRA. Muốn tách
+phải lượng tử hoá hai bản về cùng một mức rồi chạy lại.
+
+Câu "fine-tuning mua văn phong, không mua sự thật" vẫn **rút lại** — nhưng câu thay thế cũng chỉ là
+*so sánh cấu hình*, chưa phải *so sánh LoRA*.
 
 ### I3. ⚠️ Quy kết L4 cho "packet dài" — chưa đủ bằng chứng, và phải tách hai trường hợp
 
@@ -661,8 +698,44 @@ Câu "fine-tuning mua văn phong, không mua sự thật" (H4-3) **chưa có đ�
 - **Base·L4**: Fmt 0,35 **phần lớn do truncation**, không phải "mô hình bị phá vỡ". Chưa kết luận được.
 - **FT·L4**: chỉ 2% chạm trần mà Fmt vẫn 0,34 → ở đây L4 sụp **không** do truncation.
 
-Câu "2.350 token phá vỡ mô hình nhỏ" **quá rộng**: đúng cho FT, **chưa chứng minh** cho base.
-Đang chạy lại base·L3/L4 với `num_predict=1600` để tách nguyên nhân.
+Câu "2.350 token phá vỡ mô hình nhỏ" **phải rút lại hoàn toàn**, không chỉ thu hẹp:
+
+- **Base·L4**: đã chạy lại với `num_predict=1600`. **Ghép đúng 25 ca** giữa hai lần chạy:
+
+  | | Cap 700 | Cap 1600 |
+  |---|---|---|
+  | Fmt | 0,36 | 0,36 |
+  | Chạm trần | 19/25 | 9/25 |
+
+  **Phát biểu được hỗ trợ:** *nới cap chưa cải thiện Fmt trên 25 ca này.* **KHÔNG** được nói
+  "truncation đã bị loại" — vẫn còn **36% chạm trần**, và **cắt ĐẦU VÀO/context chưa được kiểm soát**.
+  (Tôi đã so 77% với 36% trên hai cỡ mẫu khác nhau (n=70 vs n=25) — so sánh sai.)
+- **FT·L4**: tỷ lệ chạm trần 2% **loại việc cắt đầu ra khỏi vai trò giải thích chính** — nhưng **KHÔNG
+  xác định được nguyên nhân**. Tôi đã viết "ở đó L4 sụp không do truncation" theo cách ngầm hiểu là đã
+  biết nguyên nhân. Chưa biết.
+
+**Còn phải kiểm trước khi quy kết bất cứ điều gì cho độ dài packet:**
+1. **Context thực nhận** — mô hình có thật sự nhận đủ 2.350 token không, hay bị cắt ở tầng serving?
+2. **Prompt và serving template** của Ollama cho model đã merge — có khác `report_prompt.j2` không?
+3. **Khác biệt với dữ liệu huấn luyện** — LoRA học trên gói đầy đủ hay gói rút gọn? Nếu phân bố đầu vào
+   lúc suy luận lệch khỏi lúc huấn luyện thì đó mới là nguyên nhân, không phải "độ dài".
+4. **Yêu cầu báo cáo** — style `detailed` vs `summary` phân bố thế nào giữa các mức.
+
+**Cập nhật 23/09 — bốn mục kiểm đã cho bằng chứng:**
+
+1. **Dữ liệu huấn luyện:** cả 5.000 mẫu chứa packet **đầy đủ**, không phải L3 rút gọn. Nên giả thuyết
+   "LoRA học trên gói rút gọn" **không** giải thích được. Còn phải kiểm `max_seq_length=2048` trong
+   script huấn luyện giữ thực sự bao nhiêu token ở run lịch sử.
+2. **Context serving:** `prompt_eval_count` = **đúng 2050** ở **51/70** ca L4, giống hệt trên cả ba
+   mô hình. Đây là **dấu hiệu ưu tiên truy vết**, chưa phải bằng chứng xác nhận cắt prompt.
+3. **Style không lệch:** cùng 36 detailed / 34 summary ở mọi mức. Giả thuyết lệch tỷ trọng style
+   **bị loại**.
+4. **Prompt benchmark ≠ template huấn luyện** ở một số chỉ dẫn tiếng Anh. Và một output FT·L4 là
+   **tiếng Trung** → **`Fmt` hiện đang TRỘN lỗi ngôn ngữ với lỗi bố cục**, nên bản thân chỉ số này
+   chưa tách bạch.
+
+**Bước tiếp theo đúng thứ tự:** kiểm **context thực nhận** trước, giữ nguyên mọi biến khác. Giả thuyết
+lệch huấn luyện LoRA **không tự giải thích** việc hai mô hình base cũng gặp vấn đề.
 
 ### I4. ❌ Phần G gọi B2 là "bị áp đảo" — SAI, đó là ĐÁNH ĐỔI
 
@@ -710,23 +783,195 @@ nên **không** đủ để một mình quyết định chuyển hướng nghiê
 |---|---|---|
 | Evidence Packet giúp (L1→L3) | ✅ | ✅ **Giữ nguyên** — Δ NumFid +0,4024 [0,3553; 0,4496], ảo giác −0,0154 |
 | LLM hơn template tất định | ✅ | ❌ **ĐẢO NGƯỢC** — template đạt NumFid 1,000, ảo giác 0 |
-| Fine-tuning mua văn phong | ✅ | ⏳ **Chưa kết luận** — đối chứng sai, đang chạy lại |
-| L4 sụp do packet dài | ✅ | ⚠️ **Đúng cho FT, chưa chứng minh cho base** |
+| Fine-tuning mua văn phong, không mua sự thật | ✅ | ❌ **Rút lại.** Thay bằng: *cấu hình FT* đạt NumFid cao hơn **và** ảo giác proxy cao hơn *cấu hình base*. Chưa quy được cho LoRA — **lượng tử hoá còn khác** (Q4_K_M vs Q4_0). |
+| L4 sụp do packet dài | ✅ | ⚠️ **Hiện tượng có thật trên cả ba mô hình**; nới cap đầu ra chưa cải thiện Fmt, nhưng **truncation đầu vào chưa loại được**; `Fmt` còn trộn lỗi ngôn ngữ với bố cục |
 | B2 bị B2′ áp đảo | ✅ | ❌ **Là đánh đổi**, không phải áp đảo |
 | 53% lỗi nền → đổi hướng | ✅ | ⚠️ **Đúng số nhưng là corpus tự thiết kế**, không đủ để một mình quyết định |
 
-### I8. Câu hỏi nghiên cứu mà đính chính này để lộ
+### I8. Câu hỏi nghiên cứu, phát biểu lại cho sắc (sửa 23/09/2026 lần hai)
 
-Sau khi template đạt NumFid 1,000 và ảo giác 0, câu hỏi trung tâm của nhánh Evidence Packet **đổi**:
+**Tôi đã viết sai ở bản trước.** Bản đó đề xuất "chuyển sang phép đo mà template **không thể thắng
+theo cấu trúc**". Đó là **rigging phép đo** — chọn thước để định sẵn bên thắng, đúng thứ mà cả đợt rà
+soát này đang chống. Phản biện bắt được, và đúng.
 
-> LLM đem lại **giá trị nghiệp vụ** gì ngoài việc trình bày lại các trường dữ liệu mà một template
-> tất định đã in đủ và in đúng?
+**Nguyên tắc thay thế:** chọn phép đo phản ánh **công việc thực tế**, cho phép **cả template lẫn LLM
+thắng hoặc hoà**. Nếu template tốt hơn, **đó vẫn là kết quả nghiên cứu có giá trị** — không phải thất
+bại cần diễn giải lại.
 
-NumFid **không còn** trả lời được câu này — template đã đạt trần. Phải chuyển sang các phép đo mà
-template không thể thắng theo cấu trúc: **đánh giá mù về chất lượng khuyến nghị**, **khả năng hỗ trợ
-xử lý lỗi**, hoặc **thời gian/độ chính xác của người dùng khi đọc báo cáo**. Bộ công cụ mù ở
-`expert_kit/` là đúng hướng, nhưng phiếu chấm phải bổ sung tiêu chí **so sánh cặp** giữa báo cáo LLM
-và báo cáo template trên cùng một gói bằng chứng.
+**Câu hỏi nghiên cứu:**
+
+> Trong **những loại ca nào**, báo cáo LLM giúp người dùng xử lý bất thường **tốt hơn** báo cáo tất
+> định, và lợi ích đó có **đánh đổi** bằng lỗi thiếu căn cứ hay chi phí hay không?
+
+Ba mệnh đề then chốt: *loại ca nào* (không phải "có tốt hơn không" nói chung) · *giúp người dùng xử lý*
+(không phải điểm chấm trên giấy) · *có đánh đổi không* (bắt buộc báo cáo mặt trái).
+
+### I9. ⚠️ Giới hạn diễn giải của bốn chỉ số hiện có
+
+Ba cảnh báo phải ghi vào luận văn, vì tôi đã diễn giải quá mức ở **cả hai chiều**:
+
+1. **ROUGE-L cao hơn chỉ nghĩa là GẦN VĂN BẢN THAM CHIẾU hơn.** Không chứng minh "văn phong hay hơn".
+   Câu ở H4-3 và I1 nói LLM "hơn ở văn phong" là **suy diễn vượt bằng chứng** — đúng phải nói là
+   *gần bản vàng hơn*.
+2. **NumFid = 1 và tỷ lệ ảo giác = 0 là PROXY.** Chúng đo *sự có mặt của các số bắt buộc* và *số token
+   không truy được về gói*. Chúng **không** bảo đảm mọi phát biểu đúng ngữ nghĩa. Template đạt 1,000/0
+   vẫn có thể phát biểu sai quan hệ nhân quả hoặc khuyến nghị lệch.
+3. **Ba trục khuyến nghị và câu hỏi "phát biểu nào không kiểm chứng được"** mới là chỗ bắt lỗi ngữ
+   nghĩa. Bốn chỉ số tự động không thay thế được.
+
+### I10. Giao thức đánh giá — CHỐT TRƯỚC khi xem kết quả mới
+
+Đã hiện thực tại `experiments/f5_evidence_ablation/expert_kit/`.
+
+**A. So sánh cặp** (`build_pairwise.py`, `score_pairwise.py`, 40 ca):
+1. **Cùng ca, cùng gói bằng chứng** cho cả hai bản; ẩn tên hệ thống; **đảo ngẫu nhiên A/B** từng ca;
+   **cho phép HOÀ**.
+2. Chấm **riêng**, không gộp điểm: khuyến nghị *đúng* / *cụ thể* / *khả thi*; **đếm** phát biểu thiếu
+   căn cứ; **đếm** lỗi quan trọng bị bỏ sót.
+3. Phân tích **ghép cặp theo ca**; công bố **bất đồng giữa người chấm** và **khoảng tin cậy** bootstrap.
+   CI chứa 0 → kết luận là *chưa phân biệt được*, không phải "LLM không kém".
+
+**B. Hiệu quả người dùng** (`task_protocol.md`) — nếu đo:
+- Nhiệm vụ có **đáp án kiểm chứng được** từ gói bằng chứng (nhóm nghiêm trọng nhất; số bản ghi; cột
+  cần nhắm; phát biểu không kiểm chứng được).
+- Ghi **cả độ chính xác lẫn thời gian**. Nhanh hơn mà sai nhiều hơn **không** phải cải thiện.
+- Thiết kế trong-đối-tượng, cân bằng thứ tự theo ô Latin, làm mù.
+- **Điểm chuyên gia về "hữu ích" KHÔNG thay thế phép đo này.**
+
+
+### I11. 🔴 NGUYÊN NHÂN L4 ĐÃ TÌM RA — là lỗi trong harness của chính tôi
+
+Ngày 23/09/2026, sau gợi ý truy vết context serving.
+
+**Phép thử trực tiếp.** Nhét mã bí mật ở **cuối** prompt, tăng dần độ dài, hỏi lại mã:
+
+| Độ dài prompt | pEval (mặc định) | pEval (`num_ctx=8192`) | Đọc được mã? |
+|---|---|---|---|
+| ~500 tok | 837 | 837 | có / có |
+| ~1.500 tok | 2.433 | 2.433 | có / có |
+| ~2.500 tok | 4.010 | 4.010 | có / có |
+| **~3.500 tok** | **2.050** | **5.587** | có / có |
+
+Con số **2.050** tái hiện **chính xác** — đúng giá trị xuất hiện 51/70 lần ở L4. Nó là **hiện vật của
+cấu hình context mặc định của Ollama**, không phải đặc tính dữ liệu. Mô hình vẫn đọc được mã ở cuối
+→ **Ollama cắt từ ĐẦU prompt**.
+
+### Mức bằng chứng — phân định rõ hai tầng
+
+**✅ ĐÃ XÁC NHẬN: có cắt đầu vào.** Với **prompt y hệt nhau**, tầng phục vụ tự báo số token đầu vào
+nó xử lý:
+
+| Ca | Mặc định | `num_ctx=8192` |
+|---|---|---|
+| 13 | **2.050** | 4.584 |
+| 51 | **2.050** | 5.974 |
+| 54 | **2.050** | 6.517 |
+
+Cùng một prompt mà số token được xử lý chênh 2–3 lần → **giới hạn context làm GIẢM lượng đầu vào
+được xử lý ở cấu hình mặc định**. Đây là bằng chứng từ chính kế toán token của tầng phục vụ.
+
+**⚠️ Nhưng `pEval` cao KHÔNG tự chứng minh toàn bộ prompt đã được giữ.** Muốn khẳng định điều đó phải
+đối chiếu với **tổng token kỳ vọng**, tính bằng đúng tokenizer của mô hình và đúng serving template
+tương ứng — **chưa làm**. Hiện chỉ kết luận được là *ít hơn ở mặc định*, không phải *đủ ở 8192*.
+
+**❌ CHƯA XÁC ĐỊNH: phần nào bị mất.** Tôi đã thử hai phép dò (đặt chỉ dấu ở đầu và cuối prompt, hỏi
+lại mô hình) và **cả hai đều thất bại**: mô hình 1,5B không truy hồi được chỉ dấu ngay cả khi
+`pEval` = 4.584–6.480 chứng tỏ prompt **không** bị cắt. Đó là giới hạn truy hồi của mô hình nhỏ, không
+phải tín hiệu cắt. Nên phép dò **không phân định được**.
+
+Giả thuyết "khối `### Instruction` ở đầu bị mất" **phù hợp với** hành vi cắt-từ-đầu quan sát được ở
+phép thử mã bí mật (phần đuôi sống sót ở ~3.500 token), nhưng phép thử đó chạy trên văn bản độn tổng
+hợp, **không phải** prompt L4 thật. **Chưa chứng minh.**
+
+Cách phát biểu đúng: *can thiệp context (`num_ctx=8192`) cải thiện kết quả một cách nhất quán, phù hợp
+với giả thuyết cắt đầu vào; đã xác nhận có cắt, chưa xác định phần nào bị mất.*
+
+**Giả thuyết cơ chế (chưa chứng minh).** Harness của tôi **không đặt `num_ctx`**. Prompt có cấu trúc:
+
+```
+### Instruction          <-- yêu cầu định dạng: **Tóm tắt** → **Vấn đề chính** → ...
+### Input                <-- gói bằng chứng JSON
+### Output
+```
+
+Nếu cắt từ đầu thì với L4 (~2.350 token) khối `### Instruction` sẽ mất, nên mô hình không nhận được
+yêu cầu định dạng. L1–L3 (224–637 token) dưới ngưỡng nên không bị ảnh hưởng — điều này **khớp** với
+việc chỉ L4 hỏng. Nhưng đó là **suy luận nhất quán**, không phải xác minh trực tiếp.
+
+**Kiểm chứng** (n=25, `num_ctx=8192`):
+
+| Chỉ số | Mặc định | `num_ctx=8192` |
+|---|---|---|
+| FT·L4 **Fmt** | 0,343 | **1,000** |
+| FT·L4 NumFid | 0,344 | **0,685** |
+| FT·L4 ảo giác | 0,0424 | **0,0038** |
+| FT·L4 ROUGE-L | 0,1653 | **0,2566** |
+| base·L4 Fmt | 0,279 | **1,000** |
+| Số ca pEval = 2.050 | 51/70 | **0/25** |
+
+Ba quan sát khó hiểu trước đây **nhất quán** với giả thuyết này: cả ba mô hình cùng hỏng ở đúng L4;
+nới `num_predict` không cứu được; và có output tiếng Trung. Nhất quán ≠ chứng minh.
+
+**Hệ quả — đảo ngược H4-2.** Kết luận cũ là *"cấu hình production L4 tệ nhất, nên rút gọn về L3"*.
+Với context đủ, FT·L4 **vượt** L3 ở cả NumFid (0,685 vs 0,655) và ROUGE-L (0,2566 vs 0,2513).
+Tôi suýt khuyến nghị rút gọn packet để chữa một lỗi **do chính mình gây ra**.
+
+⚠️ n=25 khác cỡ mẫu với n=70 — **đang chạy đủ 70 cho L3+L4** để so ghép cặp đúng. Chưa chốt.
+
+**Còn nguyên hai vấn đề:** lượng tử hoá vẫn khác (I2), và **`Fmt` vẫn trộn lỗi ngôn ngữ với lỗi bố
+cục**. Việc Fmt lên 1,000 khi có đủ context gợi ý phần lớn lỗi ngôn ngữ cũng do mất chỉ dẫn, nhưng
+phải tách hai loại mới khẳng định được.
+
+### I12. Bài học phương pháp
+
+Ba vòng phản biện, **ba kết luận "mô hình/phương pháp kém" của tôi đều hoá ra là lỗi trong harness
+của chính tôi**:
+
+| Kết luận sai | Nguyên nhân thật |
+|---|---|
+| "LLM thắng template về độ trung thực" | Template bỏ qua `ratio` dạng chuỗi |
+| "Fine-tuning không mua sự thật" | Đối chứng sai model (3B vs 1,5B) |
+| "Packet dài phá vỡ mô hình nhỏ" | Không đặt `num_ctx`, Ollama cắt mất khối Instruction |
+
+**Quy tắc rút ra:** trước khi quy một kết quả kém cho **đối tượng nghiên cứu**, phải loại trừ **công
+cụ đo** — baseline có được cài đúng không, đối chứng có đúng một biến không, tầng phục vụ có giữ
+nguyên đầu vào không. Bootstrap và CI **không** phát hiện được nhóm lỗi này: chúng đo độ ổn định của
+một phép đo, không đo tính đúng của phép đo.
+
+### I13. Bốn điều khoá thêm trước khi mở holdout (23/09/2026)
+
+**a) Kiểm độc lập — đã chạy đủ, tất cả bằng 0** (`HOLDOUT_INDEPENDENCE.json`):
+
+| Trục kiểm | Kết quả |
+|---|---|
+| Trùng **nội dung** với train của adapter | 0 |
+| Trùng **nội dung** với val | 0 |
+| Giao **chỉ số** với 70 ca phát triển | 0 |
+| Giao với pilot / expert_kit / pairwise | 0 / 0 / 0 |
+| Trùng **nội dung** với ca đã dùng (biến thể cùng nguồn) | 0 |
+| Trùng nội dung **nội bộ** holdout | 0 |
+
+Đã lưu **cả ba** loại định danh: hash chỉ số `aae8acb6…`, **hash nội dung** `5637126c…`, và
+**phiên bản dataset** (`synthetic_samples_v2.jsonl`, 63.670.860 bytes, sha256 `07705f1f…`).
+
+**b) Chỉ số chính và quy tắc kết luận — đã tiền đăng ký** (`PREREGISTRATION.md`):
+chỉ số xác nhận **duy nhất** là `num_fid`; năm chỉ số còn lại là **phụ, thăm dò, không dùng kết luận**;
+ba giả thuyết H1–H3 hiệu chỉnh **Holm–Bonferroni** α = 0,05. **Cấm chọn chỉ số thắng sau khi xem kết quả.**
+
+**c) BLEU — CI chưa làm tròn:** cận dưới thật là **+0,000567** (không phải +0,000). Phân biệt được về
+kỹ thuật, nhưng **biên cực mỏng**, và kể cả vậy nó chỉ là cải thiện **độ trùng văn bản tham chiếu**.
+Không dùng làm căn cứ.
+
+| Chỉ số (L4 − L3) | Δ | CI 95% chưa làm tròn |
+|---|---|---|
+| bleu4 | +0,012717 | [+0,000567; +0,025374] |
+| rouge_l | +0,017225 | [+0,003633; +0,031362] |
+| num_fid | +0,041905 | [−0,011020; +0,094830] |
+
+**d) Fmt — chênh lệch từng ca:** **70/70 ca chênh đúng 0**, phân bố `{0.0: 70}`; cả hai nhánh có
+min = 0,75. Tức không chỉ trung bình bằng nhau mà **từng ca đều bằng nhau**. Dù vậy vẫn **chỉ nói
+được**: *không quan sát thấy khác biệt trên tập này*. Muốn kết luận **tương đương** phải đặt trước
+biên tương đương và dùng TOST — **chưa đặt**. Nhiều khả năng chỉ số này quá thô để phân biệt L3/L4.
 
 ## Giới hạn của chính báo cáo này
 
