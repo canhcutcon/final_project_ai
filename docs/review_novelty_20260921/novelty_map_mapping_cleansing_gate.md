@@ -1,3 +1,9 @@
+> 🗂️ **TRẠNG THÁI: TÀI LIỆU LỊCH SỬ — 24/09/2026.**
+> Bản đồ tính mới + kết quả F5/gate của lượt 21–23/09. Banner đính chính sẵn có trong file vẫn đúng ở phần nó nói, nhưng chưa đủ: I11/I12 và phần lặp cuối còn mâu thuẫn.
+> Nguồn kết luận hiện hành duy nhất là [`final_project_ai/docs/review_final_20260923/CLAIM_LEDGER.md`](/final_project_ai/docs/review_final_20260923/CLAIM_LEDGER.md).
+> Không trích tài liệu này làm kết luận hiện hành; các số/bảng ở đây giữ nguyên theo run cũ
+> để đối chiếu lịch sử, **không** được thay bằng số của run mới.
+
 # Bản đồ khoảng trống — nhánh AI trong mapping/cleansing/ETL và Validation & reconciliation làm gate
 
 Ngày: 22/09/2026. Chế độ: deep-research (lit-review + architect), chạy inline.
@@ -841,6 +847,8 @@ Ba cảnh báo phải ghi vào luận văn, vì tôi đã diễn giải quá m�
 
 ### I11. 🔴 NGUYÊN NHÂN L4 ĐÃ TÌM RA — là lỗi trong harness của chính tôi
 
+> ⛔ **ĐÃ RÚT / THU HẸP (24/09/2026).** Giữ kết luận “đặt `num_ctx=8192` cải thiện kết quả trên tập phát triển”. **Rút** phần khẳng định đã xác định được khối `### Instruction` bị mất: chính I11 thừa nhận chưa xác định đoạn mất. Cơ chế chưa chứng minh; xem R06.
+
 Ngày 23/09/2026, sau gợi ý truy vết context serving.
 
 **Phép thử trực tiếp.** Nhét mã bí mật ở **cuối** prompt, tăng dần độ dài, hỏi lại mã:
@@ -923,6 +931,8 @@ cục**. Việc Fmt lên 1,000 khi có đủ context gợi ý phần lớn lỗi
 phải tách hai loại mới khẳng định được.
 
 ### I12. Bài học phương pháp
+
+> ⛔ **ĐÃ RÚT / THU HẸP (24/09/2026).** Các bài học vẫn dùng được, nhưng mọi phát biểu dạng “đã xác định nguyên nhân” trong mục này chịu cùng giới hạn của I11.
 
 Ba vòng phản biện, **ba kết luận "mô hình/phương pháp kém" của tôi đều hoá ra là lỗi trong harness
 của chính tôi**:

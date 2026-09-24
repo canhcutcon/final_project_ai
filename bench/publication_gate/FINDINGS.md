@@ -1,3 +1,9 @@
+> 🗂️ **TRẠNG THÁI: TÀI LIỆU LỊCH SỬ — 24/09/2026.**
+> Kết quả benchmark gate lượt 22/09. Giữ ở phạm vi **pilot bổ trợ**; hai lỗi correctness đã được tái hiện ở rà soát 23/09.
+> Nguồn kết luận hiện hành duy nhất là [`final_project_ai/docs/review_final_20260923/CLAIM_LEDGER.md`](/final_project_ai/docs/review_final_20260923/CLAIM_LEDGER.md).
+> Không trích tài liệu này làm kết luận hiện hành; các số/bảng ở đây giữ nguyên theo run cũ
+> để đối chiếu lịch sử, **không** được thay bằng số của run mới.
+
 # Kết quả benchmark — 22/09/2026
 
 Ba hạt giống (42, 43, 44) × 104 ca × K ∈ {0, 1, 5, 20}. Kết quả thô: `results_seed*.json`.
@@ -17,6 +23,8 @@ và **đo chi phí**.
 | 5 | B2′ revalidate | 0,163 / 0,222 / 0,215 | 0,000 |
 
 **B2f khớp B2′ ĐẾN TỪNG CHỮ SỐ** trên cả hai chỉ số an toàn, ở mọi K và mọi hạt giống — đồng thời
+
+> ⛔ **ĐÃ RÚT / THU HẸP (24/09/2026).** **Đã rút ở dạng tổng quát.** Probe 23/09 dựng phản ví dụ: với no-op repair có claimed_fixes, B2f cho xuất (0 dòng quét) trong khi B3 chặn (1 dòng) và B2′ chặn (10 dòng) — oracle nói không được xuất. Tương đương chỉ đúng trên corpus hiện tại, nơi mọi sửa có claim đều đổi bytes.
 xoá bỏ thảm hoạ false-block của freshness thô (0,625–1,000 → 0,000).
 
 Kết luận âm ở lượt 1 ("freshness bị revalidation áp đảo") **chỉ đúng cho freshness thô toàn tệp** —

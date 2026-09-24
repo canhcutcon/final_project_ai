@@ -1,0 +1,2464 @@
+{
+  "generated": "2026-09-24T03:57:58+00:00",
+  "git_head": "26e7a68ef4759d93630f39e8cc06a2afde1e4cd1",
+  "scope": "active thesis/proposal/docs/bench; review_final_20260923 excluded",
+  "note": "Dem theo DOAN (khoi ngan cach dong trong), vi LaTeX xuong dong giua cau. Danh sach nay la dau vao de RA SOAT thu cong, khong phai phan quyet tu dong.",
+  "scan_dirs": [
+    "iuh_master_thesis/chapters",
+    "de_cuong_IUH/chapters",
+    "final_project_ai/docs/review_novelty_20260921",
+    "final_project_ai/bench/publication_gate",
+    "csv_agent_platform/generation/experiments/f5_evidence_ablation"
+  ],
+  "claims": {
+    "C1_llm_beats_template": {
+      "desc": "LLM thang template ve do trung thuc (NumFid)",
+      "plan_ref": "PLAN_FINAL 3 / REVIEW R01, I1",
+      "n_occurrences": 11,
+      "n_files": 2,
+      "files": [
+        "csv_agent_platform/generation/experiments/f5_evidence_ablation/FINDINGS_F5.md",
+        "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md"
+      ],
+      "occurrences": [
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 11,
+          "line_end": 28,
+          "text": "> ## ⚠️ ĐÍNH CHÍNH 23/09/2026 — ĐỌC TRƯỚC PHẦN G VÀ H > > Một lượt phản biện độc lập đã tìm ra **năm lỗi thật** trong Phần G và H. Tôi đã kiểm chứng bằng số và > **xác nhận cả năm**. Các kết luận dưới đây phải đọc kèm Phần I: > > 1. **Kết luận H4-4 (\"LLM thắng template về độ trung thực\") ĐÃ BỊ ĐẢO NGƯỢC.** Template của tôi có lỗi >    `isinstance(ratio, (int,float))` trong khi dữ liệu lưu `ratio` "
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 544,
+          "line_end": 544,
+          "text": "4. **⚖️ LLM thắng template về độ trung thực, KHÔNG BAO GIỜ thắng về ảo giác.** Template đạt 0,0000 tuyệt đối theo thiết kế. Mọi tuyên bố \"không ảo giác\" phải thuộc về template, không thuộc về LLM."
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 620,
+          "line_end": 620,
+          "text": "### I1. ❌ Kết luận \"LLM thắng template\" — SAI vì lỗi baseline"
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 797,
+          "line_end": 799,
+          "text": "**Nguyên tắc thay thế:** chọn phép đo phản ánh **công việc thực tế**, cho phép **cả template lẫn LLM thắng hoặc hoà**. Nếu template tốt hơn, **đó vẫn là kết quả nghiên cứu có giá trị** — không phải thất bại cần diễn giải lại."
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 930,
+          "line_end": 934,
+          "text": "| Kết luận sai | Nguyên nhân thật | |---|---| | \"LLM thắng template về độ trung thực\" | Template bỏ qua `ratio` dạng chuỗi | | \"Fine-tuning không mua sự thật\" | Đối chứng sai model (3B vs 1,5B) | | \"Packet dài phá vỡ mô hình nhỏ\" | Không đặt `num_ctx`, Ollama cắt mất khối Instruction |"
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 1000,
+          "line_end": 1000,
+          "text": "4. ⚖️ LLM thắng template về độ trung thực, không bao giờ thắng về ảo giác. FT·L3 vượt template ở NumFid (+0,0853) và ROUGE-L (+0,0488), đều có ý nghĩa. Nhưng template đạt ảo giác 0,0000 tuyệt đối."
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 1002,
+          "line_end": 1002,
+          "text": "Tôi phải đính chính pilot: ở n=3 tôi báo \"template thắng mọi điều kiện LLM về NumFid\". Ở n=70 điều đó sai — cấu hình LLM tốt nhất vượt template có ý nghĩa. Kết luận đúng: LLM đáng dùng, nhưng mọi tuyên bố \"không ảo giác\" phải thuộc về template."
+        },
+        {
+          "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/FINDINGS_F5.md",
+          "line": 35,
+          "line_end": 47,
+          "text": "| So sánh (a − b) | Δ | CI 95% | Kết luận | |---|---|---|---| | **Bằng chứng có giúp?** L3 − L1, NumFid | +0,4024 | [0,3553; 0,4496] | ✅ **Có ý nghĩa** | | ... trên ảo giác | −0,0154 | [−0,0199; −0,0116] | ✅ Có ý nghĩa (giảm) | | **L4 có sụp đổ?** L4 − L3, NumFid | −0,3114 | [−0,3723; −0,2484] | ✅ Có ý nghĩa | | ... trên ảo giác | +0,0365 | [0,0154; 0,0674] | ✅ Có ý nghĩa (tăng) | | ... trên định "
+        },
+        {
+          "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/FINDINGS_F5.md",
+          "line": 78,
+          "line_end": 78,
+          "text": "### 4. ⚖️ LLM tốt nhất thắng template về độ trung thực, nhưng KHÔNG BAO GIỜ thắng về ảo giác"
+        },
+        {
+          "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/FINDINGS_F5.md",
+          "line": 80,
+          "line_end": 81,
+          "text": "FT·L3 so với template tất định: NumFid **+0,0853** và ROUGE-L **+0,0488**, đều có ý nghĩa — LLM thắng. Nhưng ảo giác **+0,0059** có ý nghĩa: template đạt **0,0000 tuyệt đối** theo thiết kế, LLM không thể."
+        },
+        {
+          "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/FINDINGS_F5.md",
+          "line": 83,
+          "line_end": 85,
+          "text": "**Đính chính:** ở pilot n=3 tôi báo \"template thắng mọi điều kiện LLM về NumFid\". Ở n=70 điều đó **sai** — cấu hình LLM tốt nhất vượt template có ý nghĩa. Kết luận đúng là: LLM đáng dùng, nhưng mọi tuyên bố \"không ảo giác\" phải thuộc về template, không thuộc về LLM."
+        }
+      ]
+    },
+    "C2_ft_buys_style_only": {
+      "desc": "Fine-tuning chi mua van phong / chi cai thien BLEU-ROUGE",
+      "plan_ref": "PLAN_FINAL 3 / REVIEW R18",
+      "n_occurrences": 3,
+      "n_files": 2,
+      "files": [
+        "csv_agent_platform/generation/experiments/f5_evidence_ablation/FINDINGS_F5.md",
+        "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md"
+      ],
+      "occurrences": [
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 542,
+          "line_end": 542,
+          "text": "3. **⚠️ Fine-tuning mua VĂN PHONG, không mua SỰ THẬT.** ROUGE-L +0,0792 có ý nghĩa; NumFid **CI chứa 0**; ảo giác **tệ hơn** có ý nghĩa. Luận văn dùng BLEU 0,1423 / ROUGE-L 0,3326 làm bằng chứng fine-tune thành công — phép đo cho thấy hai chỉ số đó bắt **văn phong**, không bắt **tính đúng**. Đúng cảnh báo ở `chuong4.tex:807`, nay có số."
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 998,
+          "line_end": 998,
+          "text": "3. ⚠️ Fine-tuning mua VĂN PHONG, không mua SỰ THẬT. Cùng mức L3: ROUGE-L +0,0792 có ý nghĩa; NumFid +0,0083 CI chứa 0; ảo giác +0,0037 có ý nghĩa và tệ hơn. Luận văn đang dùng BLEU 0,1423 / ROUGE-L 0,3326 làm bằng chứng fine-tune thành công — phép đo cho thấy hai chỉ số đó bắt văn phong, không bắt tính đúng. Đúng cảnh báo ở chuong4.tex:807, nay có số."
+        },
+        {
+          "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/FINDINGS_F5.md",
+          "line": 74,
+          "line_end": 76,
+          "text": "Luận văn đang dùng BLEU 0,1423 / ROUGE-L 0,3326 làm bằng chứng fine-tune thành công. Phép đo này cho thấy hai chỉ số đó bắt **văn phong**, không bắt **tính đúng**. Đúng như cảnh báo ở `chuong4.tex:807` (\"BLEU/ROUGE ≠ chất lượng nghiệp vụ\") — nay đã có số chứng minh."
+        }
+      ]
+    },
+    "C3_instruction_loss_identified": {
+      "desc": "Da xac dinh Ollama cat mat khoi ### Instruction",
+      "plan_ref": "PLAN_FINAL 3 / REVIEW R06, I11",
+      "n_occurrences": 4,
+      "n_files": 1,
+      "files": [
+        "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md"
+      ],
+      "occurrences": [
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 11,
+          "line_end": 28,
+          "text": "> ## ⚠️ ĐÍNH CHÍNH 23/09/2026 — ĐỌC TRƯỚC PHẦN G VÀ H > > Một lượt phản biện độc lập đã tìm ra **năm lỗi thật** trong Phần G và H. Tôi đã kiểm chứng bằng số và > **xác nhận cả năm**. Các kết luận dưới đây phải đọc kèm Phần I: > > 1. **Kết luận H4-4 (\"LLM thắng template về độ trung thực\") ĐÃ BỊ ĐẢO NGƯỢC.** Template của tôi có lỗi >    `isinstance(ratio, (int,float))` trong khi dữ liệu lưu `ratio` "
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 882,
+          "line_end": 884,
+          "text": "Giả thuyết \"khối `### Instruction` ở đầu bị mất\" **phù hợp với** hành vi cắt-từ-đầu quan sát được ở phép thử mã bí mật (phần đuôi sống sót ở ~3.500 token), nhưng phép thử đó chạy trên văn bản độn tổng hợp, **không phải** prompt L4 thật. **Chưa chứng minh.**"
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 897,
+          "line_end": 899,
+          "text": "Nếu cắt từ đầu thì với L4 (~2.350 token) khối `### Instruction` sẽ mất, nên mô hình không nhận được yêu cầu định dạng. L1–L3 (224–637 token) dưới ngưỡng nên không bị ảnh hưởng — điều này **khớp** với việc chỉ L4 hỏng. Nhưng đó là **suy luận nhất quán**, không phải xác minh trực tiếp."
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 930,
+          "line_end": 934,
+          "text": "| Kết luận sai | Nguyên nhân thật | |---|---| | \"LLM thắng template về độ trung thực\" | Template bỏ qua `ratio` dạng chuỗi | | \"Fine-tuning không mua sự thật\" | Đối chứng sai model (3B vs 1,5B) | | \"Packet dài phá vỡ mô hình nhỏ\" | Không đặt `num_ctx`, Ollama cắt mất khối Instruction |"
+        }
+      ]
+    },
+    "C4_all_gates_34_64": {
+      "desc": "Moi gate deu lot 34/64 (B0 that ra 0/64)",
+      "plan_ref": "PLAN_FINAL 3 / REVIEW R17",
+      "n_occurrences": 2,
+      "n_files": 1,
+      "files": [
+        "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md"
+      ],
+      "occurrences": [
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 11,
+          "line_end": 28,
+          "text": "> ## ⚠️ ĐÍNH CHÍNH 23/09/2026 — ĐỌC TRƯỚC PHẦN G VÀ H > > Một lượt phản biện độc lập đã tìm ra **năm lỗi thật** trong Phần G và H. Tôi đã kiểm chứng bằng số và > **xác nhận cả năm**. Các kết luận dưới đây phải đọc kèm Phần I: > > 1. **Kết luận H4-4 (\"LLM thắng template về độ trung thực\") ĐÃ BỊ ĐẢO NGƯỢC.** Template của tôi có lỗi >    `isinstance(ratio, (int,float))` trong khi dữ liệu lưu `ratio` "
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 758,
+          "line_end": 761,
+          "text": "1. **\"Mọi gate đều cho qua 34/64\" là SAI.** Kiểm lại: **B0 lọt 0/64**, B1 lọt 34/64. B0 chặn tất cả. 2. **Bảng 44 lượt lỗi thực chất là 34 ca** — 10 lượt dư là do ca chồng lấp nhiều loại (soft-mix có cả `lossy_load` lẫn `email_semantic`). Tôi in bảng lượt mà không ghi chú, gây hiểu là 44 ca. 3. **\"Freshness chỉ dịch chuyển vài phần trăm\" là SAI:**"
+        }
+      ]
+    },
+    "C5_coarse_dominated": {
+      "desc": "Freshness tho 'bi ap dao' (that ra la danh doi)",
+      "plan_ref": "PLAN_FINAL 3 / REVIEW R17, I4",
+      "n_occurrences": 7,
+      "n_files": 4,
+      "files": [
+        "final_project_ai/bench/publication_gate/FINDINGS.md",
+        "final_project_ai/docs/review_novelty_20260921/TONG_HOP.md",
+        "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+        "final_project_ai/docs/review_novelty_20260921/reassessment_20260923.md"
+      ],
+      "occurrences": [
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/TONG_HOP.md",
+          "line": 54,
+          "line_end": 58,
+          "text": "| Lượt | Kết quả | |---|---| | 1 | Freshness **thô** (đang chạy trong sản phẩm) bị B2′ áp đảo: false-block 0,625–1,000 so với 0,000 | | 2 | Freshness **hạt mịn** khớp B2′ đến từng chữ số về an toàn — nhưng **B3 (chấm lại bản sửa) trùng khít B2f**, tức bị hấp thụ, không phải cơ chế riêng | | 3 | Về **chi phí**: B2f quét ít hơn 40% dòng nhưng **chậm hơn ~50%** ở mọi cỡ tệp. Đo được **h/v = 0,491** →"
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 11,
+          "line_end": 28,
+          "text": "> ## ⚠️ ĐÍNH CHÍNH 23/09/2026 — ĐỌC TRƯỚC PHẦN G VÀ H > > Một lượt phản biện độc lập đã tìm ra **năm lỗi thật** trong Phần G và H. Tôi đã kiểm chứng bằng số và > **xác nhận cả năm**. Các kết luận dưới đây phải đọc kèm Phần I: > > 1. **Kết luận H4-4 (\"LLM thắng template về độ trung thực\") ĐÃ BỊ ĐẢO NGƯỢC.** Template của tôi có lỗi >    `isinstance(ratio, (int,float))` trong khi dữ liệu lưu `ratio` "
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 395,
+          "line_end": 398,
+          "text": "**Lượt 1 — freshness thô bị áp đảo.** Cơ chế đang chạy trong sản phẩm (`assessment_gate_service._freshness_of`: so digest toàn tệp, lệch là STALE) cho false-block **0,625–1,000** ở K≥1, tức chặn gần hết. B2′ (chạy lại validation lúc export) cho false-block **0,000** ở mọi K, mọi hạt giống. Ổn định qua ba hạt giống."
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 740,
+          "line_end": 740,
+          "text": "### I4. ❌ Phần G gọi B2 là \"bị áp đảo\" — SAI, đó là ĐÁNH ĐỔI"
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 782,
+          "line_end": 789,
+          "text": "| Đóng góp | Trước | Sau | |---|---|---| | Evidence Packet giúp (L1→L3) | ✅ | ✅ **Giữ nguyên** — Δ NumFid +0,4024 [0,3553; 0,4496], ảo giác −0,0154 | | LLM hơn template tất định | ✅ | ❌ **ĐẢO NGƯỢC** — template đạt NumFid 1,000, ảo giác 0 | | Fine-tuning mua văn phong, không mua sự thật | ✅ | ❌ **Rút lại.** Thay bằng: *cấu hình FT* đạt NumFid cao hơn **và** ảo giác proxy cao hơn *cấu hình base*. C"
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/reassessment_20260923.md",
+          "line": 51,
+          "line_end": 51,
+          "text": "`publication_gate/FINDINGS.md:12–16`: K=1, seed42, coarse B2 có unsafe=0,103 và false-block=0,769; B2′ có unsafe=0,359 và false-block=0. Revalidation giảm chặn nhầm nhưng tăng lọt ca không an toàn so với coarse. Vì vậy câu “coarse bị revalidation áp đảo” sai nếu xét đồng thời hai mục tiêu."
+        },
+        {
+          "path": "final_project_ai/bench/publication_gate/FINDINGS.md",
+          "line": 22,
+          "line_end": 23,
+          "text": "Kết luận âm ở lượt 1 (\"freshness bị revalidation áp đảo\") **chỉ đúng cho freshness thô toàn tệp** — đúng cái đang chạy trong `assessment_gate_service._freshness_of`. Hạt mịn hoá là đủ để gỡ."
+        }
+      ]
+    },
+    "C6_b3_absorbed": {
+      "desc": "B3 luon bi hap thu vao B2f / trung khit B2f",
+      "plan_ref": "PLAN_FINAL 3 / REVIEW R14",
+      "n_occurrences": 9,
+      "n_files": 4,
+      "files": [
+        "final_project_ai/bench/publication_gate/FINDINGS.md",
+        "final_project_ai/docs/review_novelty_20260921/TONG_HOP.md",
+        "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+        "final_project_ai/docs/review_novelty_20260921/reassessment_20260923.md"
+      ],
+      "occurrences": [
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/TONG_HOP.md",
+          "line": 54,
+          "line_end": 58,
+          "text": "| Lượt | Kết quả | |---|---| | 1 | Freshness **thô** (đang chạy trong sản phẩm) bị B2′ áp đảo: false-block 0,625–1,000 so với 0,000 | | 2 | Freshness **hạt mịn** khớp B2′ đến từng chữ số về an toàn — nhưng **B3 (chấm lại bản sửa) trùng khít B2f**, tức bị hấp thụ, không phải cơ chế riêng | | 3 | Về **chi phí**: B2f quét ít hơn 40% dòng nhưng **chậm hơn ~50%** ở mọi cỡ tệp. Đo được **h/v = 0,491** →"
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/TONG_HOP.md",
+          "line": 92,
+          "line_end": 98,
+          "text": "| Đóng góp | Trạng thái | |---|---| | **A5 — benchmark có oracle độc lập** | ✅ Đứng vững trong mọi kịch bản | | Chuyển miền hợp đồng hiệu lực | ❌ Hoà an toàn, thua chi phí | | Chấm lại bản sửa trước duyệt | ❌ Bị hấp thụ vào freshness mức dòng | | Độ phủ hợp đồng ↔ hệ đích | 🆕 Khuyến nghị | | Đối soát làm đầu vào cổng | 🆕 Khuyến nghị |"
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 400,
+          "line_end": 406,
+          "text": "**Lượt 2 — freshness hạt mịn cứu được an toàn, nhưng B3 chết.** - B2f (phạm vi theo từng dòng đổi) **khớp B2′ đến từng chữ số** trên cả hai chỉ số an toàn, và xoá bỏ thảm hoạ false-block. Vậy kết luận âm ở lượt 1 **chỉ đúng cho freshness thô**. - **B3 (chấm lại bản sửa ứng viên) trùng khít B2f** trên 3 hạt giống × 4 giá trị K × 3 chỉ số, trừ một chỗ lệch do làm tròn. Nguyên nhân có cấu trúc: fresh"
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 475,
+          "line_end": 481,
+          "text": "| Đóng góp | Trạng thái sau ba lượt đo | |---|---| | **A5 — benchmark quyết định có oracle độc lập** | ✅ **Đứng vững** — đã hiện thực, oracle đúng 104/104 | | Chuyển miền hợp đồng hiệu lực (Phần E/F) | ❌ **Hoà về an toàn, thua về chi phí** — không trục nào thắng | | Chấm lại bản sửa trước phê duyệt (Phần D4, F3) | ❌ **Bị hấp thụ** vào freshness mức dòng — phải gỡ khỏi danh sách khoảng trống | | **"
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 559,
+          "line_end": 566,
+          "text": "| Đóng góp | Trạng thái | |---|---| | **F5 — Evidence Packet (độ trung thực)** | ⚠️ **Có bằng chứng cho L1→L3**, nhưng so với template phải đọc Phần I (baseline đã sửa) | | F5 — LLM-as-Judge | ❌ **Đã chạy, không đạt calibration** (ρ = 0,174 / −0,101) | | F5 — chất lượng nghiệp vụ (chuyên gia) | ⏳ **Chưa chạy** — bộ công cụ đã sẵn sàng tại `expert_kit/` | | A5 — benchmark quyết định xuất bản | ✅ Đứ"
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/reassessment_20260923.md",
+          "line": 55,
+          "line_end": 55,
+          "text": "Kết quả B3 trùng B2f chỉ hỗ trợ “không có giá trị tăng thêm trong event model này”. `events.py:_attempt_fix` thay đổi bytes ở các ca sửa được tạo; B2f đã quét các dòng đổi nên thí nghiệm chưa phân biệt được hai cơ chế. Không suy ra việc đánh giá ứng viên trước phê duyệt luôn tương đương kiểm lại sau sửa ở mọi hệ thống."
+        },
+        {
+          "path": "final_project_ai/bench/publication_gate/FINDINGS.md",
+          "line": 41,
+          "line_end": 41,
+          "text": "## 3. B3 (chấm lại bản sửa) BỊ HẤP THỤ vào B2f — không phải đóng góp độc lập"
+        },
+        {
+          "path": "final_project_ai/bench/publication_gate/FINDINGS.md",
+          "line": 72,
+          "line_end": 76,
+          "text": "| Đóng góp | Trạng thái | |---|---| | A5 — benchmark quyết định có oracle độc lập | ✅ **Đứng vững**, đã chạy, oracle đúng 104/104 | | Chuyển miền hợp đồng hiệu lực | ⚠️ **Sống có điều kiện** — chỉ thắng ở K thấp, hoà ở K cao | | Chấm lại bản sửa trước phê duyệt | ❌ **Bị hấp thụ** vào freshness mức dòng |"
+        },
+        {
+          "path": "final_project_ai/bench/publication_gate/FINDINGS.md",
+          "line": 128,
+          "line_end": 132,
+          "text": "| Đóng góp | Trạng thái | |---|---| | A5 — benchmark quyết định có oracle độc lập | ✅ **Đứng vững** — oracle đúng 104/104, thang chạy được, có điều kiện hoà vốn định lượng | | Chuyển miền hợp đồng hiệu lực | ❌ **Hoà về an toàn, THUA về chi phí** — chưa có trục nào thắng | | Chấm lại bản sửa trước phê duyệt | ❌ Bị hấp thụ vào freshness mức dòng |"
+        }
+      ]
+    },
+    "C7_p10_proves_theorem": {
+      "desc": "Mo phong p>=10 duoc dung nhu chung minh menh de",
+      "plan_ref": "PLAN_FINAL 3 / REVIEW R11",
+      "n_occurrences": 5,
+      "n_files": 3,
+      "files": [
+        "final_project_ai/docs/review_novelty_20260921/TONG_HOP.md",
+        "final_project_ai/docs/review_novelty_20260921/assessment.md",
+        "final_project_ai/docs/review_novelty_20260921/reassessment_20260923.md"
+      ],
+      "occurrences": [
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/TONG_HOP.md",
+          "line": 15,
+          "line_end": 25,
+          "text": "| # | Lỗi | Mức | Trạng thái sau khi chạy lại | |---|---|---|---| | F1 | Nhãn benchmark là hàm của đặc trưng quan sát | Major | **Đã đo — cơ chế bị sửa.** Bỏ cột giá chỉ hạ F1 0,035 (Condo) / 0,080 (HDB). \"Giữ cột giá\" là **sai địa chỉ**; vấn đề là nhãn = phân vị của giá, mà giá đoán được từ cột còn lại. Khuyến nghị bỏ cột là **không đủ**. | | F1a | Credit Card có fallback tổng hợp âm thầm | Major"
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/assessment.md",
+          "line": 52,
+          "line_end": 55,
+          "text": "- Bằng chứng: `chapters/cash_theory.tex:102–130` định nghĩa s_hat = tau + b_a + noise_collision, nhưng cận xác suất chỉ dùng sigma*sqrt((p-1)/K). - Phản ví dụ do người đánh giá suy ra: p=1, b_a phân phối chuẩn tâm 0 với phương sai dương. Khi đó epsilon_collision=0 và P(s_hat >= tau)=1/2; chọn t=2 thì mệnh đề đòi ít nhất 3/4. Mệnh đề sai như đang viết. - **[22/09 — xem R3]** Mô phỏng 200.000 lượt x"
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/assessment.md",
+          "line": 174,
+          "line_end": 174,
+          "text": "Phản ví dụ $p=1$ được xác nhận bằng số: 0,4999 so với 0,75 mà mệnh đề đòi. Mệnh đề sai trong vùng $p \\lesssim 5$ và đúng từ $p \\gtrsim 10$."
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/assessment.md",
+          "line": 239,
+          "line_end": 245,
+          "text": "1. **Sửa `_aggregate` trong `cash_features.py` (R4).** Đây là lỗi hiện thực có số đo, không phải chuyện diễn đạt: sai tới 493× và tăng $d$ làm xấu đi. Sửa xong phải chạy lại toàn bộ chế độ `signed_cs_*`; nhiều khả năng các ô `cs_d3/cs_d5` trong bảng CASH sẽ đổi. 2. **Truy vết các bảng dùng ngưỡng-trên-test, ưu tiên tập nhỏ (R2).** Độ lạc quan tới +0,18 F1 khi test ~200 dòng, gần 0 khi test ~5.000 "
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/reassessment_20260923.md",
+          "line": 73,
+          "line_end": 78,
+          "text": "- Mapping/cleansing có nhiều prior work không làm toàn bộ lĩnh vực “đóng hẳn”. Kết luận hợp lý: tổ hợp kỹ thuật phổ biến hiện tại chưa đủ làm tính mới. - Không tìm thấy nghiên cứu tương tự chưa chứng minh “chưa ai suy ràng buộc từ target rejection” hoặc “benchmark đầu tiên”. Tên thuật ngữ có người dùng trước không cấm dùng lại; cần dẫn nguồn và phân biệt đóng góp. - Reconciliation không mặc nhiên "
+        }
+      ]
+    },
+    "C8_mae_493x": {
+      "desc": "MAE 493x duoc doc nhu detector kem 493 lan",
+      "plan_ref": "PLAN_FINAL 3 / REVIEW R12",
+      "n_occurrences": 5,
+      "n_files": 2,
+      "files": [
+        "final_project_ai/docs/review_novelty_20260921/TONG_HOP.md",
+        "final_project_ai/docs/review_novelty_20260921/assessment.md"
+      ],
+      "occurrences": [
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/TONG_HOP.md",
+          "line": 15,
+          "line_end": 25,
+          "text": "| # | Lỗi | Mức | Trạng thái sau khi chạy lại | |---|---|---|---| | F1 | Nhãn benchmark là hàm của đặc trưng quan sát | Major | **Đã đo — cơ chế bị sửa.** Bỏ cột giá chỉ hạ F1 0,035 (Condo) / 0,080 (HDB). \"Giữ cột giá\" là **sai địa chỉ**; vấn đề là nhãn = phân vị của giá, mà giá đoán được từ cột còn lại. Khuyến nghị bỏ cột là **không đủ**. | | F1a | Credit Card có fallback tổng hợp âm thầm | Major"
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/assessment.md",
+          "line": 61,
+          "line_end": 64,
+          "text": "- Bằng chứng: `cash_theory.tex:93–98` nói tổng hợp các ước lượng; `src/data/cash_features.py:116–122,154–160` lại mean/median các vector bucket cùng chỉ số giữa những bảng có hàm băm khác nhau. - Các bucket cùng chỉ số không nhất thiết chứa cùng đặc trưng giữa các bảng. Vì vậy không thể áp nguyên lập luận về trung bình các ước lượng tích trong sang median từng tọa độ của sketch. Đây là mismatch gi"
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/assessment.md",
+          "line": 182,
+          "line_end": 187,
+          "text": "| $p$ | $d$ | MAE giải mã đúng | MAE median theo tọa độ | Tỉ lệ | |---|---|---|---|---| | 17 | 5 | 0,008 | 3,981 | **493×** | | 50 | 5 | 0,121 | 3,859 | 32× | | 200 | 5 | 0,640 | 3,528 | 5,5× | | 500 | 5 | 1,101 | 3,389 | 3,1× |"
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/assessment.md",
+          "line": 230,
+          "line_end": 233,
+          "text": "- F2 và F4 **mạnh lên** và đã có số: F2 tới +0,18 F1 trên tập nhỏ; F4 sai tới 493× và phản tác dụng khi tăng $d$. - F3 **giữ nguyên mức**, nay có vùng sai xác định ($p \\lesssim 5$) và chạm dữ liệu thật (KDD, 3 cột). - F1 **đổi cơ chế, không đổi kết luận**: vẫn Major, nhưng cách sửa phải khác vì bỏ cột không giải quyết được. - F5, F6, F7 chưa chạy lại được trong lượt này (F5 cần gọi API sinh báo cá"
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/assessment.md",
+          "line": 239,
+          "line_end": 245,
+          "text": "1. **Sửa `_aggregate` trong `cash_features.py` (R4).** Đây là lỗi hiện thực có số đo, không phải chuyện diễn đạt: sai tới 493× và tăng $d$ làm xấu đi. Sửa xong phải chạy lại toàn bộ chế độ `signed_cs_*`; nhiều khả năng các ô `cs_d3/cs_d5` trong bảng CASH sẽ đổi. 2. **Truy vết các bảng dùng ngưỡng-trên-test, ưu tiên tập nhỏ (R2).** Độ lạc quan tới +0,18 F1 khi test ~200 dòng, gần 0 khi test ~5.000 "
+        }
+      ]
+    },
+    "C9_firstness": {
+      "desc": "Claim dau tien / khong ton tai / dong han linh vuc",
+      "plan_ref": "PLAN_FINAL 3 / REVIEW R19",
+      "n_occurrences": 23,
+      "n_files": 10,
+      "files": [
+        "csv_agent_platform/generation/experiments/f5_evidence_ablation/FINDINGS_F5.md",
+        "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R035.md",
+        "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R040.md",
+        "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R051.md",
+        "final_project_ai/docs/review_novelty_20260921/TONG_HOP.md",
+        "final_project_ai/docs/review_novelty_20260921/assessment.md",
+        "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+        "final_project_ai/docs/review_novelty_20260921/reassessment_20260923.md",
+        "iuh_master_thesis/chapters/chuong1.tex",
+        "iuh_master_thesis/chapters/chuong4.tex"
+      ],
+      "occurrences": [
+        {
+          "path": "iuh_master_thesis/chapters/chuong1.tex",
+          "line": 108,
+          "line_end": 108,
+          "text": "\\textbf{Ghi chú về phạm vi khảo sát trong nước.} Tác giả \\textit{chưa tìm thấy} công trình trong nước kết hợp phát hiện bất thường đa mô hình với LLM sinh báo cáo cho dữ liệu BĐS thực tế. Cần nêu rõ giới hạn của phát biểu này: khảo sát dựa trên tra cứu các nguồn tiếng Việt tiếp cận được và không theo quy trình rà soát hệ thống (systematic review) có tiêu chí tìm kiếm và loại trừ công bố trước. Vì "
+        },
+        {
+          "path": "iuh_master_thesis/chapters/chuong4.tex",
+          "line": 426,
+          "line_end": 433,
+          "text": "\\begin{itemize} \\item \\textbf{Chỉ 1/7 giai đoạn có đóng góp dương đo được}: tách giao dịch bán (GĐ1) --- bỏ đi làm F1 giảm $0{,}051$, mức giảm lớn nhất toàn bảng. Trộn giao dịch bán vào chuỗi chính gây nhiễu phân phối rõ rệt. \\item \\textbf{Hai giai đoạn làm F1 \\textit{tăng} nhẹ khi bỏ} (GĐ3 Làm sạch $+0{,}0099$; GĐ6b trễ/trượt $+0{,}0108$). Đây \\textit{không} phải bằng chứng rằng chúng vô ích --- "
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/TONG_HOP.md",
+          "line": 33,
+          "line_end": 39,
+          "text": "| Nhánh | Kết luận | Bằng chứng | |---|---|---| | **Mapping** (exact→synonym→embedding→LLM) | ⚠️ **Nhiều prior work mạnh; tìm kiếm có mục tiêu, chưa bao quát** | Zhang et al. ICDE 2023 (A\\*), Magneto PVLDB 2025, Narayan et al. PVLDB 2022 | | **Cleansing / repair** | ⚠️ **Nhiều prior work mạnh; tìm kiếm có mục tiêu, chưa bao quát**, đã có survey | Zhu et al. 2024 (survey), RetClean 2024, UniClean 2"
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/assessment.md",
+          "line": 251,
+          "line_end": 255,
+          "text": "- **Chạy lại mô hình — đã làm một phần.** Đã tái lập đường CASH ở $K=64$ trên năm tập có dữ liệu cục bộ và chạy bốn thí nghiệm E1–E4 (`runs/`). **Chưa** chạy lại: Credit Card, KDD HTTP, Forest Cover, Gisette, Dorothea, Isolet (cần tải OpenML/sklearn fetch); toàn bộ bảng Chương 4 của pipeline V11; K-sweep đầy đủ. Số tái lập khớp bản thảo ở các ô đã thử, nhưng đây là tái lập trên môi trường **hiện t"
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 7,
+          "line_end": 7,
+          "text": "> **Cảnh báo phương pháp.** Đây không phải systematic review theo PRISMA. \"Không tìm thấy\" dưới đây nghĩa là *truy vấn có mục tiêu không trả về nguồn đạt chuẩn workspace*, không phải chứng minh không tồn tại."
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 85,
+          "line_end": 85,
+          "text": "### A5. Benchmark false-ready / false-blocked — **KHÔNG TỒN TẠI**"
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 105,
+          "line_end": 105,
+          "text": "> Luận văn hình thức hoá **quyết định xuất bản dữ liệu** thành một bài toán đo lường được, trong đó kết luận đánh giá có **hiệu lực gắn với phiên bản dữ liệu và ràng buộc đích**, và bản sửa ứng viên được **tái đánh giá trước khi phê duyệt**; kèm benchmark đầu tiên đo *unsafe-acceptance* và *false-block* ở mức sự kiện quyết định."
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 253,
+          "line_end": 253,
+          "text": "Vì sao nó quan trọng: đây là công trình bình duyệt **gần nhất** với nhánh reconciliation, và Perplexity **không** tìm ra nó trong prompt 2 — bằng chứng trực tiếp rằng kết luận \"không tồn tại\" của Perplexity là lỗi phủ sóng tìm kiếm, không phải chứng minh phủ định."
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 276,
+          "line_end": 276,
+          "text": "Vậy **A5 vẫn là đóng góp khả thi nhất và ít bị tranh chấp nhất**: xây benchmark đầu tiên gán nhãn quyết định ở mức file/job với oracle độc lập."
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 287,
+          "line_end": 293,
+          "text": "| Nhánh | Trước lượt này | Sau lượt này | |---|---|---| | A1 Mapping | Đóng | Đóng (không đổi) | | A2 Cleansing | Đóng | Đóng, **thêm** AVH (KDD 2023) + Auto-Validate (SIGMOD 2021) phải trích | | A3 Gate/verdict staleness | Mở, khe rộng | **Hẹp lại**: ACSOS 2026 đã chiếm khung khái niệm. Còn lại là **chuyển miền có kiểm chứng** | | A4 Reconciliation | Trống ở mức học thuật | **Đã có prior work** ("
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 297,
+          "line_end": 297,
+          "text": "> Luận văn xây **benchmark đầu tiên gán nhãn quyết định xuất bản dữ liệu ở mức file/job với oracle độc lập**, và dùng nó để kiểm chứng việc chuyển khung hợp đồng hiệu lực (TOCTOU trên verdict, theo Shraga et al. 2026) từ miền guardrail LLM sang miền cổng dữ liệu, so với đường cơ sở đối soát nguồn↔đích của Netinant et al. (2023) vốn chưa có ca âm và oracle độc lập."
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 341,
+          "line_end": 345,
+          "text": "1. **Bộ ước lượng của FBS không có tương ứng.** FBS ước lượng validity horizon từ *safe-side margin* và *feature volatility* của đại lượng liên tục. Verdict validation dữ liệu là tổ hợp vi phạm rời rạc; không có biên liên tục tương đương. Muốn có phải tự định nghĩa (ví dụ theo số/độ nặng vi phạm còn cách ngưỡng bao xa) — **và đó là việc mới**. 2. **Họ không có khái niệm chấm lại bản sửa ứng viên.*"
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 776,
+          "line_end": 778,
+          "text": "Đã sửa: `TONG_HOP.md` và `assessment.md` còn ghi F5 chưa chạy trong khi Phần H đã có 630 báo cáo. Đã hạ các cụm **\"đóng hẳn\"** → \"nhiều prior work mạnh; tìm kiếm có mục tiêu, chưa bao quát\"; **\"benchmark đầu tiên\"** → \"chưa tìm thấy công bố tương đương\"; **\"đã chứng minh\"** → \"có bằng chứng cho L1→L3\"."
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 981,
+          "line_end": 981,
+          "text": "F5 đã được đo lần đầu tiên. Kết quả ở FINDINGS_F5.md."
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/reassessment_20260923.md",
+          "line": 5,
+          "line_end": 5,
+          "text": "**Major revision cho cách diễn giải và thứ tự triển khai.** Plan đã tiến từ nhận định sang thí nghiệm có artifact, nhưng chưa đủ căn cứ để chốt “F5 đã chứng minh”, “benchmark đầu tiên”, hoặc chuyển trọng tâm luận văn sang A+B. Phát hiện quan trọng nhất của lượt này: baseline template có lỗi bỏ trường; bổ sung đúng trường đó làm NumFid tăng từ 0,5700 lên **1,0000 trên cả 70 mẫu**. Kết luận LLM vượt"
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/reassessment_20260923.md",
+          "line": 7,
+          "line_end": 7,
+          "text": "Phạm vi: đọc bốn tài liệu được yêu cầu, đối chiếu mã và JSON của publication_gate/F5; tính lại các thống kê bên dưới từ artifact. Không chạy lại mô hình, không thực hiện panel reviewer độc lập, không xác minh lại toàn bộ prior work. Không sửa bốn tài liệu gốc. Báo cáo này không thêm citation học thuật mới; các khẳng định “đầu tiên/chưa ai làm” vẫn cần tìm kiếm và xác minh học thuật riêng theo AGEN"
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/reassessment_20260923.md",
+          "line": 67,
+          "line_end": 67,
+          "text": "104/104 là kiểm tra nhất quán oracle với fixture. Hệ đích SQLite giúp tách triển khai oracle khỏi gate; tầng 3 vẫn do tác giả viết luật. Chưa có xác nhận độc lập bởi chuyên gia, dữ liệu thực/đa schema, hay held-out fault families. Gọi là benchmark thử nghiệm có oracle thực thi được là phù hợp; “đứng vững trong mọi kịch bản”, “oracle độc lập ba tầng có nhãn chuyên gia” và “benchmark đầu tiên” chưa "
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/reassessment_20260923.md",
+          "line": 73,
+          "line_end": 78,
+          "text": "- Mapping/cleansing có nhiều prior work không làm toàn bộ lĩnh vực “đóng hẳn”. Kết luận hợp lý: tổ hợp kỹ thuật phổ biến hiện tại chưa đủ làm tính mới. - Không tìm thấy nghiên cứu tương tự chưa chứng minh “chưa ai suy ràng buộc từ target rejection” hoặc “benchmark đầu tiên”. Tên thuật ngữ có người dùng trước không cấm dùng lại; cần dẫn nguồn và phân biệt đóng góp. - Reconciliation không mặc nhiên "
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/reassessment_20260923.md",
+          "line": 95,
+          "line_end": 95,
+          "text": "Đây là mô tả phạm vi và đóng góp thực nghiệm đang xây dựng. Chưa nên thêm “đầu tiên”, “vượt template”, “fine-tuning cải thiện sự thật” hoặc bảo đảm không ảo giác. Tính mới phương pháp và giá trị nghiệp vụ vẫn cần đối chứng hợp lệ và định vị học thuật có kiểm chứng."
+        },
+        {
+          "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/FINDINGS_F5.md",
+          "line": 3,
+          "line_end": 3,
+          "text": "Ngày 22/09/2026. **Lần đầu tiên hạng mục này được đo** — `chuong4.tex:386` ghi \"Đợt đo chưa được thực hiện\"."
+        },
+        {
+          "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R035.md",
+          "line": 9,
+          "line_end": 9,
+          "text": "Dữ liệu giao dịch bất động sản được phân tích cho thấy có sự hiện diện của một số cluster với điểm anomali cao. Cluster đầu tiên và thứ hai đều có điểm anomali là 0.855, trong khi cluster thứ ba và thứ tư có điểm anomali tương ứng là 0.913 và 0.931. Các cluster này chiếm phần lớn dữ liệu (25/32), với số lượng giao dịch cụ thể như sau: Cluster 1 - 25 giao dịch, Cluster 2 - 3 giao dịch, Cluster 3 - "
+        },
+        {
+          "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R040.md",
+          "line": 9,
+          "line_end": 9,
+          "text": "Hệ thống phát hiện 5 bất thường trong 53 giao dịch được kiểm soát, chiếm tỷ lệ 0.42% của tổng số dữ liệu. Vấn đề nghiêm trọng nhất là tỷ lệ hoa hồng cao — 12 giao dịch có tỷ lệ hoa hồng vượt quá chuẩn mực, ảnh hưởng đến hiệu suất hoạt động. Phân tích chéo chỉ ra rằng 5 tháng có nhiều giao dịch bất thường, cần ưu tiên giải quyết đầu tiên."
+        },
+        {
+          "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R051.md",
+          "line": 12,
+          "line_end": 13,
+          "text": "#### Vấn đề chính Trong nhóm dữ liệu có số lượng giao dịch cao, chúng ta đã phát hiện ra một số bất thường đáng chú ý. Đầu tiên là các giao dịch có điểm số dị thường (anomaly scores) cao, cụ thể là 0.965 và 0.929. Điều này cho thấy những giao dịch này có khả năng không tuân thủ quy tắc hoặc có thể chứa thông tin giả mạo."
+        }
+      ]
+    },
+    "C10_ensemble_significant": {
+      "desc": "Ensemble kem CO Y NGHIA thong ke (R13: 4 occurrence / 3 file active)",
+      "plan_ref": "PLAN_FINAL 7 D6 / REVIEW R13",
+      "n_occurrences": 8,
+      "n_files": 6,
+      "files": [
+        "de_cuong_IUH/chapters/chuong4.tex",
+        "final_project_ai/docs/review_novelty_20260921/assessment.md",
+        "iuh_master_thesis/chapters/chuong3.tex",
+        "iuh_master_thesis/chapters/chuong4.tex",
+        "iuh_master_thesis/chapters/chuong5.tex",
+        "iuh_master_thesis/chapters/mo_dau.tex"
+      ],
+      "occurrences": [
+        {
+          "path": "iuh_master_thesis/chapters/chuong3.tex",
+          "line": 354,
+          "line_end": 354,
+          "text": "Nói cách khác, đóng góp chính là \\textit{cách ghép nối}: Model Router heuristic chọn nhánh phát hiện bất thường $\\rightarrow$ tầng phát hiện cấp \\textit{bằng chứng có cấu trúc} thay vì chỉ điểm số $\\rightarrow$ LLM hạ nguồn được tinh chỉnh để diễn giải bằng chứng thành báo cáo nghiệp vụ. Các mảnh ghép đơn lẻ (XGBoost, BiLSTM, DAE, LoRA) đều là kỹ thuật đã biết; \\textbf{tính mới nằm ở giao diện giữ"
+        },
+        {
+          "path": "iuh_master_thesis/chapters/chuong3.tex",
+          "line": 493,
+          "line_end": 493,
+          "text": "Khi heuristic không xác định được loại dữ liệu một cách \\textit{rõ ràng} --- ví dụ tồn tại đồng thời cột thời gian và cột văn bản dài, hoặc phân tích \\texttt{to\\_datetime} chỉ đạt ngưỡng biên $0{,}7$--$0{,}9$ --- Router định tuyến sang nhánh \\textbf{Mixed}. Mạng lưới an toàn (safety net) ở đây là \\textit{bộ đặc trưng phổ quát}: nhánh Mixed mặc định chạy XGBoost universal (theo quyết định D2, \\S 4."
+        },
+        {
+          "path": "iuh_master_thesis/chapters/chuong4.tex",
+          "line": 132,
+          "line_end": 137,
+          "text": "\\textbf{Kiểm định thống kê (Ensemble vs. XGBoost đơn lẻ):} Phương pháp và ngưỡng $\\alpha = 0{,}05$ được cố định trước khi thực nghiệm để tránh HARKing (\\textit{Hypothesizing After Results are Known}). Kiểm định thực hiện trên bản tái huấn luyện hiện hành (17.745 mẫu huấn luyện, 3.803 mẫu kiểm tra, 158 bất thường; ngưỡng từng cấu hình chốt trên tập kiểm định theo đường cong F1): \\begin{itemize} \\it"
+        },
+        {
+          "path": "iuh_master_thesis/chapters/chuong5.tex",
+          "line": 36,
+          "line_end": 36,
+          "text": "\\textit{Nhận xét:} Các chỉ tiêu định lượng cốt lõi đều đạt và vượt mục tiêu -- mô hình chính XGBoost đạt F1 = 0,891 (vượt ngưỡng 0,80 với biên +0,091), AUC = 0,993 (vượt ngưỡng 0,97 với biên +0,023). Lưu ý minh bạch: cam kết ban đầu đặt mục tiêu cho cấu hình ensemble, nhưng kiểm định khai báo trước (\\S 4.3) cho thấy mọi tổ hợp ensemble đều kém XGBoost đơn có ý nghĩa thống kê, nên kết quả được báo "
+        },
+        {
+          "path": "iuh_master_thesis/chapters/mo_dau.tex",
+          "line": 52,
+          "line_end": 61,
+          "text": "\\item \\textbf{Đóng góp về mô hình}: xây dựng và đối chứng có kiểm soát ba mô hình phát hiện bất thường --- XGBoost (dữ liệu dạng bảng), BiLSTM-Attention (chuỗi thời gian) và Bộ mã hoá khử nhiễu (không giám sát); đạt \\textbf{F1 $\\geq$ 0.80} và \\textbf{AUC $\\geq$ 0.97} trên tập kiểm tra, vượt các mô hình nền Isolation Forest và LOF. Đối chứng với các phương pháp LLM-for-AD (AnoLLM, TAD-GP) \\textit{c"
+        },
+        {
+          "path": "de_cuong_IUH/chapters/chuong4.tex",
+          "line": 81,
+          "line_end": 86,
+          "text": "\\textbf{Kiểm định thống kê (Ensemble vs. XGBoost đơn lẻ):} Để xác nhận sự khác biệt giữa A12\\_Ensemble và A7\\_XGBoost-CLEAN có ý nghĩa thống kê (không phải biến động ngẫu nhiên), luận văn áp dụng hai kiểm định trên tập kiểm tra V10 (4.030 mẫu): \\begin{itemize} \\item \\textbf{McNemar's test} \\cite{mcnemar1947note}: so sánh tỷ lệ phân loại sai giữa hai mô hình trên cùng tập kiểm tra -- phù hợp cho dữ"
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/assessment.md",
+          "line": 74,
+          "line_end": 76,
+          "text": "- Bằng chứng: `chapters/mo_dau.tex` gọi kết quả âm có ý nghĩa thống kê; `chapters/chuong5.tex` phần nhận xét cũng nói mọi ensemble kém có ý nghĩa. Nhưng `chapters/chuong4.tex:137` ghi CI của delta F1 chứa 0, các ứng viên khác chưa chạy lại; `chuong5.tex` phần đóng góp lại diễn đạt đúng giới hạn này. - Bổ sung kiểm kê 22/09/2026: cần sửa đủ bốn vị trí `mo_dau.tex:59–61`, `chuong5.tex:36`, `chuong3."
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/assessment.md",
+          "line": 213,
+          "line_end": 216,
+          "text": "- `de_cuong_IUH/chapters/cash_theory.tex` **giống hệt từng byte** với bản trong luận văn. Mệnh đề 3 sai tồn tại ở **hai** tài liệu; bản sửa phải áp cho cả hai. - `de_cuong_IUH/chapters/cash_results.tex:16–18` lặp nguyên claim \"nhãn thật (không phải nhãn giả sinh từ luật)\". F1 cũng có bề mặt sửa kép. - Claim ensemble \"có ý nghĩa thống kê\" còn nằm ngoài các chương: `iuh_master_thesis/progress.md`, `"
+        }
+      ]
+    },
+    "C11_condo_hdb_real_labels": {
+      "desc": "Condo/HDB co nhan that doc lap / khong chiu phe phan danh gia vong tron",
+      "plan_ref": "PLAN_FINAL 7 D1b / REVIEW R10",
+      "n_occurrences": 15,
+      "n_files": 9,
+      "files": [
+        "de_cuong_IUH/chapters/cash_results.tex",
+        "de_cuong_IUH/chapters/cash_theory.tex",
+        "de_cuong_IUH/chapters/chuong4.tex",
+        "final_project_ai/bench/publication_gate/README.md",
+        "final_project_ai/docs/review_novelty_20260921/assessment.md",
+        "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+        "iuh_master_thesis/chapters/cash_results.tex",
+        "iuh_master_thesis/chapters/cash_theory.tex",
+        "iuh_master_thesis/chapters/chuong4.tex"
+      ],
+      "occurrences": [
+        {
+          "path": "iuh_master_thesis/chapters/cash_results.tex",
+          "line": 10,
+          "line_end": 18,
+          "text": "Phần này so sánh bốn chế độ băm của bộ mã hóa CASH --- \\emph{unsigned} (cộng dồn không dấu, tương đương bộ mã hóa hiện hành), \\emph{signed} (băm có dấu, Bổ đề \\ref{lem:unbiased}), \\emph{signed+CS} (count-sketch nhiều bảng, Bổ đề \\ref{lem:variance}) và \\emph{learned} (gán ngăn học được, Lớp~3) --- trong khi \\textbf{giữ cố định đầu dò XGBoost} (A7-XGBoost-Universal). Nhờ cố định đầu dò, mọi chênh lệ"
+        },
+        {
+          "path": "iuh_master_thesis/chapters/cash_results.tex",
+          "line": 149,
+          "line_end": 149,
+          "text": "\\subsubsection{Chuyển lược đồ (chống đánh giá vòng tròn)}"
+        },
+        {
+          "path": "iuh_master_thesis/chapters/cash_results.tex",
+          "line": 151,
+          "line_end": 156,
+          "text": "Để chứng minh tính bất biến lược đồ một cách không vòng tròn, ta huấn luyện trên lược đồ gốc rồi đánh giá trên các biến thể lược đồ của \\emph{cùng các hàng} (tập con cột, đổi tên, chèn cột nhiễu --- §\\ref{sec:schema_aug}) mà \\textbf{không huấn luyện lại}. Nhãn giống hệt, chỉ lược đồ thay đổi. Bảng \\ref{tab:cash_transfer} báo cáo tỉ lệ giữ hiệu năng $F_1^{B}/F_1^{A}$ trung bình trên các biến thể."
+        },
+        {
+          "path": "iuh_master_thesis/chapters/cash_theory.tex",
+          "line": 149,
+          "line_end": 170,
+          "text": "Các phát biểu trên được kiểm chứng bằng mã nguồn kèm theo trong gói \\texttt{detection}: \\begin{itemize} \\item \\textbf{Bổ đề 1} (không chệch) — kiểm thử \\texttt{tests/test\\_cash\\_features.py::test\\_signed\\_hashing\\_preserves\\_norm\\_unbiasedly}: ở chế độ có dấu, sai số chuẩn-hóa của $\\|\\phi(x)\\|^2$ so với $\\|x\\|^2$ về $0$, trong khi chế độ không dấu bị chệch dương rõ rệt. \\item \\textbf{Bổ đề 2} (phư"
+        },
+        {
+          "path": "iuh_master_thesis/chapters/chuong4.tex",
+          "line": 294,
+          "line_end": 317,
+          "text": "\\begin{table}[H] \\centering \\fontsize{12pt}{14pt}\\selectfont \\caption[Ma trận nhầm lẫn $3\\times 3$ trên 60 CSV test]{Ma trận nhầm lẫn $3\\times 3$ trên 60 CSV test (hàng = nhãn thật, cột = nhãn dự đoán). Ô có dấu ``--'' nghĩa là 0 (không có ca nhầm); dùng ``--'' thay 0 để tránh trình xem PDF gộp các chữ số 0 thành liên kết điện thoại.} \\label{tab:router_confusion} \\setlength{\\tabcolsep}{8pt} \\renew"
+        },
+        {
+          "path": "de_cuong_IUH/chapters/cash_results.tex",
+          "line": 10,
+          "line_end": 18,
+          "text": "Phần này so sánh bốn chế độ băm của bộ mã hóa CASH --- \\emph{unsigned} (cộng dồn không dấu, tương đương bộ mã hóa hiện hành), \\emph{signed} (băm có dấu, Bổ đề \\ref{lem:unbiased}), \\emph{signed+CS} (count-sketch nhiều bảng, Bổ đề \\ref{lem:variance}) và \\emph{learned} (gán ngăn học được, Lớp~3) --- trong khi \\textbf{giữ cố định đầu dò XGBoost} (A7-XGBoost-Universal). Nhờ cố định đầu dò, mọi chênh lệ"
+        },
+        {
+          "path": "de_cuong_IUH/chapters/cash_results.tex",
+          "line": 116,
+          "line_end": 116,
+          "text": "\\subsubsection{Chuyển lược đồ (chống đánh giá vòng tròn)}"
+        },
+        {
+          "path": "de_cuong_IUH/chapters/cash_results.tex",
+          "line": 118,
+          "line_end": 123,
+          "text": "Để chứng minh tính bất biến lược đồ một cách không vòng tròn, ta huấn luyện trên lược đồ gốc rồi đánh giá trên các biến thể lược đồ của \\emph{cùng các hàng} (tập con cột, đổi tên, chèn cột nhiễu --- §\\ref{sec:schema_aug}) mà \\textbf{không huấn luyện lại}. Nhãn giống hệt, chỉ lược đồ thay đổi. Bảng \\ref{tab:cash_transfer} báo cáo tỉ lệ giữ hiệu năng $F_1^{B}/F_1^{A}$ trung bình trên các biến thể."
+        },
+        {
+          "path": "de_cuong_IUH/chapters/cash_theory.tex",
+          "line": 149,
+          "line_end": 170,
+          "text": "Các phát biểu trên được kiểm chứng bằng mã nguồn kèm theo trong gói \\texttt{detection}: \\begin{itemize} \\item \\textbf{Bổ đề 1} (không chệch) — kiểm thử \\texttt{tests/test\\_cash\\_features.py::test\\_signed\\_hashing\\_preserves\\_norm\\_unbiasedly}: ở chế độ có dấu, sai số chuẩn-hóa của $\\|\\phi(x)\\|^2$ so với $\\|x\\|^2$ về $0$, trong khi chế độ không dấu bị chệch dương rõ rệt. \\item \\textbf{Bổ đề 2} (phư"
+        },
+        {
+          "path": "de_cuong_IUH/chapters/chuong4.tex",
+          "line": 243,
+          "line_end": 266,
+          "text": "\\begin{table}[H] \\centering \\fontsize{12pt}{14pt}\\selectfont \\caption[Ma trận nhầm lẫn $3\\times 3$ trên 60 CSV test]{Ma trận nhầm lẫn $3\\times 3$ trên 60 CSV test (hàng = nhãn thật, cột = nhãn dự đoán). Ô có dấu ``--'' nghĩa là 0 (không có ca nhầm); dùng ``--'' thay 0 để tránh trình xem PDF gộp các chữ số 0 thành liên kết điện thoại.} \\label{tab:router_confusion} \\setlength{\\tabcolsep}{8pt} \\renew"
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/assessment.md",
+          "line": 17,
+          "line_end": 22,
+          "text": "- Bằng chứng bản thảo: `iuh_master_thesis/chapters/cash_results.tex:14–18` mô tả toàn bộ benchmark là nhãn thật, không phải nhãn sinh từ luật. - Bằng chứng code: `csv_agent_platform/detection/notebooks/ablation_cash.py` import loaders từ `ablation_k256.py`. File sau tạo nhãn House Prices tại dòng 273–275 bằng quantile 0.95 của SalePrice; Condo tại 312–313 bằng hai đuôi giá; HDB tại 325 bằng quanti"
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/assessment.md",
+          "line": 213,
+          "line_end": 216,
+          "text": "- `de_cuong_IUH/chapters/cash_theory.tex` **giống hệt từng byte** với bản trong luận văn. Mệnh đề 3 sai tồn tại ở **hai** tài liệu; bản sửa phải áp cho cả hai. - `de_cuong_IUH/chapters/cash_results.tex:16–18` lặp nguyên claim \"nhãn thật (không phải nhãn giả sinh từ luật)\". F1 cũng có bề mặt sửa kép. - Claim ensemble \"có ý nghĩa thống kê\" còn nằm ngoài các chương: `iuh_master_thesis/progress.md`, `"
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 259,
+          "line_end": 262,
+          "text": "1. **Không có oracle độc lập.** Các hàm `check_consistency`, `check_integrity`, `check_constraints` của chính công cụ vừa thực hiện di trú vừa phán xử di trú đúng. Đây đúng là lỗi đánh giá vòng tròn mà F1 của luận văn mắc phải, ở quy mô khác. 2. **Không có ca âm.** Không tiêm lỗi, không có ca lẽ ra phải bị chặn. Vì vậy precision/recall được định nghĩa ở Bảng 5 nhưng **không bao giờ đo được** — mẫu"
+        },
+        {
+          "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+          "line": 387,
+          "line_end": 389,
+          "text": "Thang gate dùng **`evaluate_readiness` thật** của `csv_agent_services`, không phải bản mô phỏng. Chống vòng tròn bằng kiến trúc: `target_schema.py` (DDL SQLite STRICT) là nguồn sự thật của oracle và **gate không được đọc**; `contract.py` cố ý khai thiếu so với DDL."
+        },
+        {
+          "path": "final_project_ai/bench/publication_gate/README.md",
+          "line": 13,
+          "line_end": 13,
+          "text": "## Kiến trúc chống đánh giá vòng tròn"
+        }
+      ]
+    }
+  },
+  "files_scanned": [
+    {
+      "path": "iuh_master_thesis/chapters/abbreviations.tex",
+      "bytes": 3098,
+      "sha256": "5d3e486a0d3c5d69f82b9dd6d100de5ffb4d36668caa053719afbe4391ccc8c5"
+    },
+    {
+      "path": "iuh_master_thesis/chapters/cash_results.tex",
+      "bytes": 16025,
+      "sha256": "f0c0974960f89cf6da80234b6290ab4ff2eaa0333cb91a156abaea24a305d0ea"
+    },
+    {
+      "path": "iuh_master_thesis/chapters/cash_theory.tex",
+      "bytes": 9560,
+      "sha256": "06baf65a83c25b1eef9aa61f462d11b7f32c738a5bf8f9c5852fff8810814c12"
+    },
+    {
+      "path": "iuh_master_thesis/chapters/chuong1.tex",
+      "bytes": 22805,
+      "sha256": "f6d612ca2cc379f27fd0b6d9cd3c9ead8a6295510a334dbce2ce73cd23ff5dc9"
+    },
+    {
+      "path": "iuh_master_thesis/chapters/chuong2.tex",
+      "bytes": 14809,
+      "sha256": "ee9a746d5e8852c0a594ea739b4825e5365de3a2e405873ebf4baa4f20376c56"
+    },
+    {
+      "path": "iuh_master_thesis/chapters/chuong3.tex",
+      "bytes": 61255,
+      "sha256": "a9b8979ea03e2e5b30213104b88a8c05ace4b60a4cd6eefd65d60497de2fa9d5"
+    },
+    {
+      "path": "iuh_master_thesis/chapters/chuong4.tex",
+      "bytes": 93985,
+      "sha256": "9fd363cef85f641c941dee2eee97a315a8a527059819925b3fda3377be793f1a"
+    },
+    {
+      "path": "iuh_master_thesis/chapters/chuong5.tex",
+      "bytes": 24414,
+      "sha256": "bbf6b0a18ccc752f06b8686ee7a5ad8755e78ad6a4895c1bad3c32e1d9d56f0f"
+    },
+    {
+      "path": "iuh_master_thesis/chapters/cong_trinh.tex",
+      "bytes": 957,
+      "sha256": "eaf955a284852c3f1121e183511385f3150cd4c081f08482525eb5d4a665e40c"
+    },
+    {
+      "path": "iuh_master_thesis/chapters/ke_hoach.tex",
+      "bytes": 19081,
+      "sha256": "e3383c1d8c1ad7aa14c62f13eea7b5ce0c94e9ec35ad230d8933e9813550832f"
+    },
+    {
+      "path": "iuh_master_thesis/chapters/ly_lich.tex",
+      "bytes": 2298,
+      "sha256": "1064a8f2f3b24bc51ec4c0e07143353b2e6d4a4da173dcd5026cad7acbda3723"
+    },
+    {
+      "path": "iuh_master_thesis/chapters/mo_dau.tex",
+      "bytes": 15308,
+      "sha256": "edc37738f5ed43e0036f9b441f01995612fdca6ea56fd9b4568caa76fdcb5816"
+    },
+    {
+      "path": "iuh_master_thesis/chapters/phu_luc.tex",
+      "bytes": 27787,
+      "sha256": "152bf5eda565da12eb35791d960c49e7216114afd2561643bb13742d4cd83da3"
+    },
+    {
+      "path": "de_cuong_IUH/chapters/abbreviations.tex",
+      "bytes": 3098,
+      "sha256": "5d3e486a0d3c5d69f82b9dd6d100de5ffb4d36668caa053719afbe4391ccc8c5"
+    },
+    {
+      "path": "de_cuong_IUH/chapters/cash_results.tex",
+      "bytes": 12340,
+      "sha256": "d559879477f0cbd39acc76b254dcb8746d57be2986e875ee16b1b4cf46feadcd"
+    },
+    {
+      "path": "de_cuong_IUH/chapters/cash_theory.tex",
+      "bytes": 9560,
+      "sha256": "06baf65a83c25b1eef9aa61f462d11b7f32c738a5bf8f9c5852fff8810814c12"
+    },
+    {
+      "path": "de_cuong_IUH/chapters/chuong1.tex",
+      "bytes": 20570,
+      "sha256": "f5f9f061de15c6774e68697887dcf0757cd37818fa995a2b94d6d8b2ca4bc2c2"
+    },
+    {
+      "path": "de_cuong_IUH/chapters/chuong2.tex",
+      "bytes": 14295,
+      "sha256": "2b3b062cac8d410ff9456092a88aef78d7509ff8ecf72d529cd26516c2853ce0"
+    },
+    {
+      "path": "de_cuong_IUH/chapters/chuong3.tex",
+      "bytes": 53488,
+      "sha256": "22b84399cdf2f3d21a91fecd1246946eb3032b68e583c3a6eb70e1deaedcc39e"
+    },
+    {
+      "path": "de_cuong_IUH/chapters/chuong4.tex",
+      "bytes": 67727,
+      "sha256": "df28ddc0f7dd3cb2b93369858915bc2fe3ceb3826aac3d4a49f05bf75a1004b7"
+    },
+    {
+      "path": "de_cuong_IUH/chapters/chuong5.tex",
+      "bytes": 12273,
+      "sha256": "54978006d6ef5b0f8d298bcecfd5266659850abdbf1f58bc26956e20de0bb284"
+    },
+    {
+      "path": "de_cuong_IUH/chapters/cong_trinh.tex",
+      "bytes": 957,
+      "sha256": "eaf955a284852c3f1121e183511385f3150cd4c081f08482525eb5d4a665e40c"
+    },
+    {
+      "path": "de_cuong_IUH/chapters/ke_hoach.tex",
+      "bytes": 17405,
+      "sha256": "48eee09b826ee2e6b47b5e5e20862da836a83e9ddc7c19dc7c2b4ffa1bf323ca"
+    },
+    {
+      "path": "de_cuong_IUH/chapters/ly_lich.tex",
+      "bytes": 2298,
+      "sha256": "1064a8f2f3b24bc51ec4c0e07143353b2e6d4a4da173dcd5026cad7acbda3723"
+    },
+    {
+      "path": "de_cuong_IUH/chapters/mo_dau.tex",
+      "bytes": 14510,
+      "sha256": "d338b3f29da18f6d2efce20548bd6a8201fa46ac3dcde9d91931cf2cf47a1c47"
+    },
+    {
+      "path": "de_cuong_IUH/chapters/phu_luc.tex",
+      "bytes": 17149,
+      "sha256": "5a3bad1514c50d0c41d6e72f1151210cea6e77da8416ca4a316d52411794f5ee"
+    },
+    {
+      "path": "final_project_ai/docs/review_novelty_20260921/._TONG_HOP.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "final_project_ai/docs/review_novelty_20260921/._assessment.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "final_project_ai/docs/review_novelty_20260921/._i3_input_serving_audit_20260923.md",
+      "bytes": 4096,
+      "sha256": "0ba068d493eab2ea922aed436083b9cfe573e4afafd2427f3d7512eba571d22a"
+    },
+    {
+      "path": "final_project_ai/docs/review_novelty_20260921/._novelty_map_mapping_cleansing_gate.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "final_project_ai/docs/review_novelty_20260921/._reassessment_20260923.md",
+      "bytes": 4096,
+      "sha256": "0ba068d493eab2ea922aed436083b9cfe573e4afafd2427f3d7512eba571d22a"
+    },
+    {
+      "path": "final_project_ai/docs/review_novelty_20260921/TONG_HOP.md",
+      "bytes": 9681,
+      "sha256": "1b1ecc0cd1313fd45897ea604ae067a2d260d6e57c6f33a5b6dfeb563160f75a"
+    },
+    {
+      "path": "final_project_ai/docs/review_novelty_20260921/assessment.md",
+      "bytes": 37138,
+      "sha256": "fa5859c48fe4d4e32273fcbe339e9acdf286e9b038154de3d91fe3711042a55c"
+    },
+    {
+      "path": "final_project_ai/docs/review_novelty_20260921/i3_input_serving_audit_20260923.md",
+      "bytes": 5406,
+      "sha256": "5b22e10ad6971dd8865d19621ed465f7d5fbc9f7ee1e4507bdcefe6f8c37f342"
+    },
+    {
+      "path": "final_project_ai/docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md",
+      "bytes": 87009,
+      "sha256": "fc11b2754b739c5a4aa22e4b11969e546ae2ab20b3428a95bcb6eb40aeb41109"
+    },
+    {
+      "path": "final_project_ai/docs/review_novelty_20260921/reassessment_20260923.md",
+      "bytes": 12470,
+      "sha256": "989a55570f7e2c0512f5425c2a3861dc8dc9572c86b593d0998a0b2263d52625"
+    },
+    {
+      "path": "final_project_ai/bench/publication_gate/._FINDINGS.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "final_project_ai/bench/publication_gate/._README.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "final_project_ai/bench/publication_gate/FINDINGS.md",
+      "bytes": 8429,
+      "sha256": "950def59f964fd997f92ac4ccc4f35cabc0e394440cac40af681c78f67f66d0c"
+    },
+    {
+      "path": "final_project_ai/bench/publication_gate/README.md",
+      "bytes": 2653,
+      "sha256": "024876b4fa14381bead6b70a853867abdf4b209d6d1fffef91ded32f57c9c33e"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/._FINDINGS_F5.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/._JUDGE_FINDINGS.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/._PREREGISTRATION.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/FINDINGS_F5.md",
+      "bytes": 6870,
+      "sha256": "6e42d0cee48106e44721ad5ee9c2087c6fb8db58419b7c4f906109293400f292"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/JUDGE_FINDINGS.md",
+      "bytes": 3778,
+      "sha256": "b2158d444b310602f430662e4248dd832009210007141144db97a89a30a8a685"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/PREREGISTRATION.md",
+      "bytes": 4073,
+      "sha256": "386c9ae7b8e296ee4d75cf5e92521cce2bec65df862deaa0a24b9f7dab1eefa5"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/._README.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/._task_protocol.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/README.md",
+      "bytes": 1893,
+      "sha256": "ecf2b3d902aa56390f1cf18bddc7eb82780f065a11154658bc7f020f48ecf956"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/._README.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/README.md",
+      "bytes": 1436,
+      "sha256": "01e1b2982b21e2c3d16fdb78c66fd3aee5c4ef853e137e5f4a4770d14c259af6"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C001.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C002.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C003.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C004.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C005.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C006.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C007.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C008.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C009.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C010.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C011.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C012.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C013.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C014.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C015.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C016.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C017.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C018.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C019.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C020.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C021.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C022.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C023.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C024.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C025.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C026.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C027.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C028.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C029.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C030.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C031.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C032.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C033.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C034.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C035.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C036.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C037.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C038.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C039.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/._C040.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C001.md",
+      "bytes": 4747,
+      "sha256": "da34485c1dac0bf46eff03b9c0ebb50c866686d77e29244e79c8e33138eecafb"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C002.md",
+      "bytes": 4142,
+      "sha256": "7ceb7631e3769a643b0bf4d2a825c56c580c436eb753f3cf95871c16d9dbdaef"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C003.md",
+      "bytes": 3337,
+      "sha256": "a05633a49f193a9da4355301628682fb9a30fe9ea105b7f42d93748e110a0f7b"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C004.md",
+      "bytes": 3307,
+      "sha256": "ded0d3709feb9d56ef19f297921caea1c8acbf181a240eb5e675bd6b5f208be9"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C005.md",
+      "bytes": 4022,
+      "sha256": "6832e3a1b6f72f009a3dd3ed90f9f822d0b84333dcd2442efa618c80f848e520"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C006.md",
+      "bytes": 3535,
+      "sha256": "d2a5a3632ed8788009dea4143fee6d8f19a57ae9dfd2f64c7a62a841ec696a7c"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C007.md",
+      "bytes": 4235,
+      "sha256": "b18349483343e71cc1d03e4a9e498c74403fc411ecebd2fefc4754a97502bd9c"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C008.md",
+      "bytes": 3798,
+      "sha256": "f825748e82d0229cf3489395c099d1f7a42622309dea03a5fb8880719676fc18"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C009.md",
+      "bytes": 4759,
+      "sha256": "d26fb2989d5cccc6123fa2bc11d5698cb87a41257365cd559ec0b9b39de745ac"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C010.md",
+      "bytes": 4525,
+      "sha256": "94f9496101d0f853e04902ae40082b1ec58e82226ffe596f33c3c7e5442b8654"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C011.md",
+      "bytes": 4543,
+      "sha256": "63efa5e1b11c27c510540b2967382f28349fed9c671a14cdb3b1128aba0bb9d4"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C012.md",
+      "bytes": 4739,
+      "sha256": "5724cfff7e2877476a51c3d41a1381fd6006bd42b99d790af2a48ee0936aeea5"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C013.md",
+      "bytes": 4775,
+      "sha256": "c5cf72cfa265102638fe2a6e28549d2c8a2bd9bc79abaa8ed40562712d388cc5"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C014.md",
+      "bytes": 2858,
+      "sha256": "d7a7945b1b3c065734173564ff5e137f94a9f198668bc73d020ce19998e5cb74"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C015.md",
+      "bytes": 4782,
+      "sha256": "1ad6277a4823c5bb73f346305bdee4c88984df981adcb76cd153289cd1f712a4"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C016.md",
+      "bytes": 3603,
+      "sha256": "3c63bf8d1a82ca9ba9702c60655bd3ce5a9ae71291d2a0bf5fb9ec6c58ed4f58"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C017.md",
+      "bytes": 4419,
+      "sha256": "6b3e52b5fcb4c7bb9bf94ecedd656b959759feaab9920ce465c19a750559b5fa"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C018.md",
+      "bytes": 4633,
+      "sha256": "48ce73acb81cf5c3492c4210515d3f0552c86caa58577cb63c6ecd48d3bb909b"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C019.md",
+      "bytes": 3280,
+      "sha256": "b24a76768974131d99040ab96d85b663c07bd0f2b70552128806b8ff1ebfb603"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C020.md",
+      "bytes": 3242,
+      "sha256": "0d774c281696398476e287b53af1cb9a0b57841e978326a74608a1aade905aeb"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C021.md",
+      "bytes": 4141,
+      "sha256": "291e2e956d7b748f821a374990d4e2ddd6268c9a983df022453ad398b216fdfa"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C022.md",
+      "bytes": 4940,
+      "sha256": "90142c11c0b9cbe31a46c61616708c1bf3c9033e1de67d0781032163bbfccafd"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C023.md",
+      "bytes": 4925,
+      "sha256": "c92936deccac3eddc23531bcab999c4e6b313d1d5573702d0d95c26a629839de"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C024.md",
+      "bytes": 4329,
+      "sha256": "9a3b3de72e1557d354582504b994bd9711afc158fe138d772a9b5ceab544b7d5"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C025.md",
+      "bytes": 4395,
+      "sha256": "f801c5b0f493659f0c689b9295e7e66ce0faf44a955203b592155fa9762d67ee"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C026.md",
+      "bytes": 4114,
+      "sha256": "fdcf8d901a9e02cff0df0418f47ca9b33c2f89706de347b6208bdb9a938f8f86"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C027.md",
+      "bytes": 4374,
+      "sha256": "c273ed02f1be0f37a40ee5e27461d6a56fa6f2ac3ac358a96c18215cb07079c9"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C028.md",
+      "bytes": 3249,
+      "sha256": "c764179f301405357ee721f7c50a7d837d8d071bb88676db7d625a42d1c5c560"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C029.md",
+      "bytes": 4655,
+      "sha256": "64b0fee282554a05525dfd53b45bf58dc14ff7b6611f6ee2c38e5c86c4054a54"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C030.md",
+      "bytes": 4604,
+      "sha256": "62b7bffab818b79182460ca6bc1a778adcce4f9d3c66826ca55f61c0e0078ce3"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C031.md",
+      "bytes": 4132,
+      "sha256": "c39179565b1cff4303f2679b5b15769baddc0a1da5d9f83d8526de37ad50e560"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C032.md",
+      "bytes": 4655,
+      "sha256": "23fd691d7e0a5dd24006afb03fff31fd95b0cbc2dd9a490fdf53b5e60144ada8"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C033.md",
+      "bytes": 4197,
+      "sha256": "4c5b1736752e879b6161d60601062d4ad076f8920994b508068b82820be2044d"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C034.md",
+      "bytes": 4625,
+      "sha256": "55b5625bf83fc74f737e82a50589b14f5251b791cb3d1004d952fa9fd47e53f0"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C035.md",
+      "bytes": 4761,
+      "sha256": "b7eeb69c13a567fa61ee15e7f65eef23e7127f834c589f69a609c47b6f9671d3"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C036.md",
+      "bytes": 3708,
+      "sha256": "dab737328b81b39e2adfe9c5b5bc6823e84586948595421508c3afc980e5d8f7"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C037.md",
+      "bytes": 5004,
+      "sha256": "46090aa36cd6718e77726f14fc34b56d9a624e0a36e70772ff92a188612bed36"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C038.md",
+      "bytes": 4828,
+      "sha256": "a387ba56b9fb864e38d93579dc39de333317c970df85d08245a6e794433266e2"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C039.md",
+      "bytes": 4289,
+      "sha256": "f0a32d48d37c5851d72bcbdd5a820c200475644b6eaf9a68af03847d4c09a59a"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/pairwise/cases/C040.md",
+      "bytes": 3805,
+      "sha256": "dcdff82da84c6e876ec4afd9eefb45f3310fcd63bdae0d1e31d57fcb59560dd6"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R001.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R002.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R003.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R004.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R005.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R006.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R007.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R008.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R009.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R010.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R011.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R012.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R013.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R014.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R015.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R016.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R017.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R018.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R019.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R020.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R021.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R022.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R023.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R024.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R025.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R026.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R027.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R028.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R029.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R030.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R031.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R032.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R033.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R034.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R035.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R036.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R037.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R038.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R039.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R040.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R041.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R042.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R043.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R044.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R045.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R046.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R047.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R048.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R049.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R050.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R051.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R052.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R053.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R054.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R055.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R056.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R057.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R058.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R059.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R060.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R061.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R062.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R063.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R064.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R065.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R066.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R067.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R068.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R069.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R070.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R071.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R072.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R073.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R074.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R075.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R076.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R077.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R078.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R079.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R080.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R081.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R082.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R083.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R084.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R085.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R086.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R087.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R088.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R089.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R090.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R091.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R092.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R093.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R094.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R095.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R096.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R097.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R098.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R099.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R100.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R101.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R102.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R103.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R104.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R105.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R106.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R107.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/._R108.md",
+      "bytes": 4096,
+      "sha256": "91436ec286300f7d7d2b9bba23d4775e5e790a36d57819fad43f50231cf730ca"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R001.md",
+      "bytes": 3116,
+      "sha256": "df8f85c2df754264d45858ca45d9d9ff7dfb97215392abc2ec8ee250befdccf8"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R002.md",
+      "bytes": 856,
+      "sha256": "bf32a94003de819fae50bd8b2551c08095c6142774213412ed84631ac40eecef"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R003.md",
+      "bytes": 797,
+      "sha256": "74df451664a937b04ef76899e46e7623a9bbf21903a64ffa97fec69ba9d77c8b"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R004.md",
+      "bytes": 1089,
+      "sha256": "530992cdab7c31eba2159f0ac92961f4e9ff6aaf0532183a6bb5c6fcc7f1dd03"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R005.md",
+      "bytes": 3573,
+      "sha256": "cb3969489b3004853abe576fa5359b58acaf199ae89536654fa64680d8e3fb33"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R006.md",
+      "bytes": 1367,
+      "sha256": "15871811f9d5e68410286dbec8fa887612622656ea342689fd84c49399ec5266"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R007.md",
+      "bytes": 1194,
+      "sha256": "e14e0912f8d09e4384f1903ae4917648dceea38967f084c701f054c8c3da28ec"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R008.md",
+      "bytes": 1150,
+      "sha256": "dfb1f3ef1c7daa6cbaf531090898ae3429ed8f560225bd6fdafe8bc3500a89b9"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R009.md",
+      "bytes": 1148,
+      "sha256": "9f869bb546418ff425578df8d576e00fa37a0568cc456ad989ff865393b4d3be"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R010.md",
+      "bytes": 954,
+      "sha256": "1203fec23c9fac018ba6d7e4776f6e97d7fe7e7266fddf44f8c67a09158a918b"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R011.md",
+      "bytes": 2371,
+      "sha256": "7c2a58ff0280f28325892aff1ad961661080339f587dea985b9022c8a810ba1c"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R012.md",
+      "bytes": 2991,
+      "sha256": "fe358debb0aa055c2e60a31a3d73735b088897385b901f7855c7b3a24b2951d3"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R013.md",
+      "bytes": 1174,
+      "sha256": "cb7acfb1b36406ad11eb1b893cb87f7ebb0cb0447086b6992af276bd06491d90"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R014.md",
+      "bytes": 1301,
+      "sha256": "39602fa25fa7535f2ff4244707f8c3bb59e836dc03f1c7d17697ca8446b91ddf"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R015.md",
+      "bytes": 3095,
+      "sha256": "2c3bf16fe4592ea638ba66493f20a4f6c330905a660249eb94f2e4ccf196bf61"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R016.md",
+      "bytes": 2656,
+      "sha256": "c7716020e193eff84c0d0e0ceb46a261507fe767baa4d1240c38f581369fa831"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R017.md",
+      "bytes": 987,
+      "sha256": "426a978e620e161442535d07b4bdb6f499d375ecd533f4e702403445915729ee"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R018.md",
+      "bytes": 3736,
+      "sha256": "22d92b2d8c631517923b5829aef5a8bc5621d51ee1586c8d9ab6875d24512dff"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R019.md",
+      "bytes": 2579,
+      "sha256": "8ee4f5841e770b6f4f9ea875e167131074f01facebccdb6f8ec9932f9213e347"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R020.md",
+      "bytes": 3168,
+      "sha256": "79cfb5cd87ed07b941c1aab31e255df76c0d2699b7a6dc10beeb68aaa47d791a"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R021.md",
+      "bytes": 800,
+      "sha256": "80c7da433f4aa62b1c11a3425f02db9b10dce7f3825292efe835ae26b59d28da"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R022.md",
+      "bytes": 1129,
+      "sha256": "a3e86aea541816194432dc6872250c963b58b8068e2dfb064f6dabf95d924105"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R023.md",
+      "bytes": 1007,
+      "sha256": "fab837e5dfce7bb2d3ab98358566801227822f313346f187f5dc80a04464f22b"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R024.md",
+      "bytes": 2759,
+      "sha256": "35557922b7e29961acf7802a1e8011dd86dc678bd092ed375a183c27e571f544"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R025.md",
+      "bytes": 2045,
+      "sha256": "3f5cdb9b194bfe0b45dfe73ea9c0e676630d8afa168b615ebbe40f878f286e1d"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R026.md",
+      "bytes": 3111,
+      "sha256": "b99f6225e868b23ee6c7f40f7c812d6fb8e159fb7999a56c31aad08a14effa9b"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R027.md",
+      "bytes": 1343,
+      "sha256": "9cd5f6ba48f1ea01b6a24ba4feda0f24b83706d5b91ef1a7ea42a1d1babfcd3b"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R028.md",
+      "bytes": 1632,
+      "sha256": "a1f282720325eec1a192476b1862997ad0b350c19a9355617d25507932109810"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R029.md",
+      "bytes": 3474,
+      "sha256": "5031ef751b3145c3ae0a510c717d01c1def8731810bd3a15bc68927d37fec74f"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R030.md",
+      "bytes": 2441,
+      "sha256": "985d67cc2789b6228423f6a55a9963a71581544c75e3c5d497b67d7c962e7b94"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R031.md",
+      "bytes": 1118,
+      "sha256": "51eb5a2525527b19ba3b6d89c85c8785cba4a05a1411734833891e0c738314d4"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R032.md",
+      "bytes": 912,
+      "sha256": "244e416790d33f40b063711ca8369be0f4894de7fbaf33cd83e6b2ac236f9530"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R033.md",
+      "bytes": 1232,
+      "sha256": "2a09395bcc0fc1fca8a4d080d9b843a91cfb1f381293fd262f627ed3b27217ec"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R034.md",
+      "bytes": 2893,
+      "sha256": "5ebc2df9c1c0d46238024d396ba6c9f6e91b96c0e1f39f19d28ba3e3f1c8a9cd"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R035.md",
+      "bytes": 2170,
+      "sha256": "bc9dca727eb433fc8c870416562b9ff1aae79ad4b3504097c1b2e5a8311abfc6"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R036.md",
+      "bytes": 897,
+      "sha256": "5d8ea958ae7e4c4435ba14807f80497d6424505b326db6dfce5c432a9d187b8a"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R037.md",
+      "bytes": 1091,
+      "sha256": "bdc2a2170d1c876b0d3858b15c88048b6d5874179fbbb2a6368279ae48db4340"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R038.md",
+      "bytes": 707,
+      "sha256": "1f5635d6f3c44a883ea106d968dbc2087a0b73356e2496f0ab27b52035477744"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R039.md",
+      "bytes": 806,
+      "sha256": "fa552c6e690f04b379bbea91cab93deff6e01f95404d06ea2adca3a36418e4ab"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R040.md",
+      "bytes": 1375,
+      "sha256": "47d18b34ed432fbb113d8ed7ae1860d14f4b7c47cf1515b4bc8112fc2da88785"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R041.md",
+      "bytes": 1085,
+      "sha256": "3996c0840d2ce46fdec72cc4ddd0a109810d29343a4c0a98d7c7bf29ffbaff27"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R042.md",
+      "bytes": 1079,
+      "sha256": "940e3c18d2adf9a188afb2d0719981e5e6b803e53452398cf4c89b9ea9626ecc"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R043.md",
+      "bytes": 969,
+      "sha256": "f398528de2d117e20a877fff6c896e05f7385427760cc8e4f0e4abbb4435cab2"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R044.md",
+      "bytes": 2832,
+      "sha256": "cb57efc9c7b3240a8ec67ffd284c4fda83ac5d9c416b3e5a37355779767adccb"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R045.md",
+      "bytes": 1097,
+      "sha256": "7e32e05716237638b27dbaca74c06037c1c7cf4b21ca1cb92e81600dd30a2949"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R046.md",
+      "bytes": 1069,
+      "sha256": "5d82ac4d5f75e39014b1979209e1ce48d8ca679fb1e937cf173c65b2b3681246"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R047.md",
+      "bytes": 2657,
+      "sha256": "c3933da034eb22b7dfd95bf583f19a30175d29c37f976dc3fe3cafb5ffb6f3af"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R048.md",
+      "bytes": 952,
+      "sha256": "7d931f47a5b57a100749b2a19eba8bf3316b053c3b30cf6be8a208c7c658340e"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R049.md",
+      "bytes": 2999,
+      "sha256": "c4eeeea4ba438a7b68eb37e762a1e7f45584e87fd2b901d0ab534ec2553fa900"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R050.md",
+      "bytes": 3244,
+      "sha256": "223447478fc85f8dcb81625246af9fe45a206cc2a1af368b56707360e8111444"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R051.md",
+      "bytes": 3366,
+      "sha256": "a5b5ffb36e2011785920339cb12103aa6b52c2f1eed24f392afe61b1c8c34ec9"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R052.md",
+      "bytes": 2115,
+      "sha256": "70d31004cdeaaa4d088de585e998de3fda9d1d6f599008e46c7e79ad88a9f947"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R053.md",
+      "bytes": 2889,
+      "sha256": "f9e5a6a125e6e7646d8ea1cf3a73ce6842b33eb573cf8b33510fe6275518b99d"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R054.md",
+      "bytes": 2498,
+      "sha256": "f82456aaa11fec7955e8524d74b4fbed5729c67920f0df51fb9f386051c2475a"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R055.md",
+      "bytes": 1097,
+      "sha256": "910e4978f3c54b1a493789616c51c8edc913d20898529419f6719a94fa8a8df1"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R056.md",
+      "bytes": 1909,
+      "sha256": "ac216823b1676b10e414e39d7b7a4a490e29e4c30073b68b66a1e4756cf40081"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R057.md",
+      "bytes": 1243,
+      "sha256": "040ce56c0ce95f18b8a4bb3ed77ffd621c17e166a474131ab688d81926af6f94"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R058.md",
+      "bytes": 1077,
+      "sha256": "2a803b05e529c1164453e59232222cbcd3c53521f1db797e8fb2508f8367e0e5"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R059.md",
+      "bytes": 948,
+      "sha256": "279f9258dd2a117e26fb4d340eb51bf9e57eaecd675256d831003f154f55b04b"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R060.md",
+      "bytes": 1636,
+      "sha256": "e27248416d2fa84d4f08f53b4e812ab207a367aa6ad1d028afc323e17d9e9edd"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R061.md",
+      "bytes": 3212,
+      "sha256": "02ec2b57ca9f7802fc3405b895c580ab5cbf1862898156c95a367fb2a0b95b20"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R062.md",
+      "bytes": 966,
+      "sha256": "d2fcbf22b8fe591288e23be21ca2207af7511122519e7a05ebd0badb7d22f515"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R063.md",
+      "bytes": 976,
+      "sha256": "c7b18b2c396a967feda6a2e4bc9d3014b7f47118470c96bc35140b591b4470bd"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R064.md",
+      "bytes": 1089,
+      "sha256": "c68913f75088153896916eef728e074e6ad0ff5a8ed0e02406253c780d27ca08"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R065.md",
+      "bytes": 1212,
+      "sha256": "1ee65522231135296e813920600fbbd7cdb732a799a409ddb3e04a7b4b350921"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R066.md",
+      "bytes": 3284,
+      "sha256": "d20c86899ba6dec0782b89e2b101a9f42025233b18021ca44e93c0d2e992e602"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R067.md",
+      "bytes": 1027,
+      "sha256": "7435f850fcb7b100a3e6d6979d370c8ef71b541e4b4d06ba5c66653f6e656a89"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R068.md",
+      "bytes": 3620,
+      "sha256": "e8c5f43428dae3deb8b14a6452eba9dc84102e01d4ea84a9ebfc800f4b846905"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R069.md",
+      "bytes": 2280,
+      "sha256": "5a67219645ed24d842ffee004d9dcd5f43f0a9cc7df6a5b7a7fc7dbef713e2ab"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R070.md",
+      "bytes": 993,
+      "sha256": "a197d075136b050a6b9540d953e472770170f9d91989c89062978b588e9c2ba9"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R071.md",
+      "bytes": 1139,
+      "sha256": "fe3cca1d552e8b2f4affd090c0b4da51a89f215bd178839843b7c7054bf75594"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R072.md",
+      "bytes": 3261,
+      "sha256": "9204a9e622cc4a438e6c74d0f748c386ebbc7b41c12629e747dde0e72fd00524"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R073.md",
+      "bytes": 932,
+      "sha256": "bba86e63028822dc3a8076be697edf7270287a61247f26aaef847230b8ec6cba"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R074.md",
+      "bytes": 1571,
+      "sha256": "e351a795899acac81908cec99c7e585484a8dc2966861be32294b6b07671dcf7"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R075.md",
+      "bytes": 2174,
+      "sha256": "a22d7fbc4b1cc648d8c05e5fc935c4b7f690f910e375f8dbb4e426d34124085d"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R076.md",
+      "bytes": 868,
+      "sha256": "6d2ca41728cb26ed21956accf808f0cb6e5a2db1c1f11c37c2d3834f13469edc"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R077.md",
+      "bytes": 1548,
+      "sha256": "f9a3bf9c390567d151c68448d1cd12f4d6ced67ec2de94683c0df299e2335bd3"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R078.md",
+      "bytes": 3405,
+      "sha256": "03eb895c37b73042dd8c145bdce4542b0e790cc64a04d976861d7cee17059ff9"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R079.md",
+      "bytes": 2682,
+      "sha256": "6a5d433c98583420e264bea832856ebd33e47c1c946fc87e8072833961bd14fb"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R080.md",
+      "bytes": 804,
+      "sha256": "856a5020ee41ffff93507dd24c91d908bc4a80b7a8b3c1f7f04cf9bcfa20f317"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R081.md",
+      "bytes": 2948,
+      "sha256": "df1cb754495dfec4b973ebf7d0486b84f3df761b4c13907af49ab25e92c14866"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R082.md",
+      "bytes": 1195,
+      "sha256": "a825fb0a2baad74f035ea695c95d74b802276dee19acda02cc76812febd2072e"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R083.md",
+      "bytes": 3837,
+      "sha256": "7c1d3d9c9a4f6a1ab1581595ac25b5f75113f4d8f82d9a9b6e92f1ef332879ee"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R084.md",
+      "bytes": 869,
+      "sha256": "6ef03fa45fe1d07df98924ed39ec9a7adeb60cfdd7ca38f89b362907d43e70ea"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R085.md",
+      "bytes": 3070,
+      "sha256": "8a48f992d1756d0aae68aecd9ee73da85cfdfdfb9c5627c09598aad1bb9fdb56"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R086.md",
+      "bytes": 863,
+      "sha256": "ac16ab9072c3edb636d8efa4aba10f7726faa7d52f7325f960856b5d9b60ebf7"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R087.md",
+      "bytes": 1176,
+      "sha256": "a87154f0a014303dcf8b1b5e6745bd577ff43f75f2a3400585ff6c025a12fdce"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R088.md",
+      "bytes": 797,
+      "sha256": "1c9ec6132d7b3c8e3961ea53952b0d3dbb419abc4a79be0d36e6838737731793"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R089.md",
+      "bytes": 2922,
+      "sha256": "f79780ec2d31189fbca1071df438aa916ee29a42ac2c1c889c0adc6f4dc5579f"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R090.md",
+      "bytes": 2926,
+      "sha256": "0ba2ad084aab0d05121293d9ef896187ebbf18fd697fe01e9a7fab317620fc9b"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R091.md",
+      "bytes": 2730,
+      "sha256": "de30c614799740f434a849e4638eb6bce392933e9883268120a3f502dd10af15"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R092.md",
+      "bytes": 1125,
+      "sha256": "7f181de42685bd674bf4fc151fdf114d77e62b132a2855a9af36e522de2162a0"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R093.md",
+      "bytes": 1603,
+      "sha256": "8499dd45dc43f6b992ae5397c571ac45803f62ae527797155feed6251f7e82d4"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R094.md",
+      "bytes": 1122,
+      "sha256": "dfa39895d4c832d6ca303e97107fb40fd22fed2c7bc13e1f61b5fd9df8c0b147"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R095.md",
+      "bytes": 1015,
+      "sha256": "fd63531bd429702d71f1689908db64d45fdef3dcbd8485f31bac9fb4576d4870"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R096.md",
+      "bytes": 976,
+      "sha256": "e8233fc94eb4abbc14d009777cd4fcd110677203f9fe04fca8daf400276901f3"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R097.md",
+      "bytes": 1076,
+      "sha256": "0dc419aaeb3936fd509b3a4149de8b4482df4dc52e2bef82e461d5b789ed5021"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R098.md",
+      "bytes": 3157,
+      "sha256": "088e4095c26ccb2b12953d7e94648259d50d96a57296ba7a794d5ca33a46ebc3"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R099.md",
+      "bytes": 3071,
+      "sha256": "8b7cc28d8600a51ff5422a5b67a5ba2687b40d46ede34a1ffef867943a33056c"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R100.md",
+      "bytes": 987,
+      "sha256": "355ba0f3c04957c4ec76bb16e3d6fd24ea97f0a64301e5830a4fa25402364fd4"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R101.md",
+      "bytes": 751,
+      "sha256": "e867a8e35569a695a111e47764a098ebf10efbcebfc63b8d429d5961ceb94d4f"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R102.md",
+      "bytes": 1245,
+      "sha256": "688c86361fba69da2c0030fafada194a0802f30457f0a659d2332abeb9e3d807"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R103.md",
+      "bytes": 1062,
+      "sha256": "093edbef741c25235ba36a3dc43062e26e7f282c3d19a17d73b2e923fa1e1bdf"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R104.md",
+      "bytes": 2692,
+      "sha256": "ba40a5bd3d29f019b6a5c360838fd91df36862339d56f6a2707d0c73b6212e38"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R105.md",
+      "bytes": 1174,
+      "sha256": "a70ffed9e8c0f1d4c3f051c3efad1ee7091dcb1340736363c36ff35b1dc17036"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R106.md",
+      "bytes": 3448,
+      "sha256": "aad6d3b6847ed60eb6d6435fc604328c32af24d50cf1826ce087c5ccb806c5cb"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R107.md",
+      "bytes": 2303,
+      "sha256": "48db5054643fee8c6534f14ec8a198b794a7b0dda9aae826c465743507b99a0e"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/reports_blind/R108.md",
+      "bytes": 1034,
+      "sha256": "10368ba0e23f60af88f4e0af930b35d59b76c9c9f8980428ab41565e62db0b59"
+    },
+    {
+      "path": "csv_agent_platform/generation/experiments/f5_evidence_ablation/expert_kit/task_protocol.md",
+      "bytes": 2843,
+      "sha256": "b38a28515b4176dc5cc9e07abdaa56bc4f356c9523349bc50f3438ec81964bac"
+    }
+  ],
+  "n_files_scanned": 348
+}

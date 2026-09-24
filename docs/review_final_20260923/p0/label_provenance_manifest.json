@@ -1,0 +1,109 @@
+{
+  "artifact": "label_provenance_manifest",
+  "task": "PLAN_FINAL revision3 — D1b (va D1 cho Credit Card)",
+  "generated": "2026-09-24",
+  "method": "DOC ma nguon loader, KHONG chay dataset. Moi dong dan chieu ve source_file:lines.",
+  "source_file": "csv_agent_platform/detection/notebooks/ablation_k256.py",
+  "source_sha256": "1bcd6aae5789d24c2022f2efb8a31f152d97f793dd9d4c2c7f2b3068b4861496",
+  "label_class_vocabulary": {
+    "original": "Nhan do nguon du lieu cung cap, khong phai ham cua dac trung trong X.",
+    "converted": "Nhan phan loai goc duoc quy doi nhi phan. Khong phai nhan bat thuong nghiep vu.",
+    "threshold_derived": "Nhan sinh bang nguong/phan vi cua mot dac trung quan sat. KHONG phai ground truth nghiep vu.",
+    "original_or_synthetic_UNRESOLVED": "Khong xac dinh duoc tu ten dataset; phu thuoc nhanh fetch thanh cong hay fallback."
+  },
+  "distinction": "label_class tra loi 'nhan duoc DINH NGHIA the nao'. label_column_in_X tra loi 'co ro ri dac trung khong'. Hai truc DOC LAP: bo cot sinh nhan chi xu ly truc thu hai. Nhan threshold_derived van la ham cua dac trung quan sat du cot do da bi bo, neu cac cot con lai du doan duoc no (xem R1).",
+  "datasets": [
+    {
+      "name": "KDD Cup 99 (HTTP)",
+      "loader": "load_kdd_http",
+      "lines": "233-240",
+      "label_class": "original",
+      "label_expr": "target != b'normal.'",
+      "label_column": "target (nhan goc cua bo du lieu)",
+      "label_column_in_X": false,
+      "note": "Nhan tan cong goc. p=3 cot so -> nam trong vung menh de CASH bi phan vi du (D3)."
+    },
+    {
+      "name": "Forest Cover Type",
+      "loader": "load_forest_cover",
+      "lines": "243-253",
+      "label_class": "converted",
+      "label_expr": "target == 4",
+      "label_column": "cover type (nhan phan loai goc)",
+      "label_column_in_X": false,
+      "note": "Bai toan phan loai 7 lop duoc quy doi thanh nhi phan 'lop hiem'. Khong phai nhan bat thuong nghiep vu."
+    },
+    {
+      "name": "Credit Card Fraud",
+      "loader": "load_credit_card",
+      "lines": "256-267",
+      "label_class": "original_or_synthetic_UNRESOLVED",
+      "label_expr": "OpenML Class; fallback: Bernoulli ngau nhien",
+      "label_column": "Class",
+      "label_column_in_X": false,
+      "note": "D1: fallback bat moi Exception, sinh 10.000 dong ngau nhien nhung GIU ten 'Credit Card Fraud'. Artifact lich su ghi n_samples=284807 nen khong khop fallback 10k, nhung day chua phai provenance day du."
+    },
+    {
+      "name": "House Prices (Kaggle)",
+      "loader": "load_house_prices",
+      "lines": "270-276",
+      "label_class": "threshold_derived",
+      "label_expr": "SalePrice > quantile(0.95)",
+      "label_column": "SalePrice",
+      "label_column_in_X": false,
+      "note": "Nhan la ham cua dac trung quan sat. Cot sinh nhan DA bi drop khoi X. Test 219 dong -> F2/R2 do lac quan chon nguong tren test lon nhat o day (+0,1844 F1)."
+    },
+    {
+      "name": "Arrhythmia (UCI)",
+      "loader": "load_arrhythmia",
+      "lines": "279-291",
+      "label_class": "converted",
+      "label_expr": "class != 1",
+      "label_column": "cot cuoi (16 lop chan doan)",
+      "label_column_in_X": false,
+      "note": "D2: median impute chay TRUOC split (dong 289-290) -> ro ri preprocessing. Phai fit imputer tren train."
+    },
+    {
+      "name": "Madelon (UCI)",
+      "loader": "load_madelon",
+      "lines": "294-304",
+      "label_class": "original",
+      "label_expr": "y == -1",
+      "label_column": "madelon_*.labels",
+      "label_column_in_X": false,
+      "note": "Benchmark tong hop theo thiet ke goc cua bo du lieu; nhan do tac gia bo du lieu cung cap."
+    },
+    {
+      "name": "SG Condo Rental",
+      "loader": "load_condo",
+      "lines": "307-317",
+      "label_class": "threshold_derived",
+      "label_expr": "price > quantile(0.95) OR price < quantile(0.05)",
+      "label_column": "price",
+      "label_column_in_X": true,
+      "note": "D1b: cot sinh nhan GIU trong X. Ngoai ra R1 (E1) cho thay bo cot price chi ha F1 0,9993->0,9644: co che chinh la gia du doan duoc gan hoan hao tu cac cot con lai, nen bo cot KHONG lam nhan doc lap."
+    },
+    {
+      "name": "SG HDB Resale",
+      "loader": "load_hdb",
+      "lines": "320-332",
+      "label_class": "threshold_derived",
+      "label_expr": "resale_price > quantile(0.95)",
+      "label_column": "resale_price",
+      "label_column_in_X": true,
+      "note": "D1b: nhu Condo. R1 (E1): bo cot ha F1 0,9995->0,9191."
+    }
+  ],
+  "usable_as_business_ground_truth": [
+    "KDD Cup 99 (HTTP)",
+    "Madelon (UCI)"
+  ],
+  "not_usable_as_business_ground_truth": [
+    "Forest Cover Type",
+    "Credit Card Fraud",
+    "House Prices (Kaggle)",
+    "Arrhythmia (UCI)",
+    "SG Condo Rental",
+    "SG HDB Resale"
+  ]
+}

@@ -4,6 +4,8 @@ Chốt ngày **24/09/2026**, dựa trên audit23/09 trong `REVIEW_FINAL.md` và 
 
 **Revision 2 — 24/09/2026:** bổ sung D1b, trạng thái PREREG tại P0, task tạo base đồng nhất lượng tử hóa, kiểm cap theo arm, quy tắc cặp thiếu và định nghĩa đồng thuận. Đây là sửa plan trước triển khai; chưa sửa code, PREREG hoặc mở holdout.
 
+**Revision 3 — 24/09/2026:** tách rút H3 bằng amendment trước mở holdout khỏi thiếu cặp sau khi chạy. Cho phép khóa family {H1,H2} với Holm m=2; không còn để blocker riêng của base chặn xác nhận H1/H2. Đây chưa phải quyết định thực tế rút H3; family phải được chọn, ghi ngày/lý do và khóa trong protocol/config trước khi mở tập.
+
 ## 1. Quyết định phạm vi
 
 **Hướng chính:** hoàn thiện bằng chứng thực nghiệm cho báo cáo bất thường dựa trên Evidence Packet, so với baseline tất định hợp lệ. Phân biệt ba câu hỏi: mức thông tin có sẵn ảnh hưởng proxy thế nào; cấu hình FT khác base thế nào; báo cáo có giá trị gì cho chuyên gia/người dùng.
@@ -72,7 +74,7 @@ Phạm vi: `csv_agent_platform/generation/experiments/f5_evidence_ablation/ablat
 - Append kết quả theo ca/arm vào run riêng; không overwrite lịch sử. Resume chỉ cho request chưa thành công; mọi attempt đều lưu, không chọn output đẹp nhất.
 - Lỗi hạ tầng tạm thời: tối đa hai retry cùng request/model/options đã khóa; nếu còn lỗi thì dừng phiên chạy và giữ log để sửa hạ tầng, không bỏ ca âm thầm. Nếu đổi code/model/prompt sau khi đã xem output xác nhận, đánh dấu deviation và mất trạng thái xác nhận của phép so bị ảnh hưởng.
 - Output rỗng trong response thành công hoặc chạm output cap là kết quả mô hình theo protocol, không lý do sinh lại chọn mẫu. Báo failure/truncation riêng; cách chấm rỗng phải nhất quán đã thử ở development. Không biến transport error thành output rỗng được chấm như mô hình sinh thành công.
-- **Cặp thiếu — quy tắc cố định:** phân tích xác nhận yêu cầu đủ100 cặp hợp lệ cho từng H; không tự xóa ca theo complete-case hoặc listwise để tuyên bố xác nhận. Nếu sau retry/resume đã định trước vẫn thiếu một arm, H dùng arm đó ghi “chưa hoàn tất”, không điền score0 hoặc p=1 cho ca thiếu. Giữ dữ liệu của các H khác, nhưng chưa chốt kết luận family Holm đến khi đủ cả ba phép so; nếu dừng nghiên cứu thì báo family chưa hoàn tất. Bảng mô tả tạm thời chỉ dùng giao case ID hợp lệ **riêng từng H**, báo mask/n/lý do thiếu, gắn nhãn thăm dò; không loại ca khỏi các H không liên quan. Lỗi metric không tính được xử lý như cặp thiếu, không bỏ âm thầm.
+- **Cặp thiếu — quy tắc cố định:** phân tích xác nhận yêu cầu đủ100 cặp hợp lệ cho từng H thuộc family đã khóa; không tự xóa ca theo complete-case hoặc listwise để tuyên bố xác nhận. Nếu sau retry/resume đã định trước vẫn thiếu một arm, H dùng arm đó ghi “chưa hoàn tất”, không điền score0 hoặc p=1 cho ca thiếu. Giữ dữ liệu của các H khác, nhưng theo quy tắc vận hành này chưa chốt family Holm đến khi đủ các phép so **thuộc family đã khóa trước mở tập** (hai hoặc ba). Nếu dừng nghiên cứu thì báo family chưa hoàn tất; không rút H hoặc giảm m vì thiếu dữ liệu sau khi chạy. H3 đã rút bằng amendment trước mở tập không phải một phép so thiếu dữ liệu và không chặn family {H1,H2}. Bảng mô tả tạm thời chỉ dùng giao case ID hợp lệ **riêng từng H**, báo mask/n/lý do thiếu, gắn nhãn thăm dò; không loại ca khỏi các H không liên quan. Lỗi metric không tính được xử lý như cặp thiếu, không bỏ âm thầm.
 
 **Nghiệm thu:** dry-run bằng fixture/development chứng minh config sai/hash sai/arm thiếu bị từ chối; dừng giữa chừng rồi resume không nhân bản case/arm; không đọc HOLDOUT_CONFIRM trong các test phát triển.
 
@@ -80,20 +82,20 @@ Phạm vi: `csv_agent_platform/generation/experiments/f5_evidence_ablation/ablat
 
 ### P2.1 Cấu hình cố định
 
-Cấu hình mục tiêu để kiểm ở development: FT và base Qwen2-1.5B-Instruct, **cùng Q4_K_M**, cùng base revision/converter/tokenizer/chat template; `num_ctx=8192`, `num_predict=1600`, temperature0, seed42. Đây là lựa chọn triển khai mới trước xác nhận, không mô tả lại các run cũ. Nếu development cho thấy cấu hình không đáp ứng điều kiện kỹ thuật, sửa và ghi amendment trước P3, không đổi sau mở tập.
+Cấu hình mục tiêu để kiểm ở development: FT Qwen2-1.5B-Instruct với identity/checkpoint và manifest cố định. Nếu giữ H3, thêm base Qwen2-1.5B-Instruct **cùng Q4_K_M**, cùng base revision/converter/tokenizer/chat template; `num_ctx=8192`, `num_predict=1600`, temperature0, seed42. Đây là lựa chọn triển khai mới trước xác nhận, không mô tả lại các run cũ. Nếu development cho thấy cấu hình không đáp ứng điều kiện kỹ thuật, sửa và ghi amendment trước P3, không đổi sau mở tập.
 
-**P2.1a — Tạo base Q4_K_M và hồ sơ model:** ưu tiên tạo base từ đúng checkpoint/revision dùng trước merge LoRA, qua cùng converter và quy trình quantization Q4_K_M. Có thể lấy GGUF có sẵn chỉ khi xác minh được chuỗi provenance tương ứng; không đoán tag Ollama hoặc coi cùng chữ Q4_K_M là đủ. Đăng ký model local tên riêng, giữ model cũ. Nếu thiếu provenance FT thì tái xuất cả hai từ nguồn xác minh được; chưa có nguồn thì H3 tiếp tục bị chặn.
+**P2.1a — Tạo base Q4_K_M và hồ sơ model:** ưu tiên tạo base từ đúng checkpoint/revision dùng trước merge LoRA, qua cùng converter và quy trình quantization Q4_K_M. Có thể lấy GGUF có sẵn chỉ khi xác minh được chuỗi provenance tương ứng; không đoán tag Ollama hoặc coi cùng chữ Q4_K_M là đủ. Đăng ký model local tên riêng, giữ model cũ. Nếu thiếu provenance FT thì tái xuất cả hai từ nguồn xác minh được; chưa có nguồn để dựng đối chứng hợp lệ thì H3 tiếp tục bị chặn hoặc được rút trước mở tập theo P2.2. Rút H3 chỉ bỏ yêu cầu tái tạo cặp base–FT cho so sánh adapter; không miễn kiểm identity, serving hoặc độc lập train/test của chính FT dùng trong H1/H2. Nếu các điều kiện chung đó không xác minh được thì H1/H2 vẫn bị chặn.
 
 **Artifact nghiệm thu:** `model_manifest.json` và bản export metadata `/api/show` cho mỗi arm: source revision, adapter/merge provenance, GGUF hash, model digest, converter/version, quantization, tokenizer/template/stop hashes. FT mặc định temperature0.2 phải được override bằng request `temperature=0.0` ở **mọi arm**. Log options hiệu lực (request + defaults liên quan); test bỏ option bắt buộc phải bị runner từ chối. Template/stop của hai model cũ giống nhau theo kiểm tra hiện có, nhưng phải kiểm lại sau khi tạo base mới.
 
 - Đối chiếu token kỳ vọng của prompt đã bọc đúng template với serving; kiểm ngân sách prompt+special+output. Chỉ số prompt_eval_count là một bằng chứng, không thay thế kiểm này.
 - Không dùng việc model nhớ được marker làm bằng chứng duy nhất prompt nguyên vẹn.
 - Quy tắc khi input vượt ngân sách ở confirmation: đánh dấu vi phạm thiết kế, dừng trước inference cho ca đó; không tự cắt, không lặng lẽ tăng context, không drop ca khỏi mẫu để cứu kết quả.
-- Chưa khớp quantization/provenance thì không chạy H3; theo kế hoạch hiện tại giữ cả lần xác nhận chờ P3, không mở một phần để xem trước kết quả.
+- Chưa khớp quantization/provenance của cặp model thì không chạy H3. Trước P3, chọn giữ H3 và chờ đủ điều kiện, hoặc rút H3 bằng amendment trước mở tập để chạy H1/H2. Không mở một phần holdout để quyết định chọn nhánh nào.
 
 ### P2.2 Amendment đề xuất, thay H2 không-kém
 
-Giữ NumFid proxy làm chỉ số xác nhận duy nhất; định nghĩa estimand là trung bình chênh lệch ghép cặp theo ca. Chốt trước ba phép so, **hai phía H0: Δ=0**:
+Giữ NumFid proxy làm chỉ số xác nhận duy nhất; định nghĩa estimand là trung bình chênh lệch ghép cặp theo ca. Danh mục tối đa gồm ba phép so, **hai phía H0: Δ=0**; family thực chạy được khóa theo nhánh dưới đây:
 
 | H | Arm A − B | Những yếu tố cố định |
 |---|---|---|
@@ -101,13 +103,22 @@ Giữ NumFid proxy làm chỉ số xác nhận duy nhất; định nghĩa estima
 | H2 | FT·L4 − FT·L3 | Như H1; bỏ từ “không kém” |
 | H3 | FT·L3 − Base·L3 | Cùng họ/base revision, quantization, context/cap/template; khác adapter đã khai báo |
 
+**Hai chế độ khóa trước mở holdout:**
+
+| Chế độ | Family xác nhận | Holm | Arm LLM chạy |
+|---|---|---|---|
+| Đầy đủ | {H1,H2,H3} | m=3 | FT L1/L3/L4 và base L3 |
+| Rút H3 trước mở tập | {H1,H2} | m=2 | FT L1/L3/L4 |
+
+Nếu không thể dựng đối chứng base có provenance/quantization hợp lệ, lập amendment ghi ngày giờ, lý do kỹ thuật, trạng thái holdout chưa mở và H3 “không chạy”; cập nhật `active_hypotheses`, `family_size`, arm list và config hash cùng lúc. Nhánh m=2 không cần base model để nghiệm thu P3, H1/H2 vẫn được chốt theo phép kiểm đã khóa. Không gán p-value cho H3 đã rút. Sau mở tập, family bất biến: thiếu cặp hoặc kết quả không thuận lợi không cho phép chuyển m=3 sang m=2; áp quy tắc P1.3. Không thêm H3 trở lại family này sau khi đã xem kết quả.
+
 Chọn L3 cho H3 là lựa chọn từ tập phát triển, phải khai báo. H1 đo lợi ích cấp thêm thông tin; không coi đây là phép đo riêng hiệu quả format EP. Nếu muốn giữ claim cấu trúc EP tốt hơn cách biểu diễn khác, cần thí nghiệm cùng lượng thông tin; không thêm claim ấy trong đường tối thiểu.
 
 - Bootstrap ghép cặp20.000 lần theo ca, seed cố định; lưu mean, raw differences, marginal CI95%. Đánh dấu CI này **chưa hiệu chỉnh đa so sánh**.
 - Đặc tả p-value trong amendment/code: lựa chọn triển khai là bootstrap dưới H0 bằng hiệu số đã center (`d_i − mean(d)`), đếm `abs(mean(d_star)) >= abs(mean(d))` (bao gồm trường hợp bằng nhau), tính `(1 + số lần thỏa)/(B + 1)`; nếu mọi hiệu số bằng0 thì p=1. Nêu rõ phép kiểm bootstrap xấp xỉ, không gọi exact. Kiểm mô phỏng calibration trên dữ liệu giả và ca biên trước khóa; nếu không đạt thì sửa phương pháp trước mở tập.
-- Dùng Holm trên đúng ba p-value chính; báo p thô và p hiệu chỉnh. Quyết định xác nhận dựa trên phép kiểm đã đăng ký, không dựa riêng CI95% chưa hiệu chỉnh. Không được diễn giải “CI không chứa0 nhưng Holm không đạt” thành đã xác nhận.
+- Dùng Holm trên đúng các p-value chính của family đã khóa: m=3 cho {H1,H2,H3}, hoặc m=2 cho {H1,H2}; báo p thô và p hiệu chỉnh. Quyết định xác nhận dựa trên phép kiểm đã đăng ký, không dựa riêng CI95% chưa hiệu chỉnh. Không được diễn giải “CI không chứa0 nhưng Holm không đạt” thành đã xác nhận.
 - Secondary metrics báo đầy đủ, nhãn thăm dò; không thay thế H không đạt nhưng phải dùng để nêu giới hạn/rủi ro. Không khẳng định cải thiện tổng thể nếu proxy phụ cho thấy mặt trái.
-- Template đầy đủ là baseline mô tả bắt buộc, không tự thêm phép kiểm thứ tư sau khi xem số.
+- Template đầy đủ là baseline mô tả bắt buộc, không tự thêm phép kiểm ngoài family đã khóa sau khi xem số.
 
 **Nghiệm thu:** PREREGISTRATION amendment và executable config/analysis khớp nhau; đầy đủ model digest, cap số, seed, arm, p-value, family size, missing/retry, metric version; không còn H2 non-inferiority không margin.
 
@@ -123,16 +134,16 @@ Chỉ mở khi mọi mục sau đạt và có artifact nghiệm thu:
 
 - [ ] P0: trạng thái claim hiện hành đã đồng bộ.
 - [ ] P1: runner sử dụng đúng template sửa; scorer ghép ID; language/layout tách riêng.
-- [ ] P2: matched model/quant; prompt/context accounting; provenance manifests.
-- [ ] Protocol amendment và implementation thống kê khớp, tests đạt.
+- [ ] P2: identity/serving/provenance của FT và prompt/context accounting đạt; matched base–FT/quant chỉ bắt buộc nếu active family còn H3. Nếu rút H3, hồ sơ amendment có ngày/lý do trước mở tập và base arm không được yêu cầu ngầm.
+- [ ] Protocol amendment và implementation thống kê khớp, tests đạt ở cả chế độ m=2/m=3; active_hypotheses, family_size và arm list bất biến sau mở tập.
 - [ ] Holdout audit có cách tái lập và giới hạn lineage rõ ràng.
 - [ ] Dry-run trên ca phát triển hoàn tất, logs/outputs không thiếu, resume không đổi mẫu.
-- [ ] Có `development_cap_audit.json` cho **từng arm FT L1/L3/L4 và base L3** ở đúng cấu hình chuẩn bị khóa: n, cap số, phân bố output tokens, at-cap count/rate, done_reason và số trường hợp nghi cắt giữa chừng; báo chênh rate ghép cặp L4−L3. Không áp con số9/25 của Qwen2.5 trước đây cho Qwen2 mục tiêu.
-- [ ] Nếu bất kỳ arm nào còn at-cap, ghi quyết định trước mở holdout: (a) điều chỉnh cap chung/ngân sách context qua amendment và kiểm lại development; hoặc (b) giữ cap, đăng ký rõ estimand là chất lượng **dưới ngân sách đầu ra cố định**, bắt buộc báo at-cap/truncation từng arm và giới hạn này ở H1–H3. Không dùng rate không-significant để coi đã hết ảnh hưởng; không bỏ ca at-cap. Hiệu ứng cap khác nhau có thể thuộc tác động dưới budget, không mặc nhiên là confound ngoại sinh.
+- [ ] Có `development_cap_audit.json` cho **từng arm đang hoạt động: FT L1/L3/L4, thêm base L3 chỉ khi giữ H3** ở đúng cấu hình chuẩn bị khóa: n, cap số, phân bố output tokens, at-cap count/rate, done_reason và số trường hợp nghi cắt giữa chừng; báo chênh rate ghép cặp L4−L3. Không áp con số9/25 của Qwen2.5 trước đây cho Qwen2 mục tiêu.
+- [ ] Nếu bất kỳ arm nào còn at-cap, ghi quyết định trước mở holdout: (a) điều chỉnh cap chung/ngân sách context qua amendment và kiểm lại development; hoặc (b) giữ cap, đăng ký rõ estimand là chất lượng **dưới ngân sách đầu ra cố định**, bắt buộc báo at-cap/truncation từng arm và giới hạn này ở các H đang hoạt động. Không dùng rate không-significant để coi đã hết ảnh hưởng; không bỏ ca at-cap. Hiệu ứng cap khác nhau có thể thuộc tác động dưới budget, không mặc nhiên là confound ngoại sinh.
 - [ ] Test missing một arm đạt: H liên quan chưa hoàn tất; H khác giữ nguyên dữ liệu; không âm thầm complete-case để chốt Holm.
 - [ ] Khóa hash code/config/model/metric/template và thời điểm trước khi mở.
 
-**Chạy:** n100 × bốn arm LLM cần thiết (FT L1/L3/L4, base L3) + template đầy đủ. Không cần lặp mọi arm thăm dò cũ. Lưu mọi outcome. Xuất bảng H1–H3 với n cặp thực, Δ, CI marginal, p thô/p Holm, lỗi vận hành, secondary metrics và deviations.
+**Chạy:** n100 × arm list đã khóa + template đầy đủ: bốn arm LLM nếu m=3 (FT L1/L3/L4, base L3), ba arm nếu m=2 (FT L1/L3/L4). Không cần lặp mọi arm thăm dò cũ. Lưu mọi outcome. Xuất bảng các H đang hoạt động với n cặp thực, Δ, CI marginal, p thô/p Holm, lỗi vận hành, secondary metrics và deviations; nếu H3 được rút trước mở tập, ghi riêng “không chạy” kèm amendment/lý do, không ghi “chưa hoàn tất” hoặc kết luận thống kê cho H3.
 
 **Hoàn thành:** một báo cáo xác nhận tái tạo được từ raw outputs mà không gọi lại model; không tuning trên tập này. Nếu phát hiện lỗi phép đo sau chạy, giữ run, ghi invalid/deviation đúng phạm vi, sửa trên development; không tái dùng để tuyên bố xác nhận như chưa từng thấy dữ liệu.
 
@@ -179,7 +190,7 @@ Nhóm “loại ca nào” phải đặt trước theo yếu tố nghiệp vụ,
 - Kiểm bibliography theo policy workspace; tận dụng snapshot cũ để tìm lỗi nhưng xác minh lại phiên bản hiện tại. Không tự đổi nguồn định nghĩa sang nguồn mới chỉ vì năm, không giữ blog thương mại làm bằng chứng nghiên cứu.
 - Đồng bộ thesis/proposal tại nơi còn là tài liệu active; bản lịch sử gắn superseded. Dựng LaTeX, kiểm cite/ref/table và kiểm từng claim có dẫn artifact/source.
 
-**Định nghĩa hoàn thành:** không còn blocker correctness/phương pháp trong claim giữ lại; H1–H3 được báo đúng protocol hoặc lý do không thể xác nhận; tất cả kết luận hữu ích/ngữ nghĩa có phép đo phù hợp hoặc được rút; gate là pilot; các giới hạn và kết quả âm hiển thị; bản dựng tái tạo được.
+**Định nghĩa hoàn thành:** không còn blocker correctness/phương pháp trong claim giữ lại; các H thuộc family đã khóa được báo đúng protocol hoặc lý do không thể xác nhận; H3 rút trước mở tập có amendment và không chặn hoàn thành H1/H2; tất cả kết luận hữu ích/ngữ nghĩa có phép đo phù hợp hoặc được rút; gate là pilot; các giới hạn và kết quả âm hiển thị; bản dựng tái tạo được.
 
 ## 11. Việc bắt đầu ngay ở lượt triển khai
 

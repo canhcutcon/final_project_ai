@@ -1,3 +1,9 @@
+> 🗂️ **TRẠNG THÁI: TÀI LIỆU LỊCH SỬ — 24/09/2026.**
+> README của benchmark gate, lượt 22/09.
+> Nguồn kết luận hiện hành duy nhất là [`final_project_ai/docs/review_final_20260923/CLAIM_LEDGER.md`](/final_project_ai/docs/review_final_20260923/CLAIM_LEDGER.md).
+> Không trích tài liệu này làm kết luận hiện hành; các số/bảng ở đây giữ nguyên theo run cũ
+> để đối chiếu lịch sử, **không** được thay bằng số của run mới.
+
 # Benchmark quyết định xuất bản dữ liệu (publication-gate decision benchmark)
 
 Dựng 22/09/2026 theo thiết kế Phần C/F của `docs/review_novelty_20260921/novelty_map_mapping_cleansing_gate.md`.
@@ -43,4 +49,6 @@ Kiểm chứng oracle: 64/64 ca bẩn bị chặn đúng, 40/40 ca sạch đư�
 
 - ✅ B0, B1, B2, B2′ đã hiện thực
 - ❌ **B3 (chấm lại bản sửa) và B4 (AI đề xuất sửa) CHƯA hiện thực** — hiện là lớp con của B2, số liệu của chúng **trùng B2 và không mang thông tin**
+
+> ⛔ **ĐÃ RÚT / THU HẸP (24/09/2026).** Mục này **đã lỗi thời**: B3 và phần đo chi phí đã được hiện thực ở lượt 2 (xem `FINDINGS.md`). Nhưng kết quả “B3 trùng khít B2f” cũng đã bị phản ví dụ bác bỏ. Trạng thái đúng: B3 có hiện thực, khác B2f ở ít nhất một lớp sự kiện, chưa đủ làm đóng góp chính.
 - ❌ Chưa đo chi phí/độ trễ — đây là trục duy nhất cơ chế freshness có thể thắng

@@ -1,3 +1,9 @@
+> 🗂️ **TRẠNG THÁI: TÀI LIỆU LỊCH SỬ — 24/09/2026.**
+> Bản tổng hợp của lượt 21–22/09. Nhiều kết luận trong đây đã bị rút hoặc thu hẹp.
+> Nguồn kết luận hiện hành duy nhất là [`final_project_ai/docs/review_final_20260923/CLAIM_LEDGER.md`](/final_project_ai/docs/review_final_20260923/CLAIM_LEDGER.md).
+> Không trích tài liệu này làm kết luận hiện hành; các số/bảng ở đây giữ nguyên theo run cũ
+> để đối chiếu lịch sử, **không** được thay bằng số của run mới.
+
 # Tổng hợp — đánh giá luận văn và định vị tính mới
 
 Cập nhật 22/09/2026. Tài liệu này gộp hai nguồn, đọc cái này trước rồi mới xuống chi tiết:
@@ -21,7 +27,11 @@ Cập nhật 22/09/2026. Tài liệu này gộp hai nguồn, đọc cái này tr
 | F3 | Mệnh đề 3 CASH bỏ sót nhiễu nền | Major | **Đã khoanh vùng:** sai ở p ≲ 5 (p=1 → 0,4999 so với cận 0,75), đúng từ p ≳ 10. **KDD HTTP có 3 cột → nằm trong vùng sai.** Phương án B đúng ở mọi p đã thử. |
 | F4 | Tổng hợp sketch lệch lý thuyết | Major | **Nặng nhất.** Median theo toạ độ sai gấp **3,1×–493×**; tăng d làm **xấu đi** (MAE 1,35 → 3,57). Khớp việc `signed_cs_d5` sập trên KDD (F1 = 0,073). |
 | F5 | Evidence Packet chưa có phép đo | Major | **ĐÃ ĐO 22–23/09** (630 báo cáo, n=70, structural holdout). Xem Phần H của novelty_map. ⚠️ Kết luận về template **đã đảo ngược** sau khi sửa lỗi baseline — xem Phần I. |
+
+> ⛔ **ĐÃ RÚT / THU HẸP (24/09/2026).** Kết quả F5 của lượt này là **thăm dò trên 70 ca phát triển**, chấm bằng template có lỗi ratio. Không dùng làm kết luận xác nhận; xem P1–P4 của `PLAN_FINAL.md`.
 | F6 | Kết luận ensemble mâu thuẫn | Major | **Chín tệp** cần sửa, không phải hai. |
+
+> ⛔ **ĐÃ RÚT / THU HẸP (24/09/2026).** Con số “chín tệp” là đếm tay và **sai**. Dùng `p0/occurrence_manifest.json` (claim C10): 4 occurrence cần sửa trong 3 file active của luận văn.
 | F7 | Readiness có code, chưa có kiểm chứng | Major | Nay đã có benchmark — xem Phần 3. |
 
 **Thứ tự xử lý:** sửa `_aggregate` (F4, có số đo) → truy vết bảng tập nhỏ (F2) → sửa Mệnh đề 3 ở **cả hai tài liệu** (`cash_theory.tex` giống hệt từng byte giữa luận văn và đề cương) → mô tả lại nhãn Condo/HDB → đồng bộ chín tệp F6.
@@ -51,6 +61,8 @@ Cập nhật 22/09/2026. Tài liệu này gộp hai nguồn, đọc cái này tr
 `bench/publication_gate/` — corpus + oracle ba tầng + thang B0–B4/B2′ + tiêm sự kiện + quét chi phí.
 Dùng **`evaluate_readiness` thật** của `csv_agent_services`. **Oracle đúng 104/104 ca.**
 
+> ⛔ **ĐÃ RÚT / THU HẸP (24/09/2026).** “104/104” chỉ nghĩa là oracle khớp fixture do chính tác giả tạo, **không** phải độ chính xác trên nhãn độc lập. Tầng 3 (regex email) chưa có nhãn chuyên gia.
+
 | Lượt | Kết quả |
 |---|---|
 | 1 | Freshness **thô** (đang chạy trong sản phẩm) bị B2′ áp đảo: false-block 0,625–1,000 so với 0,000 |
@@ -58,6 +70,8 @@ Dùng **`evaluate_readiness` thật** của `csv_agent_services`. **Oracle đún
 | 3 | Về **chi phí**: B2f quét ít hơn 40% dòng nhưng **chậm hơn ~50%** ở mọi cỡ tệp. Đo được **h/v = 0,491** → hoà vốn khi **c/n < 0,509**, mà sự kiện đổi ngữ nghĩa buộc c/n = 1 |
 
 ### Phát hiện lớn nhất: **53% lỗi ở K = 0**
+
+> ⛔ **ĐÃ RÚT / THU HẸP (24/09/2026).** Tỷ lệ này do corpus tự đặt, không phải prevalence thực tế; 44 lượt lỗi thực chất là **34 ca** (10 lượt chồng lấp). Và B0 lọt **0/64**, nên “mọi gate đều lọt 34/64” là sai.
 
 Không sự kiện nào, không staleness — **mọi** gate vẫn cho qua 34/64 ca đáng chặn:
 

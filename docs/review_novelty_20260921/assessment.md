@@ -1,3 +1,9 @@
+> 🗂️ **TRẠNG THÁI: TÀI LIỆU LỊCH SỬ — 24/09/2026.**
+> Bản đánh giá F1–F7 + chạy lại R1–R7 của lượt 21–22/09. Phần chẩn đoán vẫn dùng được; phần kết luận đã được thay bằng ledger.
+> Nguồn kết luận hiện hành duy nhất là [`final_project_ai/docs/review_final_20260923/CLAIM_LEDGER.md`](/final_project_ai/docs/review_final_20260923/CLAIM_LEDGER.md).
+> Không trích tài liệu này làm kết luận hiện hành; các số/bảng ở đây giữ nguyên theo run cũ
+> để đối chiếu lịch sử, **không** được thay bằng số của run mới.
+
 # Đánh giá hướng nghiên cứu và tính mới — 21/09/2026
 
 ## Phạm vi và trạng thái
@@ -160,6 +166,8 @@ Cùng một mô hình, cùng proba, chỉ đổi nguồn chọn ngưỡng. Trung
 
 ### R3 — E3 khoanh vùng mệnh đề CASH sai, và vùng đó chạm dữ liệu thật
 
+> ⛔ **ĐÃ RÚT / THU HẸP (24/09/2026).** Mô phỏng chỉ **bác bỏ** mệnh đề ở p nhỏ. Không dùng “đúng từ p ≳ 10” như chứng minh; phải sửa mệnh đề theo giả thiết (task D3).
+
 Mô phỏng Monte Carlo 200.000 lượt đúng theo mô hình của Mệnh đề 3 ($\tau=3$, $\sigma=1$, $K=64$, $t=2$, cận đòi 0,75):
 
 | $p$ (số cột số) | $\varepsilon_{\text{coll}}$ | Xác suất thực nghiệm | Mệnh đề đúng? |
@@ -176,6 +184,8 @@ Phản ví dụ $p=1$ được xác nhận bằng số: 0,4999 so với 0,75 mà
 **Vùng sai không phải giả định suông:** KDD HTTP trong chính bảng CASH chỉ có 3 cột. Phương án B (dùng phương sai toàn bộ $\sigma^2[1+(p-1)/K]$) kiểm bằng số thì đúng ở mọi $p$ đã thử (xác suất ≥ 0,975 so với cận 0,75).
 
 ### R4 — E4 cho thấy tổng hợp sketch trong code không chỉ lệch lý thuyết mà còn phản tác dụng
+
+> ⛔ **ĐÃ RÚT / THU HẸP (24/09/2026).** Tỷ lệ MAE 3,1×–493× là của **decoder count-sketch áp lên pooled embedding**, không phải phép đo trên detector thật. Không đọc thành “detector kém 493 lần”; xem R12 và task D4.
 
 So sánh hai cách đọc tín hiệu cột bất thường ($\tau=4$, $K=64$): giải mã count-sketch đúng `median_t{ξ_t(a)·T_t[h_t(a)]}` so với median theo tọa độ như `_aggregate` đang làm.
 
